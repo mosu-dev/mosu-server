@@ -1,5 +1,8 @@
 package life.mosu.mosuserver.domain.application;
 
+import lombok.Getter;
+
+@Getter
 public enum Subject {
 
     // 공통 과목

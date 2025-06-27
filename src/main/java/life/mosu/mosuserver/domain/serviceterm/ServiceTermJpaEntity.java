@@ -16,7 +16,7 @@ class ServiceTermJpaEntity extends BaseTimeEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "service_term_id")
-    private String id;
+    private Long id;
 
     @Column(name = "service_term_tag")
     private String tag;

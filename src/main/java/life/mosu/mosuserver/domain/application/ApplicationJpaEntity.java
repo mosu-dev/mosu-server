@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import life.mosu.mosuserver.domain.base.BaseTimeEntity;
 import lombok.AccessLevel;
 import lombok.Builder;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.util.HashSet;
@@ -11,6 +12,7 @@ import java.util.Set;
 
 @Entity
 @Table(name = "application")
+@Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class ApplicationJpaEntity extends BaseTimeEntity {
 
@@ -33,32 +35,19 @@ public class ApplicationJpaEntity extends BaseTimeEntity {
     @Enumerated(EnumType.STRING)
     private Set<Subject> subjects = new HashSet<>();
 
-    @ElementCollection(fetch = FetchType.EAGER)
-    @CollectionTable(name = "application_school", joinColumns = @JoinColumn(name = "application_id"))
-    @Column(name = "school_id", nullable = false)
-    private Set<Long> schoolIds = new HashSet<>();
-
     @Builder
     public ApplicationJpaEntity(
         final Long userId,
         final Lunch lunch,
         final String examinationNumber,
-        final Set<Subject> subjects,
-        final Set<Long> schoolIds
+        final Set<Subject> subjects
     ) {
         this.userId = userId;
         this.lunch = lunch;
         this.examinationNumber = examinationNumber;
-
-        if (subjects == null || subjects.size() != 5) {
-            throw new IllegalArgumentException("과목은 5개를 선택해야 합니다.");
-        }
         this.subjects = subjects;
 
-        if (schoolIds == null || schoolIds.isEmpty()) {
-            throw new IllegalArgumentException("최소 한 개 이상의 학교를 선택해야 합니다.");
-        }
-        this.schoolIds = schoolIds;
+
     }
 
 }

@@ -4,9 +4,11 @@ import jakarta.persistence.*;
 import life.mosu.mosuserver.domain.base.BaseTimeEntity;
 import lombok.AccessLevel;
 import lombok.Builder;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Entity
+@Getter
 @Table(name="payment")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class PaymentJpaEntity extends BaseTimeEntity {

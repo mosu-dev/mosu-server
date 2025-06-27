@@ -5,12 +5,14 @@ import life.mosu.mosuserver.domain.base.BaseTimeEntity;
 import life.mosu.mosuserver.domain.school.AddressJpaVO;
 import life.mosu.mosuserver.domain.school.Area;
 import lombok.AccessLevel;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
 
 @Entity
 @Table(name="application_school")
+@Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class ApplicationSchoolJpaEntity extends BaseTimeEntity {
 

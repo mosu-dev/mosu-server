@@ -3,11 +3,13 @@ package life.mosu.mosuserver.domain.profile;
 import jakarta.persistence.*;
 import life.mosu.mosuserver.domain.base.BaseTimeEntity;
 import lombok.AccessLevel;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
 
 @Entity
+@Getter
 @Table(name = "profile")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class ProfileJpaEntity extends BaseTimeEntity {

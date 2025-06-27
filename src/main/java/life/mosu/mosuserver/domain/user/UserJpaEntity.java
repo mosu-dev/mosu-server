@@ -5,6 +5,7 @@ import life.mosu.mosuserver.domain.base.BaseTimeEntity;
 import life.mosu.mosuserver.domain.serviceterm.ServiceTermAgreementJpaEntity;
 import lombok.AccessLevel;
 import lombok.Builder;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.util.HashSet;
@@ -12,6 +13,7 @@ import java.util.Set;
 
 @Entity
 @Table(name = "user")
+@Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class UserJpaEntity extends BaseTimeEntity {
 

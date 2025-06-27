@@ -1,12 +1,13 @@
 package life.mosu.mosuserver.domain.serviceterm;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotNull;
 import lombok.*;
 
 import java.time.LocalDateTime;
 
+@Entity
 @Getter
+@Table(name = "service_term_agreement")
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class ServiceTermAgreementJpaEntity {
