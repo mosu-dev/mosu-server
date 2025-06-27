@@ -2,7 +2,6 @@ package life.mosu.mosuserver.domain.application;
 
 import jakarta.persistence.*;
 import life.mosu.mosuserver.domain.base.BaseTimeEntity;
-import life.mosu.mosuserver.infra.storage.domain.AdmissionTicketImage;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.NoArgsConstructor;
@@ -29,9 +28,6 @@ public class ApplicationJpaEntity extends BaseTimeEntity {
     @Column(name = "examination")
     private String examinationNumber;
 
-    @Embedded
-    private AdmissionTicketImage admissionTicketImage;
-
     @ElementCollection(fetch = FetchType.EAGER)
     @CollectionTable(name = "exam_subject", joinColumns = @JoinColumn(name = "application_id"))
     @Enumerated(EnumType.STRING)
@@ -47,14 +43,12 @@ public class ApplicationJpaEntity extends BaseTimeEntity {
         final Long userId,
         final Lunch lunch,
         final String examinationNumber,
-        final AdmissionTicketImage admissionTicketImage,
         final Set<Subject> subjects,
         final Set<Long> schoolIds
     ) {
         this.userId = userId;
         this.lunch = lunch;
         this.examinationNumber = examinationNumber;
-        this.admissionTicketImage = admissionTicketImage;
 
         if (subjects == null || subjects.size() != 5) {
             throw new IllegalArgumentException("과목은 5개를 선택해야 합니다.");
