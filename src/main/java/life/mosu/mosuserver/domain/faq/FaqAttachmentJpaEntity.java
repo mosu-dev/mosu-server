@@ -13,12 +13,12 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(access = lombok.AccessLevel.PROTECTED)
 public class FaqAttachmentJpaEntity extends File {
     @Id
-    @GeneratedValue(strategy = jakarta.persistence.GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "faq_attachment_id", nullable = false)
     private Long id;
 
     @Column(name = "faq_id", nullable = false)
-    private  Long faqId;
+    private Long faqId;
 
     @Builder
     public FaqAttachmentJpaEntity(final String fileName, final String s3Key, final Visibility visibility, final Long faqId) {
