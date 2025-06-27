@@ -38,7 +38,7 @@ public class ProfileJpaEntity extends BaseTimeEntity {
     @Enumerated(EnumType.STRING)
     private Education education;
 
-    @Enumerated(EnumType.STRING)
+    @Embedded
     private SchoolInfoJpaVO schoolInfo;
 
     @Enumerated(EnumType.STRING)
