@@ -25,4 +25,5 @@ public class SchoolInfoJpaVO {
     @Column(name = "detail")
     private String detail;
 
+
 }

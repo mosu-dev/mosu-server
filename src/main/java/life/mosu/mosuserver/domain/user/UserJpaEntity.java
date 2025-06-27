@@ -2,14 +2,10 @@ package life.mosu.mosuserver.domain.user;
 
 import jakarta.persistence.*;
 import life.mosu.mosuserver.domain.base.BaseTimeEntity;
-import life.mosu.mosuserver.domain.serviceterm.ServiceTermAgreementJpaEntity;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-
-import java.util.HashSet;
-import java.util.Set;
 
 @Entity
 @Table(name = "user")
@@ -34,9 +30,9 @@ public class UserJpaEntity extends BaseTimeEntity {
 
     @Builder
     public UserJpaEntity(
-            final String loginId,
-            final String password,
-            final UserRole userRole
+        final String loginId,
+        final String password,
+        final UserRole userRole
     ) {
         this.loginId = loginId;
         this.password = password;
