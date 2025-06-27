@@ -26,6 +26,9 @@ public class EventJpaEntity extends BaseTimeEntity {
     @Column(name = "event_img")
     private String eventImg;
 
+    @Embedded
+    private DurationJpaVO duration;
+
     @Column(name = "user_id", nullable = false)
     private Long userId;
 
