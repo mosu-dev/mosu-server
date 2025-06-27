@@ -2,6 +2,7 @@ package life.mosu.mosuserver.domain.user;
 
 import jakarta.persistence.*;
 import life.mosu.mosuserver.domain.base.BaseTimeEntity;
+import life.mosu.mosuserver.domain.serviceterm.ServiceTermAgreementJpaEntity;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.NoArgsConstructor;
@@ -29,23 +30,14 @@ public class UserJpaEntity extends BaseTimeEntity {
     @Enumerated(EnumType.STRING)
     private UserRole userRole;
 
-    @ElementCollection(fetch = FetchType.EAGER)
-    @CollectionTable(
-        name = "user_service_term_agreement",
-        joinColumns = @JoinColumn(name = "user_id")
-    )
-    private Set<ServiceTermAgreementJpaVO> serviceTermAgreements = new HashSet<>();
-
     @Builder
     public UserJpaEntity(
             final String loginId,
             final String password,
-            final UserRole userRole,
-            final Set<ServiceTermAgreementJpaVO> serviceTermAgreements
+            final UserRole userRole
     ) {
         this.loginId = loginId;
         this.password = password;
         this.userRole = userRole;
-        this.serviceTermAgreements = serviceTermAgreements;
     }
 }
