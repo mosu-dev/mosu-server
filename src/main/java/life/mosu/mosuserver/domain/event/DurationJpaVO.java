@@ -12,7 +12,7 @@ import java.time.temporal.ChronoUnit;
 @ToString
 @Embeddable
 @EqualsAndHashCode
-@AllArgsConstructor
+@AllArgsConstructor(access = AccessLevel.PRIVATE)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class DurationJpaVO {
 
