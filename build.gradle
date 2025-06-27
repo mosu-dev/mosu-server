@@ -43,17 +43,12 @@ dependencies {
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 
     //aws
-    implementation platform('software.amazon.awssdk:bom:2.20.0') // AWS SDK 버전 관리
+    implementation platform('software.amazon.awssdk:bom:2.20.0')
     implementation 'software.amazon.awssdk:s3'
     implementation 'software.amazon.awssdk:sts'
     implementation 'software.amazon.awssdk:core:2.30.20'
     implementation 'software.amazon.awssdk:ec2'
 
-    // QueryDSL
-    implementation "com.querydsl:querydsl-jpa:5.1.0:jakarta"
-    annotationProcessor "com.querydsl:querydsl-apt:5.1.0:jakarta"
-    annotationProcessor "jakarta.annotation:jakarta.annotation-api:3.0.0"
-    annotationProcessor "jakarta.persistence:jakarta.persistence-api:3.2.0"
 }
 
 tasks.named('test') {
