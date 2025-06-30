@@ -53,3 +53,8 @@ aws:
     access-key: ${AWS_ACCESS_KEY}
     secret-key: ${AWS_SECRET_KEY}
     presigned-url-expiration-minutes: ${S3_PRESIGNED_URL_EXPIRATION_MINUTES}
+
+logging:
+  file:
+    path: ./logs
+    name: app.log
