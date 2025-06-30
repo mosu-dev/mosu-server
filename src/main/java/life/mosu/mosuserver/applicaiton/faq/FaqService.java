@@ -21,10 +21,10 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
-@Transactional(readOnly = true)
 @RequiredArgsConstructor
 public class FaqService {
     private final FaqRepository faqRepository;
@@ -37,12 +37,12 @@ public class FaqService {
 
     @Transactional
     public void createFaq(FaqCreateRequest request) {
-        FaqJpaEntity entity = faqRepository.save(request.toEntity());
+        FaqJpaEntity faqEntity = faqRepository.save(request.toEntity());
 
-        createAttachmentIfPresent(request, entity);
+        createAttachmentIfPresent(request, faqEntity);
     }
 
-    @Transactional(readOnly = true)
+    @Transactional(readOnly = true, propagation = Propagation.SUPPORTS)
     public List<FaqResponse> getFaqWithAttachments(int page, int size) {
         Pageable pageable = PageRequest.of(page, size, Sort.by("id"));
         Page<FaqJpaEntity> faqPage = faqRepository.findAll(pageable);
@@ -55,26 +55,26 @@ public class FaqService {
 
     @Transactional
     public void deleteFaq(Long faqId) {
-        FaqJpaEntity entity = faqRepository.findById(faqId)
+        FaqJpaEntity faqEntity = faqRepository.findById(faqId)
                 .orElseThrow(() -> new CustomRuntimeException(ErrorCode.FILE_NOT_FOUND));
-        faqRepository.delete(entity);
+        faqRepository.delete(faqEntity);
 
-        deleteAttachmentIfPresent(entity);
+        deleteAttachmentIfPresent(faqEntity);
     }
 
 
-    private void createAttachmentIfPresent(FaqCreateRequest request, FaqJpaEntity entity) {
-        if (request.file() == null) return;
+    private void createAttachmentIfPresent(FaqCreateRequest request, FaqJpaEntity faqEntity) {
+        if (request.file() == null || request.file().isEmpty()) {
+            return;
+        }
 
-        Long faqId = entity.getId();
+        Long faqId = faqEntity.getId();
 
         List<CompletableFuture<Void>> futures = request.file().stream()
             .map(file -> CompletableFuture.runAsync(() -> {
-
                 String s3Key = s3Service.uploadFile(file, Folder.FAQ);
                 String fileName = file.getOriginalFilename();
                 faqAttachmentRepository.save(request.toAttachmentEntity(fileName, s3Key, faqId));
-
             }, executorService))
             .toList();
 
@@ -97,7 +97,7 @@ public class FaqService {
         return attachments.stream()
             .map(attachment -> new FaqResponse.AttachmentResponse(
                 attachment.getFileName(),
-                s3Service.getPresignedUrl(
+                s3Service.getPreSignedUrl(
                     attachment.getS3Key(),
                     Duration.ofMinutes(durationTime)
                 )
