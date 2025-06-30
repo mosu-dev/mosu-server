@@ -23,7 +23,7 @@ public class FaqController {
     private final FaqService faqService;
 
     //TODO: 관리자 권한 체크 추가
-    @PostMapping("/create")
+    @PostMapping
     public ApiResponseWrapper<Void> create(@ModelAttribute FaqCreateRequest request) {
         faqService.createFaq(request);
         return ApiResponseWrapper.success(HttpStatus.CREATED, "게시글 등록 성공");
@@ -39,7 +39,7 @@ public class FaqController {
     }
 
     //TODO: 관리자 권한 체크 추가
-    @DeleteMapping("/delete/{faqId}")
+    @DeleteMapping("/{faqId}")
     public ApiResponseWrapper<Void> delete(@PathVariable Long faqId) {
         faqService.deleteFaq(faqId);
         return ApiResponseWrapper.success(HttpStatus.OK, "게시글 삭제 성공");
