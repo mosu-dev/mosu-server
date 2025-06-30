@@ -1,49 +1,34 @@
-# 기본 변수 정의
-COMPOSE = docker-compose
-DOCKER = docker
-PROJECT_NAME = mosu
+.PHONY: prod-up prod-down local-up local-down
 
-# 환경별 공통 옵션
-LOCAL_COMPOSE_FILE = docker-compose/docker-compose.local.yml
-LOCAL_ENV_FILE = docker-compose/.env.local
+# Target for bringing up the production environment
+prod-up:
+	@echo "Bringing up production environment..."
+	docker compose -f docker-compose/docker-compose.prod.yml --env-file docker-compose/.env.prod up -d --build
+	@echo "Production environment is up!"
 
-PROD_COMPOSE_FILE = docker-compose/docker-compose.prod.yml
-PROD_ENV_FILE = docker-compose/.env.prod
+# Target for bringing down the production environment
+prod-down:
+	@echo "Bringing down production environment..."
+	docker compose -f docker-compose/docker-compose.prod.yml --env-file docker-compose/.env.prod down
+	@echo "Production environment is down!"
 
-# 공통 실행 함수
-define compose_up
-	$(COMPOSE) -p $(PROJECT_NAME) -f $(1) --env-file $(2) up -d
-endef
+# Target for bringing up the local development environment
+# Assumes docker-compose/docker-compose.local.yml and docker-compose/.env.local exist
+local-up:
+	@echo "Bringing up local development environment..."
+	docker compose -f docker-compose/docker-compose.local.yml --env-file docker-compose/.env.local up -d --build
+	@echo "Local development environment is up!"
 
-define compose_down
-	$(COMPOSE) -p $(PROJECT_NAME) down
-endef
+# Target for bringing down the local development environment
+local-down:
+	@echo "Bringing down local development environment..."
+	docker compose -f docker-compose/docker-compose.local.yml --env-file docker-compose/.env.local down
+	@echo "Local development environment is down!"
 
-define compose_ps
-	$(COMPOSE) -p $(PROJECT_NAME) ps
-endef
-
-# 실행 (로컬)
-up-local:
-	$(call compose_up, $(LOCAL_COMPOSE_FILE), $(LOCAL_ENV_FILE))
-
-# 실행 (운영)
-up-prod:
-	$(call compose_up, $(PROD_COMPOSE_FILE), $(PROD_ENV_FILE))
-
-# 중지 및 컨테이너 제거
-down:
-	$(call compose_down)
-
-# 상태 보기
-ps:
-	$(call compose_ps)
-
-# 재시작
-restart-local:
-	$(call compose_down)
-	$(call compose_up, $(LOCAL_COMPOSE_FILE), $(LOCAL_ENV_FILE))
-
-restart-prod:
-	$(call compose_down)
-	$(call compose_up, $(PROD_COMPOSE_FILE), $(PROD_ENV_FILE))
+# Default target - shows available commands
+help:
+	@echo "Usage:"
+	@echo "  make prod-up    - Build and start production services"
+	@echo "  make prod-down  - Stop and remove production services"
+	@echo "  make local-up   - Build and start local development services"
+	@echo "  make local-down - Stop and remove local development services"
