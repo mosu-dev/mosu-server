@@ -22,6 +22,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class FaqController {
     private final FaqService faqService;
 
+    //TODO: 관리자 권한 체크 추가
     @PostMapping("/create")
     public ApiResponseWrapper<Void> create(@ModelAttribute FaqCreateRequest request) {
         faqService.createFaq(request);
@@ -37,6 +38,7 @@ public class FaqController {
         return ApiResponseWrapper.success(HttpStatus.OK, "게시글 조회 성공", responses);
     }
 
+    //TODO: 관리자 권한 체크 추가
     @DeleteMapping("/delete/{faqId}")
     public ApiResponseWrapper<Void> delete(@PathVariable Long faqId) {
         faqService.deleteFaq(faqId);

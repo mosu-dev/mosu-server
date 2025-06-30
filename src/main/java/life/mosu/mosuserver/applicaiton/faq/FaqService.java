@@ -105,6 +105,7 @@ public class FaqService {
             .toList();
     }
 
+    //TODO: S3Service에서 SoftDelete 적용 된 파일들에 대해 따로 분리하는 로직 필요할 듯
     private void deleteAttachmentIfPresent(FaqJpaEntity entity) {
         List<FaqAttachmentJpaEntity> attachments = faqAttachmentRepository.findAllByFaqId(entity.getId());
         faqAttachmentRepository.deleteAll(attachments);
