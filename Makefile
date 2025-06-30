@@ -1,34 +1,34 @@
 .PHONY: prod-up prod-down local-up local-down
 
-# Target for bringing up the production environment
+# 프로덕션 환경을 실행하는 명령어
 prod-up:
-	@echo "Bringing up production environment..."
+	@echo "프로덕션 환경을 실행 중..."
 	docker compose -f docker-compose/docker-compose.prod.yml --env-file docker-compose/.env.prod up -d --build
-	@echo "Production environment is up!"
+	@echo "프로덕션 환경이 실행되었습니다!"
 
-# Target for bringing down the production environment
+# 프로덕션 환경을 중지하는 명령어
 prod-down:
-	@echo "Bringing down production environment..."
+	@echo "프로덕션 환경을 중지 중..."
 	docker compose -f docker-compose/docker-compose.prod.yml --env-file docker-compose/.env.prod down
-	@echo "Production environment is down!"
+	@echo "프로덕션 환경이 중지되었습니다!"
 
-# Target for bringing up the local development environment
-# Assumes docker-compose/docker-compose.local.yml and docker-compose/.env.local exist
+# 로컬 개발 환경을 실행하는 명령어
+# docker-compose/docker-compose.local.yml 및 docker-compose/.env.local 파일이 존재해야 함
 local-up:
-	@echo "Bringing up local development environment..."
+	@echo "로컬 개발 환경을 실행 중..."
 	docker compose -f docker-compose/docker-compose.local.yml --env-file docker-compose/.env.local up -d --build
-	@echo "Local development environment is up!"
+	@echo "로컬 개발 환경이 실행되었습니다!"
 
-# Target for bringing down the local development environment
+# 로컬 개발 환경을 중지하는 명령어
 local-down:
-	@echo "Bringing down local development environment..."
+	@echo "로컬 개발 환경을 중지 중..."
 	docker compose -f docker-compose/docker-compose.local.yml --env-file docker-compose/.env.local down
-	@echo "Local development environment is down!"
+	@echo "로컬 개발 환경이 중지되었습니다!"
 
-# Default target - shows available commands
+# 기본 명령어 - 사용 가능한 명령어 출력
 help:
-	@echo "Usage:"
-	@echo "  make prod-up    - Build and start production services"
-	@echo "  make prod-down  - Stop and remove production services"
-	@echo "  make local-up   - Build and start local development services"
-	@echo "  make local-down - Stop and remove local development services"
+	@echo "사용법:"
+	@echo "  make prod-up    - 프로덕션 서비스 빌드 및 실행"
+	@echo "  make prod-down  - 프로덕션 서비스 중지 및 제거"
+	@echo "  make local-up   - 로컬 개발 서비스 빌드 및 실행"
+	@echo "  make local-down - 로컬 개발 서비스 중지 및 제거"
