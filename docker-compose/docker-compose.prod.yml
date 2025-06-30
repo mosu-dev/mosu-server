@@ -73,6 +73,8 @@ services:
     container_name: mosu-grafana
     ports:
       - ${GRAFANA_PORT}:${GRAFANA_PORT}
+    volumes:
+      - ./grafana/data:/var/lib/grafana
     depends_on:
       - prometheus
     networks:
