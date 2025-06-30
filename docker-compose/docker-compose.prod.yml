@@ -8,6 +8,7 @@ services:
       - ${ENV_FILE}
     depends_on:
       - database
+      - prometheus
     ports:
       - ${SPRING_PORT}:${SPRING_PORT}
     restart: always
@@ -33,6 +34,7 @@ services:
       - mosu-database:/var/lib/mysql
     networks:
       - mosu-bridge
+
   velkey:
     image: ghcr.io/valkey-io/valkey:7.2
     container_name: mosu-velkey
