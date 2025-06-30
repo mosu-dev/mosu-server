@@ -40,6 +40,12 @@ springdoc:
   swagger-ui:
     path: /swagger
 
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+
 aws:
   s3:
     bucket-name: ${AWS_BUCKET_NAME}
