@@ -1,0 +1,82 @@
+services:
+  app:
+    build:
+      context: ..
+      dockerfile: Dockerfile
+    container_name: mosu-server
+    env_file:
+      - ${ENV_FILE}
+    depends_on:
+      - database
+    ports:
+      - ${SPRING_PORT}:${SPRING_PORT}
+    restart: always
+    networks:
+      - mosu-bridge
+
+  database:
+    image: mysql:8.4.4
+    container_name: mosu-database
+    environment:
+      MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}
+      MYSQL_DATABASE: ${DB_DATABASE}
+      MYSQL_USER: ${DB_USERNAME}
+      MYSQL_PASSWORD: ${DB_PASSWORD}
+    command:
+      --port=${DB_PORT} --max_allowed_packet=32M
+    expose:
+      - ${DB_PORT}
+    ports:
+      - ${DB_PORT}:${DB_PORT}
+    restart: no
+    volumes:
+      - mosu-database:/var/lib/mysql
+    networks:
+      - mosu-bridge
+  velkey:
+    image: ghcr.io/valkey-io/valkey:7.2
+    container_name: mosu-velkey
+    command: [ "valkey-server", "--port", "${VELKEY_PORT}" ]
+    ports:
+      - ${VELKEY_PORT}:${VELKEY_PORT}
+    networks:
+      - mosu-bridge
+
+  redis-exporter:
+    image: oliver006/redis_exporter:v1.58.0
+    container_name: mosu-redis-exporter
+    environment:
+      REDIS_ADDR: redis://velkey:${VELKEY_PORT}
+    ports:
+      - ${REDIS_EXPORTER}:${REDIS_EXPORTER}
+    depends_on:
+      - velkey
+    networks:
+      - mosu-bridge
+
+  prometheus:
+    image: prom/prometheus:latest
+    container_name: mosu-prometheus
+    ports:
+      - ${PROMETHEUS_PORT}:${PROMETHEUS_PORT}
+    volumes:
+      - ./prometheus/config.yml:/etc/prometheus/prometheus.yml
+    networks:
+      - mosu-bridge
+
+  grafana:
+    image: grafana/grafana:latest
+    container_name: mosu-grafana
+    ports:
+      - ${GRAFANA_PORT}:${GRAFANA_PORT}
+    depends_on:
+      - prometheus
+    networks:
+      - mosu-bridge
+
+volumes:
+  mosu-database:
+
+networks:
+  mosu-bridge:
+    driver: bridge

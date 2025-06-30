@@ -1,7 +1,7 @@
 services:
   app:
     build:
-      context: .
+      context: ..
       dockerfile: Dockerfile
     container_name: mosu-server
     env_file:
@@ -11,6 +11,8 @@ services:
     ports:
       - ${SPRING_PORT}:${SPRING_PORT}
     restart: always
+    networks:
+      - mosu-bridge
 
   database:
     image: mysql:8.4.4
@@ -29,6 +31,12 @@ services:
     restart: no
     volumes:
       - mosu-database:/var/lib/mysql
+    networks:
+      - mosu-bridge
 
 volumes:
   mosu-database:
+
+networks:
+  mosu-bridge:
+    driver: bridge
