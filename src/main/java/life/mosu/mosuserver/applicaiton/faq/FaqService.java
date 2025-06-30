@@ -78,7 +78,13 @@ public class FaqService {
             }, executorService))
             .toList();
 
-        CompletableFuture.allOf(futures.toArray(new CompletableFuture[0])).join();
+        try{
+            CompletableFuture.allOf(futures.toArray(new CompletableFuture[0])).join();
+        }
+        catch (Exception e) {
+            throw new CustomRuntimeException(ErrorCode.FILE_UPLOAD_FAILED);
+        }
+
     }
 
     private FaqResponse toFaqResponse(FaqJpaEntity faq) {
