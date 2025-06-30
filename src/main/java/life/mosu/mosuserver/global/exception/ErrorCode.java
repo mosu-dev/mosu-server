@@ -16,7 +16,10 @@ public enum ErrorCode {
 
     // FAQ 관련 에러
     FAQ_NOT_FOUND(HttpStatus.NOT_FOUND, "FAQ를 찾을 수 없습니다."),
-    FAQ_CREATION_FAILED(HttpStatus.INTERNAL_SERVER_ERROR, "FAQ 등록에 실패했습니다.");
+    FAQ_CREATION_FAILED(HttpStatus.INTERNAL_SERVER_ERROR, "FAQ 등록에 실패했습니다."),
+
+    //서버 관련 에러
+    SERVER_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "서버 오류가 발생했습니다.");
 
     private final HttpStatus status;
     private final String message;

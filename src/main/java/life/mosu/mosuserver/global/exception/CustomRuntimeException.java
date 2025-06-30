@@ -10,10 +10,12 @@ public class CustomRuntimeException extends RuntimeException{
 
     private HttpStatus status;
     private String message;
+    private String code;
 
     public CustomRuntimeException(ErrorCode errorCode){
         this.status = errorCode.getStatus();
         this.message = errorCode.getMessage();
+        this.code = errorCode.name();
 
         log.error("CustomRuntimeException 발생: status={}, message={}", status, message, this);
     }

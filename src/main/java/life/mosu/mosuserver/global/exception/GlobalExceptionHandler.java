@@ -86,4 +86,24 @@ public class GlobalExceptionHandler {
 
         return ResponseEntity.status(HttpStatus.FORBIDDEN).body(response);
     }
+
+    @ExceptionHandler(Exception.class)
+    public ResponseEntity<Map<String, Object>> handleGeneralException(Exception ex) {
+        Map<String, Object> response = new LinkedHashMap<>();
+        response.put("status", HttpStatus.INTERNAL_SERVER_ERROR.value());
+        response.put("message", "서버 오류가 발생했습니다.");
+        response.put("errors", ErrorCode.SERVER_ERROR);
+
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
+    }
+
+    @ExceptionHandler(CustomRuntimeException.class)
+    public ResponseEntity<Map<String, Object>> handleCustomRuntimeException(CustomRuntimeException ex) {
+        Map<String, Object> response = new LinkedHashMap<>();
+        response.put("status", ex.getStatus().value());
+        response.put("message", ex.getMessage());
+        response.put("code", ex.getCode());
+
+        return ResponseEntity.status(ex.getStatus()).body(response);
+    }
 }
