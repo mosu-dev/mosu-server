@@ -1,7 +1,7 @@
 package life.mosu.mosuserver.presentation.faq;
 
 import java.util.List;
-import life.mosu.mosuserver.applicaiton.faq.FaqService;
+import life.mosu.mosuserver.application.faq.FaqService;
 import life.mosu.mosuserver.global.util.ApiResponseWrapper;
 import life.mosu.mosuserver.presentation.faq.dto.FaqCreateRequest;
 import life.mosu.mosuserver.presentation.faq.dto.FaqResponse;
