@@ -6,11 +6,13 @@ import life.mosu.mosuserver.infra.storage.domain.Visibility;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.SoftDelete;
 
 @Getter
 @Entity
 @Table(name = "faq_attachment")
 @NoArgsConstructor(access = lombok.AccessLevel.PROTECTED)
+@SoftDelete
 public class FaqAttachmentJpaEntity extends File {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

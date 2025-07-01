@@ -28,8 +28,8 @@ public class S3Service {
     @Value("${aws.s3.bucket-name}")
     private String bucketName;
 
-    @Value("${s3.presigned-url-expiration-minutes}")
-    private int presignedUrlExpirationMinutes;
+    @Value("${aws.s3.presigned-url-expiration-minutes}")
+    private int preSignedUrlExpirationMinutes;
 
 
     public String uploadFile(MultipartFile file, Folder folder) {
@@ -68,30 +68,30 @@ public class S3Service {
     public String getUrl(File file) {
         return file.isPublic()
                 ? getPublicUrl(file.getS3Key())
-                : getPresignedUrl(file.getS3Key(), Duration.ofMinutes(presignedUrlExpirationMinutes));
+                : getPreSignedUrl(file.getS3Key(), Duration.ofMinutes(preSignedUrlExpirationMinutes));
     }
 
     public String getPublicUrl(String s3Key) {
         return String.format("https://%s.s3.amazonaws.com/%s", bucketName, s3Key);
     }
 
-    public String getPresignedUrl(String s3Key, Duration expireDuration) {
+    public String getPreSignedUrl(String s3Key, Duration expireDuration) {
         GetObjectRequest getObjectRequest = GetObjectRequest.builder()
                 .bucket(bucketName)
                 .key(s3Key)
                 .build();
 
-        GetObjectPresignRequest presignRequest = GetObjectPresignRequest.builder()
+        GetObjectPresignRequest preSignRequest = GetObjectPresignRequest.builder()
                 .getObjectRequest(getObjectRequest)
                 .signatureDuration(expireDuration)
                 .build();
 
-        return s3Presigner.presignGetObject(presignRequest).url().toString();
+        return s3Presigner.presignGetObject(preSignRequest).url().toString();
     }
 
     private String sanitizeFileName(String originalFilename) {
         try {
-            return URLEncoder.encode(originalFilename, StandardCharsets.UTF_8.toString())
+            return URLEncoder.encode(originalFilename, StandardCharsets.UTF_8)
                     .replaceAll("\\+", "%20");
         } catch (Exception e) {
             throw new RuntimeException("파일 이름 인코딩 실패", e);
