@@ -75,7 +75,7 @@ public class ProfileJpaEntity extends BaseTimeEntity {
 
     public void edit(final EditProfileRequest request) {
         this.userName = request.userName();
-        this.gender = request.gender();
+        this.gender = request.validatedGender();
         this.birth = request.birth();
         this.phoneNumber = request.phoneNumber();
         this.email = request.email();

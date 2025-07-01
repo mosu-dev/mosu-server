@@ -14,6 +14,8 @@ public enum ErrorCode {
     PROFILE_DOES_NOT_EXIST(HttpStatus.BAD_REQUEST, "프로필이 존재하지 않습니다."),
     PROFILE_CREATE_FAILED(HttpStatus.INTERNAL_SERVER_ERROR, "프로필 등록에 실패했습니다."),
     PROFILE_UPDATE_FAILED(HttpStatus.INTERNAL_SERVER_ERROR, "프로필 수정에 실패했습니다."),
+    INVALID_GENDER(HttpStatus.BAD_REQUEST, "유효하지 않은 성별 값입니다."),
+
 
     // 파일 관련 에러
     FILE_NOT_FOUND(HttpStatus.NOT_FOUND, "파일을 찾을 수 없습니다."),
