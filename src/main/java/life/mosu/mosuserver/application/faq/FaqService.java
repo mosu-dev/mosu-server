@@ -1,4 +1,4 @@
-package life.mosu.mosuserver.applicaiton.faq;
+package life.mosu.mosuserver.application.faq;
 
 import java.time.Duration;
 import java.util.List;
