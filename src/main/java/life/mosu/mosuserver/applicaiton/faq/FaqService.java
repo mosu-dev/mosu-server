@@ -32,7 +32,7 @@ public class FaqService {
     private final S3Service s3Service;
     private final ExecutorService executorService;
 
-    @Value("${s3.presigned-url-expiration-minutes}")
+    @Value("${aws.s3.presigned-url-expiration-minutes}")
     private int durationTime;
 
     @Transactional

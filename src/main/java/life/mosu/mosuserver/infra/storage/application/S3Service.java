@@ -28,7 +28,7 @@ public class S3Service {
     @Value("${aws.s3.bucket-name}")
     private String bucketName;
 
-    @Value("${s3.presigned-url-expiration-minutes}")
+    @Value("${aws.s3.presigned-url-expiration-minutes}")
     private int preSignedUrlExpirationMinutes;
 
 
