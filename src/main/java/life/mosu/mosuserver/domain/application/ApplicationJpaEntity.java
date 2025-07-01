@@ -19,9 +19,9 @@ public class ApplicationJpaEntity extends BaseTimeEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "application_id")
-    private int Id;
+    private Long id;
 
-    @Column(name ="user_id")
+    @Column(name = "user_id")
     private Long userId;
 
     @Enumerated(EnumType.STRING)
@@ -46,7 +46,9 @@ public class ApplicationJpaEntity extends BaseTimeEntity {
         this.lunch = lunch;
         this.examinationNumber = examinationNumber;
         this.subjects = subjects;
+    }
 
+    public void generateExaminationNumber() {
 
     }
 

@@ -22,8 +22,4 @@ public class SchoolInfoJpaVO {
     @Column(name = "street")
     private String street;
 
-    @Column(name = "detail")
-    private String detail;
-
-
 }
