@@ -1,4 +1,4 @@
-package life.mosu.mosuserver.infra.config;
+package life.mosu.mosuserver.global.config;
 
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
