@@ -6,13 +6,13 @@ import org.springframework.http.HttpStatus;
 
 @Getter
 @Slf4j
-public class CustomRuntimeException extends RuntimeException{
+public class CustomRuntimeException extends RuntimeException {
 
     private HttpStatus status;
     private String message;
     private String code;
 
-    public CustomRuntimeException(ErrorCode errorCode){
+    public CustomRuntimeException(ErrorCode errorCode) {
         this.status = errorCode.getStatus();
         this.message = errorCode.getMessage();
         this.code = errorCode.name();
@@ -20,4 +20,11 @@ public class CustomRuntimeException extends RuntimeException{
         log.error("CustomRuntimeException 발생: status={}, message={}", status, message, this);
     }
 
+    public CustomRuntimeException(ErrorCode errorCode, Object... cause) {
+        this.status = errorCode.getStatus();
+        this.message = String.format(errorCode.getMessage(), cause);
+        this.code = errorCode.name();
+
+        log.error("CustomRuntimeException 발생: status={}, message={}", status, message, this);
+    }
 }
