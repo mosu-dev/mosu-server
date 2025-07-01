@@ -8,6 +8,13 @@ import org.springframework.http.HttpStatus;
 @AllArgsConstructor
 public enum ErrorCode {
 
+    //프로필 관련 에러
+    PROFILE_ALREADY_EXISTS(HttpStatus.CONFLICT, "프로필이 이미 존재합니다."),
+    PROFILE_NOT_FOUND(HttpStatus.NOT_FOUND, "프로필을 찾을 수 없습니다."),
+    PROFILE_DOES_NOT_EXIST(HttpStatus.BAD_REQUEST, "프로필이 존재하지 않습니다."),
+    PROFILE_CREATE_FAILED(HttpStatus.INTERNAL_SERVER_ERROR, "프로필 등록에 실패했습니다."),
+    PROFILE_UPDATE_FAILED(HttpStatus.INTERNAL_SERVER_ERROR, "프로필 수정에 실패했습니다."),
+
     // 파일 관련 에러
     FILE_NOT_FOUND(HttpStatus.NOT_FOUND, "파일을 찾을 수 없습니다."),
     FILE_UPLOAD_FAILED(HttpStatus.INTERNAL_SERVER_ERROR, "파일 업로드에 실패했습니다."),
@@ -23,4 +30,5 @@ public enum ErrorCode {
 
     private final HttpStatus status;
     private final String message;
+
 }
