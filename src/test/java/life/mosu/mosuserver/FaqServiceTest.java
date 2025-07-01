@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-import life.mosu.mosuserver.applicaiton.faq.FaqService;
+import life.mosu.mosuserver.application.faq.FaqService;
 import life.mosu.mosuserver.domain.faq.FaqAttachmentRepository;
 import life.mosu.mosuserver.domain.faq.FaqJpaEntity;
 import life.mosu.mosuserver.domain.faq.FaqRepository;
