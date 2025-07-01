@@ -39,7 +39,7 @@ public class ProfileController {
     @GetMapping
     public ApiResponseWrapper<ProfileDetailResponse> getProfile(
         @RequestParam Long userId) {
-        ProfileDetailResponse response = (profileService.getProfile(userId));
+        ProfileDetailResponse response = profileService.getProfile(userId);
         return ApiResponseWrapper.success(HttpStatus.OK, "프로필 조회 성공", response);
     }
 
