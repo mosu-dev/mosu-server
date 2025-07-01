@@ -3,10 +3,11 @@ name: Just Build with JDK 21
 on:
   pull_request:
     branches:
-      - develop
+      - 'develop'
 
   push:
     branches:
+      - 'develop'
       - 'fix/**'
       - 'feature/**'
 
@@ -33,5 +34,5 @@ jobs:
       - name: Grant execute permission to gradlew
         run: chmod +x ./gradlew
 
-      - name: Build with Gradle
-        run: ./gradlew clean build -x test
+      - name: Test And Build with Gradle
+        run: ./gradlew clean build
