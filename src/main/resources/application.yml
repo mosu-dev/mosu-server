@@ -13,7 +13,7 @@ spring:
   config:
     import:
       - optional:file:.env[.properties]
-      - security.yml
+      - security-config.yml
   datasource:
     url: ${DB_URL}
     username: ${DB_USERNAME}

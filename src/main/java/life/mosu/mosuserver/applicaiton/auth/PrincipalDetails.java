@@ -1,6 +1,6 @@
 package life.mosu.mosuserver.applicaiton.auth;
 
-import life.mosu.mosuserver.domain.user.UserJpaEntity; // 여러분의 사용자 엔티티
+import life.mosu.mosuserver.domain.user.UserJpaEntity;
 import lombok.Getter;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
