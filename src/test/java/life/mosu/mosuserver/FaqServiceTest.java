@@ -9,6 +9,8 @@ import static org.mockito.Mockito.when;
 
 import java.util.List;
 import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+
 import life.mosu.mosuserver.applicaiton.faq.FaqService;
 import life.mosu.mosuserver.domain.faq.FaqAttachmentRepository;
 import life.mosu.mosuserver.domain.faq.FaqJpaEntity;
@@ -16,11 +18,14 @@ import life.mosu.mosuserver.domain.faq.FaqRepository;
 import life.mosu.mosuserver.infra.storage.application.S3Service;
 import life.mosu.mosuserver.infra.storage.domain.Folder;
 import life.mosu.mosuserver.presentation.faq.dto.FaqCreateRequest;
+
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.InjectMocks;
+
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+
 import org.springframework.web.multipart.MultipartFile;
 
 @ExtendWith(MockitoExtension.class)
@@ -29,8 +34,21 @@ public class FaqServiceTest {
     @Mock private FaqRepository faqRepository;
     @Mock private FaqAttachmentRepository faqAttachmentRepository;
     @Mock private S3Service s3Service;
-    @Mock private ExecutorService executorService;
-    @InjectMocks private FaqService faqService;
+
+    private ExecutorService realExecutorService;
+    private FaqService faqService;
+
+    @BeforeEach
+    void setUp() {
+        realExecutorService = Executors.newSingleThreadExecutor();
+
+        faqService = new FaqService(
+                faqRepository,
+                faqAttachmentRepository,
+                s3Service,
+                realExecutorService
+        );
+    }
 
     @Test
     void FAQ_생성_요청시_FAQ_저장_그리고_파일_업로드_해야함() {
@@ -45,7 +63,6 @@ public class FaqServiceTest {
         // when
         faqService.createFaq(request);
 
-        // then
         verify(faqRepository).save(any());
         verify(s3Service, atLeastOnce()).uploadFile(any(), eq(Folder.FAQ));
         verify(faqAttachmentRepository, atLeastOnce()).save(any());
