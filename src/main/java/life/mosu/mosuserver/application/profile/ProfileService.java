@@ -9,6 +9,7 @@ import life.mosu.mosuserver.presentation.profile.dto.ProfileDetailResponse;
 import life.mosu.mosuserver.presentation.profile.dto.ProfileRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
@@ -36,7 +37,7 @@ public class ProfileService {
         profile.edit(request);
     }
 
-    @Transactional(readOnly = true)
+    @Transactional(readOnly = true, propagation = Propagation.SUPPORTS)
     public ProfileDetailResponse getProfile(Long userId) {
         ProfileJpaEntity profile = profileJpaRepository.findByUserId(userId)
             .orElseThrow(() -> new CustomRuntimeException(ErrorCode.PROFILE_DOES_NOT_EXIST, userId));
