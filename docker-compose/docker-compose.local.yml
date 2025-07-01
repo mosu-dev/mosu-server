@@ -10,7 +10,7 @@ services:
       - database
     ports:
       - ${SPRING_PORT}:${SPRING_PORT}
-    restart: always
+    restart: "always"
     networks:
       - mosu-bridge
 
@@ -28,14 +28,27 @@ services:
       - ${DB_PORT}
     ports:
       - ${DB_PORT}:${DB_PORT}
-    restart: no
+    restart: "no"
     volumes:
       - mosu-database:/var/lib/mysql
     networks:
       - mosu-bridge
 
+  redis:
+    image: redis:latest
+    container_name: mosu-redis
+    command: --port ${REDIS_PORT} --requirepass ${REDIS_PASSWORD}
+    expose:
+      - ${REDIS_PORT}
+    ports:
+      - ${REDIS_PORT}:${REDIS_PORT}
+    restart: "always"
+    volumes:
+      - mosu-redis:/var/lib/redis
+
 volumes:
   mosu-database:
+  mosu-redis:
 
 networks:
   mosu-bridge:

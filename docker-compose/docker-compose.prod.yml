@@ -37,6 +37,20 @@ services:
     networks:
       - mosu-bridge
 
+  redis:
+    image: redis:latest
+    container_name: mosu-redis
+    command: --port ${REDIS_PORT} --requirepass ${REDIS_PASSWORD}
+    expose:
+      - ${REDIS_PORT}
+    ports:
+      - ${REDIS_PORT}:${REDIS_PORT}
+    restart: "always"
+    volumes:
+      - mosu-redis:/var/lib/redis
+    networks:
+      - mosu-bridge
+
   velkey:
     image: ghcr.io/valkey-io/valkey:7.2
     container_name: mosu-velkey
@@ -106,6 +120,7 @@ services:
 
 volumes:
   mosu-database:
+  mosu-redis:
 
 networks:
   mosu-bridge:
