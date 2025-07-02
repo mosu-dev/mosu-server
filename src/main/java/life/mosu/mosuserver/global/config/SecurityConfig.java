@@ -40,7 +40,8 @@ public class SecurityConfig {
     public static final List<String> clients = List.of(
         "http://localhost:3000",
         "http://localhost:8080",
-        "https://mosuedu.com"
+        "https://mosuedu.com",
+        "https://api.mosuedu.com"
     );
 
     @Bean
@@ -57,19 +58,13 @@ public class SecurityConfig {
             .logout(AbstractHttpConfigurer::disable)
             .authorizeHttpRequests(authorize -> authorize
                 .requestMatchers(
-                    "/swagger-ui/**",
-                    "/v3/api-docs/**",
-                    "/oauth2/**",
-                    "/api/v1/auth/**",
-                    "/api/v1/login/**"
+                    "/**"
                 )
                 .permitAll()
                 .requestMatchers(
                     "/api/v1/admin/**"
                 )
                 .hasRole("ADMIN")
-                .anyRequest()
-                .hasAnyRole("USER")
             )
             .oauth2Login(oauth2 -> oauth2.redirectionEndpoint(redirection ->
                     redirection.baseUri("/login/oauth2/code/{registrationId}"))
