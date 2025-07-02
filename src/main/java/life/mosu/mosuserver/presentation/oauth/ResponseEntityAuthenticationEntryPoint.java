@@ -22,6 +22,8 @@ import java.nio.charset.StandardCharsets;
 public class ResponseEntityAuthenticationEntryPoint implements AuthenticationEntryPoint {
 
     private final ObjectMapper objectMapper;
+    private static final String message = "로그인이 필요합니다.";
+    private static final HttpStatus status = HttpStatus.UNAUTHORIZED;
 
     @Override
     public void commence(
@@ -29,9 +31,6 @@ public class ResponseEntityAuthenticationEntryPoint implements AuthenticationEnt
         final HttpServletResponse response,
         final AuthenticationException authException
     ) throws IOException {
-        final HttpStatus status = HttpStatus.UNAUTHORIZED;
-        final String message = "로그인이 필요합니다.";
-
         final ResponseEntity<AuthRequiredResponse> responseEntity = ResponseEntity
             .status(status)
             .body(new AuthRequiredResponse(message));
@@ -39,11 +38,22 @@ public class ResponseEntityAuthenticationEntryPoint implements AuthenticationEnt
         response.setContentType(MediaType.APPLICATION_JSON_VALUE);
 
         final HttpHeaders headers = responseEntity.getHeaders();
+        setHeaders(response, headers);
+
+        outputStreamWriter(response, responseEntity);
+    }
+
+    private void setHeaders(final HttpServletResponse response, final HttpHeaders headers) {
         headers.forEach((key, value) -> {
             final String headerValue = String.join(",", value);
             response.addHeader(key, headerValue);
         });
+    }
 
+    private void outputStreamWriter(
+        final HttpServletResponse response,
+        final ResponseEntity<AuthRequiredResponse> responseEntity
+    ) throws IOException {
         try (
             final OutputStreamWriter writer = new OutputStreamWriter(
                 response.getOutputStream(),
