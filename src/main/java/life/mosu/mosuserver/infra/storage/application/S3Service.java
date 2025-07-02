@@ -1,5 +1,6 @@
 package life.mosu.mosuserver.infra.storage.application;
 
+import java.util.List;
 import life.mosu.mosuserver.infra.storage.domain.File;
 import life.mosu.mosuserver.infra.storage.domain.Folder;
 import life.mosu.mosuserver.infra.storage.presentation.dto.FileUploadResponse;
@@ -44,6 +45,7 @@ public class S3Service {
                     PutObjectRequest.builder()
                             .bucket(bucketName)
                             .key(s3Key)
+                            .tagging("status=temp")
                             .contentType(file.getContentType())
                             .build(),
                     RequestBody.fromInputStream(file.getInputStream(), file.getSize())
@@ -68,22 +70,16 @@ public class S3Service {
         }
     }
 
-    public void moveFile(String sourceKey, Folder folder){
-        final String destinationKey = folder.getPath() + "/" + sourceKey.substring("temp/".length());
+    public void updateFileTagToActive(String key) {
+        PutObjectTaggingRequest tagReq = PutObjectTaggingRequest.builder()
+            .bucket(bucketName)
+            .key(key)
+            .tagging(Tagging.builder()
+                .tagSet(List.of(Tag.builder().key("status").value("active").build()))
+                .build())
+            .build();
 
-        CopyObjectRequest copyRequest = CopyObjectRequest.builder()
-                .sourceBucket(bucketName)
-                .sourceKey(sourceKey)
-                .destinationBucket(bucketName)
-                .destinationKey(destinationKey)
-                .build();
-
-        try {
-            s3Client.copyObject(copyRequest);
-            log.info("파일 이동 성공: {} -> {}", shortenKey(sourceKey), shortenKey(destinationKey));
-        } catch (S3Exception e) {
-            throw new RuntimeException("S3 파일 이동 실패", e);
-        }
+        s3Client.putObjectTagging(tagReq);
     }
 
     public String getUrl(File file) {

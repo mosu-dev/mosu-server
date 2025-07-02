@@ -21,23 +21,8 @@ public class FileUploadHelper {
     private final FaqAttachmentRepository faqAttachmentRepository;
     private final ExecutorService executorService;
 
-    public void moveToFolder(List<FileRequest> fileRequests, Long faqId, Folder folder) {
-        for (FileRequest fileRequest : fileRequests) {
-
-            CompletableFuture.runAsync(() -> {
-                    s3Service.moveFile(fileRequest.s3Key(), folder);
-                }, executorService)
-                .exceptionally(ex -> {
-                    fileMoveFailLogRepository.save(
-                        FileMoveFailLog.of(faqId, fileRequest.s3Key(), folder));
-                    throw new CustomRuntimeException(ErrorCode.FILE_UPLOAD_FAILED, ex);
-                });
-
-            faqAttachmentRepository.save(fileRequest.toAttachmentEntity(
-                fileRequest.fileName(),
-                fileRequest.s3Key(),
-                faqId
-            ));
-        }
+    public void updateTag(String s3Key) {
+        s3Service.updateFileTagToActive(s3Key);
     }
+
 }

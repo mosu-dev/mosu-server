@@ -74,7 +74,14 @@ public class FaqService {
         }
         Long faqId = faqEntity.getId();
 
-        fileUploadHelper.moveToFolder(fileRequests, faqId, Folder.FAQ);
+        for(FileRequest fileRequest : fileRequests) {
+            fileUploadHelper.updateTag(fileRequest.s3Key());
+            faqAttachmentRepository.save(fileRequest.toAttachmentEntity(
+                fileRequest.fileName(),
+                fileRequest.s3Key(),
+                faqId
+            ));
+        }
     }
 
     private FaqResponse toFaqResponse(FaqJpaEntity faq) {
