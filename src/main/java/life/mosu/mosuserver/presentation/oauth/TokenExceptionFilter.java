@@ -23,7 +23,7 @@ public class TokenExceptionFilter extends OncePerRequestFilter {
     ) throws ServletException, IOException {
         try {
             filterChain.doFilter(request, response);
-        } catch (final CustomRuntimeException exception) {
+        } catch (CustomRuntimeException exception) {
             response.sendError(exception.getStatus().value(), exception.getMessage());
         }
     }
