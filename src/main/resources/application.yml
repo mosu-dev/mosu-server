@@ -11,7 +11,10 @@ server:
 
 spring:
   config:
-    import: optional:file:.env[.properties]
+    import:
+      - optional:file:.env[.properties]
+      - security-config.yml
+      - swagger-config.yml
   datasource:
     url: ${DB_URL}
     username: ${DB_USERNAME}
@@ -35,10 +38,11 @@ spring:
         jdbc:
           time_zone: Asia/Seoul
         dialect: org.hibernate.dialect.MySQLDialect
-
-springdoc:
-  swagger-ui:
-    path: /swagger
+  data:
+    redis:
+      host: ${REDIS_HOST}
+      port: ${REDIS_EXPORTER}
+      password: ${REDIS_PASSWORD}
 
 management:
   endpoints:
