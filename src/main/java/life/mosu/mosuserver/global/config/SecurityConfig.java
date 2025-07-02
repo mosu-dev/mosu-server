@@ -1,7 +1,6 @@
 package life.mosu.mosuserver.global.config;
 
 import life.mosu.mosuserver.applicaiton.oauth.OAuthUserService;
-import life.mosu.mosuserver.global.exception.CustomRuntimeException;
 import life.mosu.mosuserver.global.handler.OAuth2LoginSuccessHandler;
 import life.mosu.mosuserver.presentation.oauth.AccessTokenFilter;
 import life.mosu.mosuserver.presentation.oauth.AuthorizationRequestRedirectResolver;
@@ -36,6 +35,7 @@ public class SecurityConfig {
     private final AuthenticationEntryPoint authenticationEntryPoint;
     private final AuthorizationRequestRedirectResolver authorizationRequestRedirectResolver;
     private final AccessTokenFilter accessTokenFilter;
+    private final TokenExceptionFilter tokenExceptionFilter;
 
     public static final List<String> clients = List.of(
         "http://localhost:3000",
@@ -82,7 +82,7 @@ public class SecurityConfig {
                 )
                 .successHandler(loginSuccessHandler))
             .addFilterBefore(accessTokenFilter, UsernamePasswordAuthenticationFilter.class)
-            .addFilterBefore(new TokenExceptionFilter(), accessTokenFilter.getClass())
+            .addFilterBefore(tokenExceptionFilter, accessTokenFilter.getClass())
             .exceptionHandling(exceptions ->
                 exceptions.authenticationEntryPoint(authenticationEntryPoint));
         return http.build();
