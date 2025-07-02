@@ -34,21 +34,29 @@ services:
     networks:
       - mosu-bridge
 
-  redis:
-    image: redis:latest
-    container_name: mosu-redis
-    command: --port ${REDIS_PORT} --requirepass ${REDIS_PASSWORD}
-    expose:
-      - ${REDIS_PORT}
+  velkey:
+    image: ghcr.io/valkey-io/valkey:7.2
+    container_name: mosu-velkey
+    command: [ "valkey-server", "--port", "${VELKEY_PORT}", "--requirepass","${REDIS_PASSWORD}"]
     ports:
-      - ${REDIS_PORT}:${REDIS_PORT}
-    restart: "always"
-    volumes:
-      - mosu-redis:/var/lib/redis
+      - ${VELKEY_PORT}:${VELKEY_PORT}
+    networks:
+      - mosu-bridge
+
+  redis-exporter:
+    image: oliver006/redis_exporter:v1.58.0
+    container_name: mosu-redis-exporter
+    environment:
+      REDIS_ADDR: redis://velkey:${VELKEY_PORT}
+    ports:
+      - ${REDIS_EXPORTER}:${REDIS_EXPORTER}
+    depends_on:
+      - velkey
+    networks:
+      - mosu-bridge
 
 volumes:
   mosu-database:
-  mosu-redis:
 
 networks:
   mosu-bridge:
