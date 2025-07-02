@@ -33,27 +33,26 @@ public class OAuthUserService extends DefaultOAuth2UserService {
             .getUserInfoEndpoint()
             .getUserNameAttributeName();
 
-        final OAuthUserInfo userInfo = OAuthUserInfo.of(registrationId, oAuth2UserAttributes);
+        final OAuthUserInfo userInfo = OAuthUserInfo.of(OAuthProvider.from(registrationId) , oAuth2UserAttributes);
 
         final OAuthUserJpaEntity oAuthUser = updateOrWrite(userInfo);
 
         return new OAuthUser(oAuthUser, oAuth2UserAttributes, userNameAttributeName);
     }
 
-    private OAuthUserJpaEntity updateOrWrite(
-        final OAuthUserInfo info
-    ) {
-        if (userRepository.existsByEmail(info.email())) {
-            final OAuthUserJpaEntity user = userRepository.findByEmail(info.email())
-                .orElseThrow(() -> new CustomRuntimeException(ErrorCode.OAUTH_USER_ALREADY_EXISTS));
-            user.updateInfo(info);
-            return user;
-        }
-        final OAuthUserJpaEntity user = OAuthUserJpaEntity.builder()
-            .name(info.name())
-            .email(info.email())
-            .userRole(UserRole.ROLE_USER)
-            .build();
-        return userRepository.save(user);
+    private OAuthUserJpaEntity updateOrWrite(final OAuthUserInfo info) {
+        return userRepository.findByEmail(info.email())
+            .map(user -> {
+                user.updateInfo(info);
+                return user;
+            })
+            .orElseGet(() -> {
+                final OAuthUserJpaEntity newUser = OAuthUserJpaEntity.builder()
+                    .name(info.name())
+                    .email(info.email())
+                    .userRole(UserRole.ROLE_USER)
+                    .build();
+                return userRepository.save(newUser);
+            });
     }
 }

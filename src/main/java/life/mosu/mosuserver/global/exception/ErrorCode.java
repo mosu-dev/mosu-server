@@ -11,6 +11,7 @@ public enum ErrorCode {
     // OAuth 관련 에러
     UNSUPPORTED_OAUTH2_PROVIDER( HttpStatus.BAD_REQUEST, "지원하지 않는 OAuth2 제공자입니다."),
     OAUTH_USER_ALREADY_EXISTS(HttpStatus.CONFLICT, "이미 존재하는 OAuth 사용자입니다."),
+    FAILED_TO_GET_KAKAO_OAUTH_USER(HttpStatus.INTERNAL_SERVER_ERROR, "OAuth 사용자 생성에 실패했습니다."),
 
     // Auth 관련 에러
     INCORRECT_ID_OR_PASSWORD(HttpStatus.UNAUTHORIZED, "아이디 또는 비밀번호가 일치하지 않습니다."),

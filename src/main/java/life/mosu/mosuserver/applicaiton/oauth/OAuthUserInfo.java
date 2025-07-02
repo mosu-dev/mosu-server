@@ -12,13 +12,12 @@ public record OAuthUserInfo(
     String email,
     String profile
 ) {
-
     public static OAuthUserInfo of(
-        final String registrationId,
+        final OAuthProvider oAuthProvider,
         final Map<String, Object> attributes
     ) {
-        return switch (registrationId) {
-            case "kakao" -> ofKakao(attributes);
+        return switch (oAuthProvider) {
+            case OAuthProvider.KAKAO -> ofKakao(attributes);
             default -> throw new CustomRuntimeException(ErrorCode.UNSUPPORTED_OAUTH2_PROVIDER);
         };
     }
