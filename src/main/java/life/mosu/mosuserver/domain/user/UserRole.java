@@ -1,5 +1,5 @@
 package life.mosu.mosuserver.domain.user;
 
 public enum UserRole {
-    MEMBER, ADMIN
+    ROLE_USER, ROLE_ADMIN
 }

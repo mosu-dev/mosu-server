@@ -10,7 +10,7 @@ services:
       - database
     ports:
       - ${SPRING_PORT}:${SPRING_PORT}
-    restart: always
+    restart: "always"
     networks:
       - mosu-bridge
 
@@ -28,9 +28,30 @@ services:
       - ${DB_PORT}
     ports:
       - ${DB_PORT}:${DB_PORT}
-    restart: no
+    restart: "no"
     volumes:
       - mosu-database:/var/lib/mysql
+    networks:
+      - mosu-bridge
+
+  velkey:
+    image: ghcr.io/valkey-io/valkey:7.2
+    container_name: mosu-velkey
+    command: [ "valkey-server", "--port", "${VELKEY_PORT}", "--requirepass","${REDIS_PASSWORD}"]
+    ports:
+      - ${VELKEY_PORT}:${VELKEY_PORT}
+    networks:
+      - mosu-bridge
+
+  redis-exporter:
+    image: oliver006/redis_exporter:v1.58.0
+    container_name: mosu-redis-exporter
+    environment:
+      REDIS_ADDR: redis://velkey:${VELKEY_PORT}
+    ports:
+      - ${REDIS_EXPORTER}:${REDIS_EXPORTER}
+    depends_on:
+      - velkey
     networks:
       - mosu-bridge
 
