@@ -26,16 +26,6 @@ public class RefreshTokenService extends JwtTokenService {
         this.refreshTokenRepository = refreshTokenRepository;
     }
 
-    public void cacheRefreshToken(final Long userId, final String refreshToken) {
-        refreshTokenRepository.save(
-            RefreshToken.of(
-                userId,
-                refreshToken,
-                expireTime
-            )
-        );
-    }
-
     @Override
     protected Claims validateAndParseToken(final String token) {
         if (!refreshTokenRepository.existsByRefreshToken(token)) {
@@ -49,5 +39,15 @@ public class RefreshTokenService extends JwtTokenService {
             throw new CustomRuntimeException(ErrorCode.INVALID_TOKEN);
         }
         refreshTokenRepository.deleteByUserId(id);
+    }
+
+    public void cacheRefreshToken(final Long userId, final String refreshToken) {
+        refreshTokenRepository.save(
+            RefreshToken.of(
+                userId,
+                refreshToken,
+                expireTime
+            )
+        );
     }
 }
