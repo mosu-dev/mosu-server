@@ -24,12 +24,25 @@ public record OAuthUserInfo(
     }
 
     private static OAuthUserInfo ofKakao(final Map<String, Object> attributes) {
-        final Map<String, Object> account = (Map<String, Object>) attributes.get("kakao_account");
-        final Map<String, Object> profile = (Map<String, Object>) account.get("profile");
 
-        return OAuthUserInfo.builder()
-            .name((String) profile.get("name"))
-            .email("hello@gmail.com")
-            .build();
+        final Map<String, Object> account = (Map<String, Object>) attributes.get("kakao_account");
+        Map<String, Object> profile = null;
+        String email = null;
+
+        if (account != null) {
+            profile = (Map<String, Object>) account.get("profile");
+            email = (String) account.get("email");
+        }
+
+        if (profile != null) {
+            String name = (String) profile.get("name");
+
+            return OAuthUserInfo.builder()
+                .name(name)
+                .email("test123@gmali.com")
+                .build();
+        } else {
+            throw new CustomRuntimeException(ErrorCode.FAILED_TO_GET_KAKAO_OAUTH_USER);
+        }
     }
 }
