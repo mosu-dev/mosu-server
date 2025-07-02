@@ -11,6 +11,7 @@ public enum Folder {
     FAQ("faq", PUBLIC),
     NOTICE("notice", PUBLIC),
 
+    TEMP("temp", PRIVATE),
     INQUIRY("inquiry", PRIVATE),
     INQUIRY_ANSWER("inquiryAnswer", PRIVATE),
     ADMISSION_TICKET_IMAGE("admissionTicket/images", PRIVATE),

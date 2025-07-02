@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -24,7 +25,7 @@ public class FaqController {
 
     //TODO: 관리자 권한 체크 추가
     @PostMapping
-    public ApiResponseWrapper<Void> create(@ModelAttribute FaqCreateRequest request) {
+    public ApiResponseWrapper<Void> create(@RequestBody FaqCreateRequest request) {
         faqService.createFaq(request);
         return ApiResponseWrapper.success(HttpStatus.CREATED, "게시글 등록 성공");
     }
