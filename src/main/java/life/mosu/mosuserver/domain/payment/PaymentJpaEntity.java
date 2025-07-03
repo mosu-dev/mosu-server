@@ -27,6 +27,9 @@ public class PaymentJpaEntity extends BaseTimeEntity {
     @Column(name = "order_id", nullable = false)
     private String orderId;
 
+    @Column(name = "application_quantity", nullable = false)
+    private Integer quantity;
+
     @Embedded
     private PaymentAmountVO paymentAmount;
 
