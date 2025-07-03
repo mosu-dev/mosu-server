@@ -12,27 +12,27 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class PaymentAmountVO {
     @Column(name = "total_amount", nullable = false)
-    private Long totalAmount;
+    private Integer totalAmount;
 
     @Column(name = "supplied_amount", nullable = false)
-    private Long suppliedAmount;
+    private Integer suppliedAmount;
 
     @Column(name = "vat_amount", nullable = false)
-    private Long vatAmount;
+    private Integer vatAmount;
 
     @Column(name = "balance_amount")
-    private Long balanceAmount;
+    private Integer balanceAmount;
 
     @Column(name = "tax_free_amount")
-    private Long taxFreeAmount;
+    private Integer taxFreeAmount;
 
     @Builder
     public PaymentAmountVO(
-            Long totalAmount,
-            Long suppliedAmount,
-            Long vatAmount,
-            Long balanceAmount,
-            Long taxFreeAmount
+            Integer totalAmount,
+            Integer suppliedAmount,
+            Integer vatAmount,
+            Integer balanceAmount,
+            Integer taxFreeAmount
     ) {
         this.totalAmount = totalAmount;
         this.suppliedAmount = suppliedAmount;
@@ -42,11 +42,11 @@ public class PaymentAmountVO {
     }
 
     public static PaymentAmountVO of(
-            Long totalAmount,
-            Long suppliedAmount,
-            Long vatAmount,
-            Long balanceAmount,
-            Long taxFreeAmount
+            Integer totalAmount,
+            Integer suppliedAmount,
+            Integer vatAmount,
+            Integer balanceAmount,
+            Integer taxFreeAmount
     ) {
         return PaymentAmountVO.builder()
                 .totalAmount(totalAmount)
