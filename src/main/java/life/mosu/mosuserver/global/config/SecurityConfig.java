@@ -1,6 +1,6 @@
 package life.mosu.mosuserver.global.config;
 
-import life.mosu.mosuserver.applicaiton.oauth.OAuthUserService;
+import life.mosu.mosuserver.application.oauth.OAuthUserService;
 import life.mosu.mosuserver.global.handler.OAuth2LoginSuccessHandler;
 import life.mosu.mosuserver.presentation.oauth.AccessTokenFilter;
 import life.mosu.mosuserver.presentation.oauth.AuthorizationRequestRedirectResolver;

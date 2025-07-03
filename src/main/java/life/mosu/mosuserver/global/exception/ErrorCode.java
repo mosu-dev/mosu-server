@@ -1,15 +1,15 @@
 package life.mosu.mosuserver.global.exception;
 
-import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 
 @Getter
-@AllArgsConstructor
+@RequiredArgsConstructor
 public enum ErrorCode {
 
     // OAuth 관련 에러
-    UNSUPPORTED_OAUTH2_PROVIDER( HttpStatus.BAD_REQUEST, "지원하지 않는 OAuth2 제공자입니다."),
+    UNSUPPORTED_OAUTH2_PROVIDER(HttpStatus.BAD_REQUEST, "지원하지 않는 OAuth2 제공자입니다."),
     OAUTH_USER_ALREADY_EXISTS(HttpStatus.CONFLICT, "이미 존재하는 OAuth 사용자입니다."),
     FAILED_TO_GET_KAKAO_OAUTH_USER(HttpStatus.INTERNAL_SERVER_ERROR, "OAuth 사용자 생성에 실패했습니다."),
 
