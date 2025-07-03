@@ -1,5 +1,7 @@
 package life.mosu.mosuserver.infra.storage.domain;
 
+import life.mosu.mosuserver.global.exception.CustomRuntimeException;
+import life.mosu.mosuserver.global.exception.ErrorCode;
 import lombok.Getter;
 
 import static life.mosu.mosuserver.infra.storage.domain.Visibility.PRIVATE;
@@ -11,6 +13,7 @@ public enum Folder {
     FAQ("faq", PUBLIC),
     NOTICE("notice", PUBLIC),
 
+    TEMP("temp", PRIVATE),
     INQUIRY("inquiry", PRIVATE),
     INQUIRY_ANSWER("inquiryAnswer", PRIVATE),
     ADMISSION_TICKET_IMAGE("admissionTicket/images", PRIVATE),
@@ -22,5 +25,13 @@ public enum Folder {
     Folder(String path, Visibility visibility) {
         this.path = path;
         this.visibility = visibility;
+    }
+
+    public static Folder validate(String folderName) {
+        for (Folder folder : Folder.values())
+            if (folder.name().equals(folderName)) {
+                return folder;
+            }
+        throw new CustomRuntimeException(ErrorCode.WRONG_FOLDER_TYPE);
     }
 }

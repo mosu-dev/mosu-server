@@ -1,7 +1,9 @@
 package life.mosu.mosuserver.infra.storage.application;
 
+import java.util.List;
 import life.mosu.mosuserver.infra.storage.domain.File;
 import life.mosu.mosuserver.infra.storage.domain.Folder;
+import life.mosu.mosuserver.infra.storage.presentation.dto.FileUploadResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -17,7 +19,9 @@ import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.time.Duration;
 import java.util.UUID;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class S3Service {
@@ -32,7 +36,7 @@ public class S3Service {
     private int preSignedUrlExpirationMinutes;
 
 
-    public String uploadFile(MultipartFile file, Folder folder) {
+    public FileUploadResponse uploadFile(MultipartFile file, Folder folder) {
         String sanitizedName = sanitizeFileName(file.getOriginalFilename());
         String s3Key = folder.getPath() + "/" + UUID.randomUUID() + "_" + sanitizedName;
 
@@ -41,6 +45,7 @@ public class S3Service {
                     PutObjectRequest.builder()
                             .bucket(bucketName)
                             .key(s3Key)
+                            .tagging("status=temp")
                             .contentType(file.getContentType())
                             .build(),
                     RequestBody.fromInputStream(file.getInputStream(), file.getSize())
@@ -51,7 +56,7 @@ public class S3Service {
             throw new RuntimeException("S3 업로드 실패", e);
         }
 
-        return s3Key;
+        return FileUploadResponse.of(file.getOriginalFilename(), s3Key);
     }
 
     public void deleteFile(File file) {
@@ -63,6 +68,18 @@ public class S3Service {
         } catch (S3Exception e) {
             throw new RuntimeException("S3 파일 삭제 실패", e);
         }
+    }
+
+    public void updateFileTagToActive(String key) {
+        PutObjectTaggingRequest tagReq = PutObjectTaggingRequest.builder()
+            .bucket(bucketName)
+            .key(key)
+            .tagging(Tagging.builder()
+                .tagSet(List.of(Tag.builder().key("status").value("active").build()))
+                .build())
+            .build();
+
+        s3Client.putObjectTagging(tagReq);
     }
 
     public String getUrl(File file) {
@@ -96,5 +113,12 @@ public class S3Service {
         } catch (Exception e) {
             throw new RuntimeException("파일 이름 인코딩 실패", e);
         }
+    }
+
+    private String shortenKey(String key) {
+        if (key.length() <= 40) {
+            return key;
+        }
+        return key.substring(0, 10) + "..." + key.substring(key.length() - 20);
     }
 }

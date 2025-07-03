@@ -16,7 +16,7 @@ public class FaqJpaEntity extends BaseTimeEntity {
     @Column(name = "faq_id", nullable = false)
     private Long id;
 
-    @Column(name = "question", nullable = false)
+    @Column(name = "question", nullable = false, length = 500)
     private String question;
 
     @Column(name = "answer", nullable = false)

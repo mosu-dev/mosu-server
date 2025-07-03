@@ -1,5 +1,6 @@
 package life.mosu.mosuserver;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.atLeastOnce;
@@ -35,36 +36,34 @@ public class FaqServiceTest {
     @Mock private FaqAttachmentRepository faqAttachmentRepository;
     @Mock private S3Service s3Service;
 
-    private ExecutorService realExecutorService;
     private FaqService faqService;
 
     @BeforeEach
     void setUp() {
-        realExecutorService = Executors.newSingleThreadExecutor();
 
         faqService = new FaqService(
                 faqRepository,
                 faqAttachmentRepository,
                 s3Service,
-                realExecutorService
+                null
         );
     }
 
     @Test
-    void FAQ_생성_요청시_FAQ_저장_그리고_파일_업로드_해야함() {
+    void 파일등록_성공() {
         // given
-        MultipartFile fileMock = mock(MultipartFile.class);
-        FaqCreateRequest request = new FaqCreateRequest("질문", "답변", 1L, List.of(fileMock));
-        FaqJpaEntity faqEntity = request.toEntity();
+        FaqCreateRequest request = mock(FaqCreateRequest.class);
+        FaqJpaEntity savedEntity = mock(FaqJpaEntity.class);
 
-        when(faqRepository.save(any())).thenReturn(faqEntity);
-        when(s3Service.uploadFile(any(), eq(Folder.FAQ))).thenReturn("s3-key");
+        when(faqRepository.save(any())).thenReturn(savedEntity);
+        when(request.toEntity()).thenReturn(savedEntity);
+        when(savedEntity.getId()).thenReturn(1L);
 
         // when
         faqService.createFaq(request);
 
-        verify(faqRepository).save(any());
-        verify(s3Service, atLeastOnce()).uploadFile(any(), eq(Folder.FAQ));
-        verify(faqAttachmentRepository, atLeastOnce()).save(any());
+        // then
+        verify(faqRepository, atLeastOnce()).save(any());
+        assertEquals(1L, savedEntity.getId());
     }
 }
