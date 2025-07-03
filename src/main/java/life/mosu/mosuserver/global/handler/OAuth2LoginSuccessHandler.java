@@ -2,8 +2,8 @@ package life.mosu.mosuserver.global.handler;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import life.mosu.mosuserver.applicaiton.auth.AccessTokenService;
-import life.mosu.mosuserver.applicaiton.oauth.OAuthUser;
+import life.mosu.mosuserver.application.auth.AccessTokenService;
+import life.mosu.mosuserver.application.oauth.OAuthUser;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.Authentication;

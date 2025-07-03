@@ -1,9 +1,7 @@
-package life.mosu.mosuserver.persistence.profile;
-
-import life.mosu.mosuserver.domain.profile.ProfileJpaEntity;
-import org.springframework.data.jpa.repository.JpaRepository;
+package life.mosu.mosuserver.domain.profile;
 
 import java.util.Optional;
+import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface ProfileJpaRepository extends JpaRepository<ProfileJpaEntity, Long> {
 

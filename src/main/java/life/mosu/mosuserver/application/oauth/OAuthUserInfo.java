@@ -1,4 +1,4 @@
-package life.mosu.mosuserver.applicaiton.oauth;
+package life.mosu.mosuserver.application.oauth;
 
 import life.mosu.mosuserver.global.exception.CustomRuntimeException;
 import life.mosu.mosuserver.global.exception.ErrorCode;
@@ -17,7 +17,7 @@ public record OAuthUserInfo(
         final Map<String, Object> attributes
     ) {
         return switch (oAuthProvider) {
-            case OAuthProvider.KAKAO -> ofKakao(attributes);
+            case KAKAO -> ofKakao(attributes);
             default -> throw new CustomRuntimeException(ErrorCode.UNSUPPORTED_OAUTH2_PROVIDER);
         };
     }
