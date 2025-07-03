@@ -54,11 +54,11 @@ public class TossPaymentClientTest {
                     "IDMAoki7azYp8SzQ06LMt12323235", // orderId
                     "DONE",                          // status
                     "2025-07-02T23:14:33+09:00",    // approvedAt
-                    1_000L,                           // totalAmount
-                    1_000L,                           // balanceAmount
-                    1_000L,                           // suppliedAmount
-                    1_000L,                           // vat
-                    1_000L,                           // taxFreeAmount
+                    1_000,                           // totalAmount
+                    1_000,                           // balanceAmount
+                    1_000,                           // suppliedAmount
+                    1_000,                           // vat
+                    1_000,                           // taxFreeAmount
                     "간편결제"                            // method
             );
         }
