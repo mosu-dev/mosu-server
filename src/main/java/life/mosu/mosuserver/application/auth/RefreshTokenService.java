@@ -1,4 +1,4 @@
-package life.mosu.mosuserver.applicaiton.auth;
+package life.mosu.mosuserver.application.auth;
 
 import io.jsonwebtoken.Claims;
 import life.mosu.mosuserver.domain.auth.security.RefreshToken;

@@ -2,7 +2,7 @@ package life.mosu.mosuserver.presentation.auth;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
-import life.mosu.mosuserver.applicaiton.auth.AuthService;
+import life.mosu.mosuserver.application.auth.AuthService;
 import life.mosu.mosuserver.global.util.ApiResponseWrapper;
 import life.mosu.mosuserver.presentation.auth.dto.LoginRequest;
 import life.mosu.mosuserver.presentation.auth.dto.Token;

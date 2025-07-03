@@ -1,11 +1,8 @@
-package life.mosu.mosuserver.applicaiton.oauth;
+package life.mosu.mosuserver.application.oauth;
 
 import life.mosu.mosuserver.domain.user.OAuthUserJpaEntity;
 import life.mosu.mosuserver.domain.user.OAuthUserJpaRepository;
-import life.mosu.mosuserver.domain.user.UserJpaRepository;
 import life.mosu.mosuserver.domain.user.UserRole;
-import life.mosu.mosuserver.global.exception.CustomRuntimeException;
-import life.mosu.mosuserver.global.exception.ErrorCode;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService;
 import org.springframework.security.oauth2.client.userinfo.OAuth2UserRequest;

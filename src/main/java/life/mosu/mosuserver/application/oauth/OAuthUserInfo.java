@@ -1,4 +1,4 @@
-package life.mosu.mosuserver.applicaiton.oauth;
+package life.mosu.mosuserver.application.oauth;
 
 import life.mosu.mosuserver.global.exception.CustomRuntimeException;
 import life.mosu.mosuserver.global.exception.ErrorCode;

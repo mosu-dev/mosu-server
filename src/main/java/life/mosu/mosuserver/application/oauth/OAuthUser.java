@@ -1,4 +1,4 @@
-package life.mosu.mosuserver.applicaiton.oauth;
+package life.mosu.mosuserver.application.oauth;
 
 import life.mosu.mosuserver.domain.user.OAuthUserJpaEntity;
 import lombok.Getter;
