@@ -3,9 +3,9 @@ package life.mosu.mosuserver.payment;
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-import life.mosu.mosuserver.infra.payment.application.TossPaymentClient;
-import life.mosu.mosuserver.infra.payment.application.dto.ConfirmTossPaymentResponse;
-import life.mosu.mosuserver.infra.payment.application.dto.TossPaymentPayload;
+import life.mosu.mosuserver.infra.payment.TossPaymentClient;
+import life.mosu.mosuserver.infra.payment.dto.ConfirmTossPaymentResponse;
+import life.mosu.mosuserver.infra.payment.dto.TossPaymentPayload;
 import life.mosu.mosuserver.payment.stub.ConfirmFakeRestOperationsStub;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.BeforeAll;

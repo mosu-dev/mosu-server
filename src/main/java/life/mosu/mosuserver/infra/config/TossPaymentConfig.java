@@ -1,10 +1,9 @@
 package life.mosu.mosuserver.infra.config;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import java.nio.charset.StandardCharsets;
 import java.util.Base64;
 import java.util.List;
-import life.mosu.mosuserver.infra.payment.application.TossPaymentErrorHandler;
+import life.mosu.mosuserver.infra.payment.TossPaymentErrorHandler;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

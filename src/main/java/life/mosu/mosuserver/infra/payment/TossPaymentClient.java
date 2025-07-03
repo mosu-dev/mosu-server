@@ -1,8 +1,8 @@
-package life.mosu.mosuserver.infra.payment.application;
+package life.mosu.mosuserver.infra.payment;
 
-import life.mosu.mosuserver.infra.payment.application.dto.CancelTossPaymentResponse;
-import life.mosu.mosuserver.infra.payment.application.dto.ConfirmTossPaymentResponse;
-import life.mosu.mosuserver.infra.payment.application.dto.TossPaymentPayload;
+import life.mosu.mosuserver.infra.payment.dto.CancelTossPaymentResponse;
+import life.mosu.mosuserver.infra.payment.dto.ConfirmTossPaymentResponse;
+import life.mosu.mosuserver.infra.payment.dto.TossPaymentPayload;
 import life.mosu.mosuserver.presentation.payment.dto.CancelPaymentRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;

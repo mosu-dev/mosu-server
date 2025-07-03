@@ -1,6 +1,6 @@
 package life.mosu.mosuserver.presentation.payment.dto;
 
-import life.mosu.mosuserver.infra.payment.application.dto.TossPaymentPayload;
+import life.mosu.mosuserver.infra.payment.dto.TossPaymentPayload;
 
 public record PaymentRequest(
         Long applicationId,

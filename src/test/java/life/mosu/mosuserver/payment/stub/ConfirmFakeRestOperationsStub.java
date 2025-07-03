@@ -1,6 +1,6 @@
 package life.mosu.mosuserver.payment.stub;
 
-import life.mosu.mosuserver.infra.payment.application.dto.ConfirmTossPaymentResponse;
+import life.mosu.mosuserver.infra.payment.dto.ConfirmTossPaymentResponse;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;

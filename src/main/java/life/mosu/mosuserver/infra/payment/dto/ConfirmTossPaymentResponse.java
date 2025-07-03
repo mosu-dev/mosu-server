@@ -1,4 +1,4 @@
-package life.mosu.mosuserver.infra.payment.application.dto;
+package life.mosu.mosuserver.infra.payment.dto;
 
 import life.mosu.mosuserver.domain.payment.PaymentAmountVO;
 import life.mosu.mosuserver.domain.payment.PaymentJpaEntity;

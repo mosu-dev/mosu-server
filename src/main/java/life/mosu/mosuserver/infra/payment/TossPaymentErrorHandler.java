@@ -1,11 +1,11 @@
-package life.mosu.mosuserver.infra.payment.application;
+package life.mosu.mosuserver.infra.payment;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.IOException;
 import java.net.URI;
 import java.nio.charset.StandardCharsets;
-import life.mosu.mosuserver.infra.payment.application.dto.TossPaymentErrorResponse;
+import life.mosu.mosuserver.infra.payment.dto.TossPaymentErrorResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;

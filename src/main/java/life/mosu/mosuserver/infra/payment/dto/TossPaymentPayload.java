@@ -1,4 +1,4 @@
-package life.mosu.mosuserver.infra.payment.application.dto;
+package life.mosu.mosuserver.infra.payment.dto;
 
 public record TossPaymentPayload(
     String paymentKey,
