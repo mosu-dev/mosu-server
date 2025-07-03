@@ -19,11 +19,11 @@ public class ConfirmTossPaymentResponse {
     private String orderId;
     private String status;
     private String approvedAt;
-    private Long totalAmount;
-    private Long balanceAmount;
-    private Long suppliedAmount;
-    private Long vat;
-    private Long taxFreeAmount;
+    private Integer totalAmount;
+    private Integer balanceAmount;
+    private Integer suppliedAmount;
+    private Integer vat;
+    private Integer taxFreeAmount;
     private String method;
 
     public PaymentJpaEntity toEntity(Long applicationId) {
