@@ -1,4 +1,4 @@
-package life.mosu.mosuserver.applicaiton.auth;
+package life.mosu.mosuserver.application.auth;
 
 import jakarta.servlet.http.HttpServletRequest;
 import life.mosu.mosuserver.domain.user.UserJpaEntity;

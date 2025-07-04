@@ -1,7 +1,7 @@
 package life.mosu.mosuserver.domain.user;
 
 import jakarta.persistence.*;
-import life.mosu.mosuserver.applicaiton.oauth.OAuthUserInfo;
+import life.mosu.mosuserver.application.oauth.OAuthUserInfo;
 import life.mosu.mosuserver.domain.base.BaseTimeEntity;
 import lombok.AccessLevel;
 import lombok.Builder;
