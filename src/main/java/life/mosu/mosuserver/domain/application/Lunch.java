@@ -1,6 +1,10 @@
 package life.mosu.mosuserver.domain.application;
 
-//임의 구현
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
+
+@Getter
+@RequiredArgsConstructor
 public enum Lunch {
     NONE("선택 안 함"),
     OPTION1("도시락 A"),
@@ -11,12 +15,5 @@ public enum Lunch {
     OPTION6("중식 도시락");
 
     private final String lunchName;
-
-    Lunch(String lunchName) {
-        this.lunchName = lunchName;
-    }
-
-    public String getLunchName() {
-        return lunchName;
-    }
 }
+//임의 구현

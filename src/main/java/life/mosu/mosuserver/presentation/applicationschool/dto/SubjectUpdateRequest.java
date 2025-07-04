@@ -1,6 +1,6 @@
 package life.mosu.mosuserver.presentation.applicationschool.dto;
 
-import life.mosu.mosuserver.domain.application.Subject;
+import life.mosu.mosuserver.domain.subject.Subject;
 
 import java.util.Set;
 

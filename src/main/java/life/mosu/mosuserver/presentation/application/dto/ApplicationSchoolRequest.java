@@ -1,9 +1,9 @@
 package life.mosu.mosuserver.presentation.application.dto;
 
 import life.mosu.mosuserver.domain.application.Lunch;
-import life.mosu.mosuserver.domain.application.Subject;
 import life.mosu.mosuserver.domain.applicationschool.ApplicationSchoolJpaEntity;
 import life.mosu.mosuserver.domain.school.Area;
+import life.mosu.mosuserver.domain.subject.Subject;
 
 import java.time.LocalDate;
 import java.util.Set;

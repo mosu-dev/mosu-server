@@ -1,7 +1,5 @@
 package life.mosu.mosuserver.presentation.application.dto;
 
-import life.mosu.mosuserver.domain.applicationschool.ApplicationSchoolJpaEntity;
-
 import java.util.List;
 
 public record ApplicationResponse(
@@ -10,16 +8,25 @@ public record ApplicationResponse(
     Integer amount
 ) {
 
+//    public static ApplicationResponse of(
+//        Long applicationId,
+//        List<ApplicationSchoolJpaEntity> schoolEntities,
+//        Set<Subject> subjects,
+//        Integer amount
+//    ) {
+//        List<ApplicationSchoolResponse> schoolResponses = schoolEntities.stream()
+//            .map(applicationSchoolJpa -> ApplicationSchoolResponse.of(applicationSchoolJpa, subjects))
+//            .toList();
+//
+//        return new ApplicationResponse(applicationId, schoolResponses, amount);
+//    }
+
     public static ApplicationResponse of(
         Long applicationId,
-        List<ApplicationSchoolJpaEntity> schoolEntities,
+        List<ApplicationSchoolResponse> schoolEntities,
         Integer amount
     ) {
-        List<ApplicationSchoolResponse> schoolResponses = schoolEntities.stream()
-            .map(ApplicationSchoolResponse::from)
-            .toList();
-
-        return new ApplicationResponse(applicationId, schoolResponses, amount);
+        return new ApplicationResponse(applicationId, schoolEntities, amount);
     }
 
 }
