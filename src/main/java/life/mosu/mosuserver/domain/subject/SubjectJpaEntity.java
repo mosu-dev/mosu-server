@@ -21,6 +21,7 @@ public class SubjectJpaEntity extends BaseTimeEntity {
     private Long applicationSchoolId;
 
     @Enumerated(EnumType.STRING)
+    @Column(name = "subject")
     private Subject subject;
 
     @Builder

@@ -39,12 +39,10 @@ public class ApplicationController {
     /**
      * 전체 신청 내역 조회
      */
-    @GetMapping
+    @GetMapping()
     public ApiResponseWrapper<List<ApplicationResponse>> getAll(
-        @RequestParam Long userId
     ) {
-        List<ApplicationResponse> responses = applicationService.getApplications(userId);
+        List<ApplicationResponse> responses = applicationService.getApplications(2L);
         return ApiResponseWrapper.success(HttpStatus.OK, "신청 내역 조회 성공", responses);
     }
-
 }

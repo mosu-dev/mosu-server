@@ -26,11 +26,14 @@ public class ApplicationJpaEntity extends BaseTimeEntity {
     @Column(name = "recommender_phone_number")
     private String recommenderPhoneNumber;
 
+    @Column(name = "lunch")
+    private String lunch;
+
     @Column(name = "agreed_to_notices")
-    private boolean agreedToNotices;
+    private Boolean agreedToNotices;
 
     @Column(name = "agreed_to_refund_policy")
-    private boolean agreedToRefundPolicy;
+    private Boolean agreedToRefundPolicy;
 
     @Column(name = "agreed_to_notices_at")
     private LocalDate agreedToNoticesAt;
@@ -60,13 +63,4 @@ public class ApplicationJpaEntity extends BaseTimeEntity {
         this.agreedToRefundPolicyAt = agreedToRefundPolicyAt;
         this.amount = amount;
     }
-
 }
-/**
- * application school ---1:n---- subject ( applicationSchoolId  INDEX)
- * (CollectionTable vs Separate Entity)
- * <p>
- * select * from subject where application_id = ?;
- * select * from
- * CollectionTable
- */

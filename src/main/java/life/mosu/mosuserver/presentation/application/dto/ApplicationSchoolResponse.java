@@ -17,17 +17,6 @@ public record ApplicationSchoolResponse(
     String examinationNumber,
     Set<Subject> subjects
 ) {
-    //    public static ApplicationSchoolResponse of(ApplicationSchoolJpaEntity applicationSchool, Set<Subject> subjects) {
-//        return new ApplicationSchoolResponse(
-//            applicationSchool.getId(),
-//            applicationSchool.getArea(),
-//            applicationSchool.getExamDate(),
-//            applicationSchool.getSchoolName(),
-//            applicationSchool.getLunch(),
-//            applicationSchool.getExaminationNumber(),
-//            subjects
-//        );
-//    }
     public static ApplicationSchoolResponse of(ApplicationSchoolJpaEntity applicationSchool, Set<Subject> subjects) {
         return new ApplicationSchoolResponse(
             applicationSchool.getId(),

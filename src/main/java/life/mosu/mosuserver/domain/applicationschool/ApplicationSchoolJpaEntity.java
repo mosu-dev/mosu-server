@@ -43,6 +43,9 @@ public class ApplicationSchoolJpaEntity extends BaseTimeEntity {
     @Embedded
     private AddressJpaVO address;
 
+    @Column(name = "capacity")
+    private Long capacity;
+
     @Column(name = "exam_date")
     private LocalDate examDate;
 
@@ -54,7 +57,6 @@ public class ApplicationSchoolJpaEntity extends BaseTimeEntity {
 
     @Column(name = "amount")
     private Integer amount;
-
 
     @Builder
     public ApplicationSchoolJpaEntity(
