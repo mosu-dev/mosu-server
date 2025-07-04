@@ -1,4 +1,4 @@
-package life.mosu.mosuserver.applicaiton.auth;
+package life.mosu.mosuserver.application.auth;
 
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.io.Decoders;
