@@ -17,6 +17,7 @@ import org.springframework.stereotype.Service;
 @Service
 @RequiredArgsConstructor
 public class FaqAttachmentService implements AttachmentService<FaqJpaEntity, FileRequest> {
+
     private final FaqAttachmentRepository faqAttachmentRepository;
     private final FileUploadHelper fileUploadHelper;
     private final S3Service s3Service;
@@ -26,19 +27,23 @@ public class FaqAttachmentService implements AttachmentService<FaqJpaEntity, Fil
 
     @Override
     public void createAttachment(List<FileRequest> requests, FaqJpaEntity entity) {
-        if (requests == null) return;
+        if (requests == null) {
+            return;
+        }
         Long faqId = entity.getId();
-        for (FileRequest req : requests) {
+
+        requests.forEach(req -> {
             fileUploadHelper.updateTag(req.s3Key());
             faqAttachmentRepository.save(req.toAttachmentEntity(
-                req.fileName(), req.s3Key(), faqId
+                    req.fileName(), req.s3Key(), faqId
             ));
-        }
+        });
     }
 
     @Override
     public void deleteAttachment(FaqJpaEntity entity) {
-        List<FaqAttachmentJpaEntity> attachments = faqAttachmentRepository.findAllByFaqId(entity.getId());
+        List<FaqAttachmentJpaEntity> attachments = faqAttachmentRepository.findAllByFaqId(
+                entity.getId());
         faqAttachmentRepository.deleteAll(attachments);
     }
 
@@ -46,17 +51,17 @@ public class FaqAttachmentService implements AttachmentService<FaqJpaEntity, Fil
     public List<FaqResponse.AttachmentResponse> toAttachmentResponses(FaqJpaEntity faq) {
 
         List<FaqAttachmentJpaEntity> attachments = faqAttachmentRepository.findAllByFaqId(
-            faq.getId());
+                faq.getId());
 
         return attachments.stream()
-            .map(attachment -> new FaqResponse.AttachmentResponse(
-                attachment.getFileName(),
-                s3Service.getPreSignedUrl(
-                    attachment.getS3Key(),
-                    Duration.ofMinutes(durationTime)
-                )
-            ))
-            .toList();
+                .map(attachment -> new FaqResponse.AttachmentResponse(
+                        attachment.getFileName(),
+                        s3Service.getPreSignedUrl(
+                                attachment.getS3Key(),
+                                Duration.ofMinutes(durationTime)
+                        )
+                ))
+                .toList();
     }
 
 

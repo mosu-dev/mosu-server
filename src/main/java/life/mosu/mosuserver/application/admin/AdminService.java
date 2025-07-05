@@ -1,6 +1,7 @@
 package life.mosu.mosuserver.application.admin;
 
 import life.mosu.mosuserver.domain.admin.StudentQueryRepositoryImpl;
+import life.mosu.mosuserver.presentation.admin.dto.StudentFilter;
 import life.mosu.mosuserver.presentation.admin.dto.StudentListResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -12,9 +13,10 @@ import org.springframework.stereotype.Service;
 @Service
 @RequiredArgsConstructor
 public class AdminService {
+
     private final StudentQueryRepositoryImpl studentQueryRepository;
 
-    public Page<StudentListResponse> getStudents(String name, String phone, String order, Pageable pageable) {
-        return studentQueryRepository.searchAllStudents(name, phone, order, pageable);
+    public Page<StudentListResponse> getStudents(StudentFilter filter, Pageable pageable) {
+        return studentQueryRepository.searchAllStudents(filter, pageable);
     }
 }

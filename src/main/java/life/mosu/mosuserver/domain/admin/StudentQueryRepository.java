@@ -1,9 +1,11 @@
 package life.mosu.mosuserver.domain.admin;
 
-import org.springframework.data.domain.Pageable;
+import life.mosu.mosuserver.presentation.admin.dto.StudentFilter;
 import life.mosu.mosuserver.presentation.admin.dto.StudentListResponse;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 public interface StudentQueryRepository {
-    Page<StudentListResponse> searchAllStudents(String name, String phone, String order, Pageable pageable);
+
+    Page<StudentListResponse> searchAllStudents(StudentFilter filter, Pageable pageable);
 }
