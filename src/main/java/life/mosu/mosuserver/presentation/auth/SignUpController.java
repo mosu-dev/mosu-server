@@ -25,10 +25,13 @@ public class SignUpController {
      * @param request 회원 가입 요청
      */
     @PostMapping
-    public ResponseEntity<ApiResponseWrapper<?>> signUp(
-        @RequestBody @Valid final SignUpRequest request
+    public ResponseEntity<ApiResponseWrapper<Void>> signUp(
+            @RequestBody @Valid final SignUpRequest request
     ) {
         signUpService.signUp(request);
-        return ResponseEntity.ok(ApiResponseWrapper.success(HttpStatus.OK, "성공"));
+
+        return ResponseEntity
+                .status(HttpStatus.CREATED)
+                .body(ApiResponseWrapper.success(HttpStatus.CREATED, "회원가입 성공"));
     }
 }
