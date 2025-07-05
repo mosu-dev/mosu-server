@@ -7,9 +7,6 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import java.util.HashSet;
-import java.util.Set;
-
 @Entity
 @Table(name = "application")
 @Getter
@@ -24,32 +21,28 @@ public class ApplicationJpaEntity extends BaseTimeEntity {
     @Column(name = "user_id")
     private Long userId;
 
-    @Enumerated(EnumType.STRING)
-    private Lunch lunch;
+    @Column(name = "recommender_phone_number")
+    private String recommenderPhoneNumber;
 
-    @Column(name = "examination")
-    private String examinationNumber;
+    @Column(name = "agreed_to_notices")
+    private Boolean agreedToNotices;
 
-    @ElementCollection(fetch = FetchType.EAGER)
-    @CollectionTable(name = "exam_subject", joinColumns = @JoinColumn(name = "application_id"))
-    @Enumerated(EnumType.STRING)
-    private Set<Subject> subjects = new HashSet<>();
+    @Column(name = "agreed_to_refund_policy")
+    private Boolean agreedToRefundPolicy;
+
 
     @Builder
     public ApplicationJpaEntity(
         final Long userId,
-        final Lunch lunch,
-        final String examinationNumber,
-        final Set<Subject> subjects
+        final String recommenderPhoneNumber,
+        final boolean agreedToNotices,
+        final boolean agreedToRefundPolicy
+
     ) {
         this.userId = userId;
-        this.lunch = lunch;
-        this.examinationNumber = examinationNumber;
-        this.subjects = subjects;
-    }
-
-    public void generateExaminationNumber() {
-
+        this.recommenderPhoneNumber = recommenderPhoneNumber;
+        this.agreedToNotices = agreedToNotices;
+        this.agreedToRefundPolicy = agreedToRefundPolicy;
     }
 
 }
