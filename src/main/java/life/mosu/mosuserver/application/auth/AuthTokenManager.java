@@ -2,6 +2,8 @@ package life.mosu.mosuserver.application.auth;
 
 import jakarta.servlet.http.HttpServletRequest;
 import life.mosu.mosuserver.domain.user.UserJpaEntity;
+import life.mosu.mosuserver.global.exception.CustomRuntimeException;
+import life.mosu.mosuserver.global.exception.ErrorCode;
 import life.mosu.mosuserver.presentation.auth.dto.Token;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
@@ -25,8 +27,12 @@ public class AuthTokenManager {
 
     public Token reissueAccessToken(final HttpServletRequest servletRequest) {
         final String refreshTokenString = refreshTokenService.resolveToken(servletRequest);
+        if (refreshTokenString == null) {
+            throw new CustomRuntimeException(ErrorCode.NOT_FOUND_REFRESH_TOKEN);
+        }
 
-        final Authentication authentication = refreshTokenService.getAuthentication(refreshTokenString);
+        final Authentication authentication = refreshTokenService.getAuthentication(
+                refreshTokenString);
         final PrincipalDetails principalDetails = (PrincipalDetails) authentication.getPrincipal();
         final UserJpaEntity user = principalDetails.user();
 
