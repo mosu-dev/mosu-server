@@ -29,6 +29,10 @@ public record PrincipalDetails(@Getter UserJpaEntity user) implements UserDetail
         return user.getLoginId();
     }
 
+    public Long getId() {
+        return user.getId();
+    }
+
     @Override
     public boolean isAccountNonExpired() {
         return UserDetails.super.isAccountNonExpired();

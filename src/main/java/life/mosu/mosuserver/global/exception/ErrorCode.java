@@ -8,8 +8,11 @@ import org.springframework.http.HttpStatus;
 @AllArgsConstructor
 public enum ErrorCode {
 
+    // Principal 관련 에러
+    PRINCIPAL_NOT_FOUND(HttpStatus.UNAUTHORIZED, "인증된 사용자를 찾을 수 없습니다."),
+
     // OAuth 관련 에러
-    UNSUPPORTED_OAUTH2_PROVIDER( HttpStatus.BAD_REQUEST, "지원하지 않는 OAuth2 제공자입니다."),
+    UNSUPPORTED_OAUTH2_PROVIDER(HttpStatus.BAD_REQUEST, "지원하지 않는 OAuth2 제공자입니다."),
     OAUTH_USER_ALREADY_EXISTS(HttpStatus.CONFLICT, "이미 존재하는 OAuth 사용자입니다."),
     FAILED_TO_GET_KAKAO_OAUTH_USER(HttpStatus.INTERNAL_SERVER_ERROR, "OAuth 사용자 생성에 실패했습니다."),
 
@@ -19,6 +22,8 @@ public enum ErrorCode {
     EXPIRED_TOKEN(HttpStatus.UNAUTHORIZED, "토큰이 만료되었습니다."),
     INVALID_TOKEN(HttpStatus.UNAUTHORIZED, "유효하지 않은 토큰입니다."),
     INVALID_REFRESH_TOKEN(HttpStatus.UNAUTHORIZED, "유효하지 않은 리프레시 토큰입니다."),
+    NOT_FOUND_REFRESH_TOKEN(HttpStatus.UNAUTHORIZED, "리프레시 토큰을 찾을 수 없습니다."),
+    NOT_EXIST_REFRESH_TOKEN(HttpStatus.UNAUTHORIZED, "리프레시 토큰이 존재하지 않습니다."),
 
     // 유저 관련 에러
     USER_ALREADY_EXISTS(HttpStatus.CONFLICT, "이미 존재하는 사용자입니다."),
