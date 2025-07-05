@@ -17,7 +17,7 @@ public record OAuthUserInfo(
         final Map<String, Object> attributes
     ) {
         return switch (oAuthProvider) {
-            case KAKAO -> ofKakao(attributes);
+            case OAuthProvider.KAKAO -> ofKakao(attributes);
             default -> throw new CustomRuntimeException(ErrorCode.UNSUPPORTED_OAUTH2_PROVIDER);
         };
     }

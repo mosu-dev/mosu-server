@@ -3,9 +3,10 @@ package life.mosu.mosuserver.domain.serviceterm;
 
 import jakarta.persistence.*;
 import life.mosu.mosuserver.domain.base.BaseTimeEntity;
-import lombok.*;
-
-import java.time.LocalDateTime;
+import lombok.AccessLevel;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 @Entity
 @Getter
@@ -24,17 +25,13 @@ class ServiceTermJpaEntity extends BaseTimeEntity {
     @Column(name = "required")
     private boolean required;
 
-    @Column(name = "revocable")
-    private boolean revocable;
-
     @Builder
     public ServiceTermJpaEntity(
         final String tag,
-        final boolean required,
-        final boolean revocable
+        final boolean required
+
     ) {
         this.tag = tag;
         this.required = required;
-        this.revocable = revocable;
     }
 }

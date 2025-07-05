@@ -30,7 +30,7 @@ public class OAuthUserService extends DefaultOAuth2UserService {
             .getUserInfoEndpoint()
             .getUserNameAttributeName();
 
-        final OAuthUserInfo userInfo = OAuthUserInfo.of(OAuthProvider.from(registrationId) , oAuth2UserAttributes);
+        final OAuthUserInfo userInfo = OAuthUserInfo.of(OAuthProvider.from(registrationId), oAuth2UserAttributes);
 
         final OAuthUserJpaEntity oAuthUser = updateOrWrite(userInfo);
 
