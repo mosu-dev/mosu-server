@@ -9,6 +9,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import life.mosu.mosuserver.application.auth.AccessTokenService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
@@ -22,16 +23,20 @@ public class AccessTokenFilter extends OncePerRequestFilter {
     private static final String TOKEN_PREFIX = "Bearer ";
     private final AccessTokenService accessTokenService;
 
+    @Value("${endpoints.reissue}")
+    private String reissueEndpoint;
+
     @Override
     protected void doFilterInternal(
             final HttpServletRequest request,
             final HttpServletResponse response,
             final FilterChain filterChain
     ) throws ServletException, IOException {
-        if (request.getRequestURI().equals("/api/v1/auth/reissue")) {
+        if (request.getRequestURI().equals(reissueEndpoint)) {
             filterChain.doFilter(request, response);
             return;
         }
+
         final String accessToken = resolveToken(request);
         if (accessToken != null) {
             setAuthentication(accessToken);

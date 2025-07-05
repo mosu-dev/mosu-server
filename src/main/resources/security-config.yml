@@ -33,3 +33,6 @@ jwt:
     expire-time: ${JWT_ACCESS_TOKEN_EXPIRE_TIME}
   refresh-token:
     expire-time: ${JWT_REFRESH_TOKEN_EXPIRE_TIME}
+
+endpoints:
+  reissue: ${REISSUE_ENDPOINT}
