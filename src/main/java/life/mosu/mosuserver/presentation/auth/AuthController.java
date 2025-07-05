@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 @RequestMapping("/auth")
 public class AuthController {
+
     private final AuthService authService;
 
     /**
@@ -28,12 +29,13 @@ public class AuthController {
      * @return 로그인 한 회원의 Access Token과 Refresh Token
      */
     @PostMapping("/login")
-    public ResponseEntity<ApiResponseWrapper<Token>> login(@RequestBody @Valid final LoginRequest request) {
+    public ResponseEntity<ApiResponseWrapper<Token>> login(
+            @RequestBody @Valid final LoginRequest request) {
         final Token token = authService.login(request);
         final String authorization = token.grantType() + " " + token.accessToken();
         return ResponseEntity.status(HttpStatus.CREATED)
-            .header(HttpHeaders.AUTHORIZATION, authorization)
-            .body(ApiResponseWrapper.success(HttpStatus.CREATED, token));
+                .header(HttpHeaders.AUTHORIZATION, authorization)
+                .body(ApiResponseWrapper.success(HttpStatus.CREATED, token));
     }
 
     /**
@@ -43,11 +45,12 @@ public class AuthController {
      * @return 재발급 된 Access Token과 Refresh Token
      */
     @PostMapping("/reissue")
-    public ResponseEntity<ApiResponseWrapper<Token>> reissueAccessToken(final HttpServletRequest servletRequest) {
+    public ResponseEntity<ApiResponseWrapper<Token>> reissueAccessToken(
+            final HttpServletRequest servletRequest) {
         final Token token = authService.reissueAccessToken(servletRequest);
         final String authorization = token.grantType() + " " + token.accessToken();
         return ResponseEntity.status(HttpStatus.CREATED)
-            .header(HttpHeaders.AUTHORIZATION, authorization)
-            .body(ApiResponseWrapper.success(HttpStatus.CREATED, token));
+                .header(HttpHeaders.AUTHORIZATION, authorization)
+                .body(ApiResponseWrapper.success(HttpStatus.CREATED, token));
     }
 }

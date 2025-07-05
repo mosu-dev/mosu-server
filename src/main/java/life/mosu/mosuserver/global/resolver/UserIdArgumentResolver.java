@@ -1,6 +1,5 @@
 package life.mosu.mosuserver.global.resolver;
 
-import java.util.Objects;
 import life.mosu.mosuserver.application.auth.AccessTokenService;
 import life.mosu.mosuserver.application.auth.PrincipalDetails;
 import life.mosu.mosuserver.global.annotation.UserId;
@@ -39,8 +38,7 @@ public class UserIdArgumentResolver implements HandlerMethodArgumentResolver {
             throw new CustomRuntimeException(ErrorCode.PRINCIPAL_NOT_FOUND);
         }
 
-        PrincipalDetails principal = (PrincipalDetails) Objects.requireNonNull(authentication)
-                .getPrincipal();
+        PrincipalDetails principal = (PrincipalDetails) authentication.getPrincipal();
 
         return principal.getId();
     }
