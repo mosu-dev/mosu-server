@@ -99,6 +99,7 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(Exception.class)
     public ResponseEntity<Map<String, Object>> handleGeneralException(Exception ex) {
+        System.out.println("Exception: " + ex.getMessage());
         Map<String, Object> response = new LinkedHashMap<>();
         response.put("status", HttpStatus.INTERNAL_SERVER_ERROR.value());
         response.put("message", "서버 오류가 발생했습니다.");
