@@ -6,20 +6,18 @@ import java.util.List;
 
 public record ApplicationResponse(
     Long applicationId,
-    List<ApplicationSchoolResponse> schools,
-    Integer amount
+    List<ApplicationSchoolResponse> schools
 ) {
 
     public static ApplicationResponse of(
         Long applicationId,
-        List<ApplicationSchoolJpaEntity> schoolEntities,
-        Integer amount
+        List<ApplicationSchoolJpaEntity> schoolEntities
     ) {
         List<ApplicationSchoolResponse> schoolResponses = schoolEntities.stream()
             .map(ApplicationSchoolResponse::from)
             .toList();
 
-        return new ApplicationResponse(applicationId, schoolResponses, amount);
+        return new ApplicationResponse(applicationId, schoolResponses);
     }
 
 }
