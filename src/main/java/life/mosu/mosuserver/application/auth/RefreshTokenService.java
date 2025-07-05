@@ -36,7 +36,7 @@ public class RefreshTokenService extends JwtTokenService {
 
     public void deleteRefreshToken(final Long id) {
         if (!refreshTokenRepository.existsByUserId(id)) {
-            throw new CustomRuntimeException(ErrorCode.INVALID_TOKEN);
+            throw new CustomRuntimeException(ErrorCode.NOT_EXIST_REFRESH_TOKEN);
         }
         refreshTokenRepository.deleteByUserId(id);
     }

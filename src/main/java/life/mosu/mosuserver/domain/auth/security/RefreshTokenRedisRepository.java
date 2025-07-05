@@ -22,11 +22,11 @@ public class RefreshTokenRedisRepository implements RefreshTokenRepository {
 
     @Override
     public boolean existsByUserId(final Long id) {
-        return repository.existsByUserId(id);
+        return repository.existsById(id);
     }
 
     @Override
     public void deleteByUserId(final Long id) {
-        repository.deleteByUserId(id);
+        repository.deleteById(id);
     }
 }
