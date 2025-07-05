@@ -3,13 +3,12 @@ package life.mosu.mosuserver.domain.school;
 import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
 import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Getter
 @Embeddable
-@AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class AddressJpaVO {
 
@@ -21,4 +20,15 @@ public class AddressJpaVO {
 
     @Column(name = "detail")
     private String detail;
+
+    @Builder
+    public AddressJpaVO(
+        String zipcode,
+        String street,
+        String detail
+    ) {
+        this.zipcode = zipcode;
+        this.street = street;
+        this.detail = detail;
+    }
 }

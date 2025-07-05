@@ -1,4 +1,4 @@
-package life.mosu.mosuserver.applicaiton.auth;
+package life.mosu.mosuserver.application.auth;
 
 import io.jsonwebtoken.Claims;
 import life.mosu.mosuserver.domain.auth.security.RefreshToken;
@@ -22,7 +22,7 @@ public class RefreshTokenService extends JwtTokenService {
         final UserJpaRepository userJpaRepository,
         final RefreshTokenRepository refreshTokenRepository
     ) {
-        super(expireTime, secretKey,"Refresh", "Refresh-Token", userJpaRepository);
+        super(expireTime, secretKey, "Refresh", "Refresh-Token", userJpaRepository);
         this.refreshTokenRepository = refreshTokenRepository;
     }
 

@@ -16,6 +16,7 @@ import java.util.Map;
 public class GlobalExceptionHandler {
     /**
      * DTO 유효성 검사 실패
+     *
      * @return 400 Bad Request
      */
     @ExceptionHandler(MethodArgumentNotValidException.class)
@@ -36,6 +37,7 @@ public class GlobalExceptionHandler {
 
     /**
      * 잘못된 파라미터 요청
+     *
      * @return 400 Bad Request
      */
     @ExceptionHandler(IllegalArgumentException.class)
@@ -49,6 +51,7 @@ public class GlobalExceptionHandler {
 
     /**
      * 엔티티가 존재하지 않을 때
+     *
      * @return 404 Not Found
      */
     @ExceptionHandler(EntityNotFoundException.class)
@@ -61,6 +64,7 @@ public class GlobalExceptionHandler {
 
     /**
      * 인증 예외 처리
+     *
      * @return 401 Unauthorized
      */
     @ExceptionHandler(AuthenticationException.class)
@@ -75,6 +79,7 @@ public class GlobalExceptionHandler {
 
     /**
      * 권한이 없는 경우 예외 처리
+     *
      * @return 403 Forbidden
      */
     @ExceptionHandler(AccessDeniedException.class)
@@ -89,6 +94,7 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(Exception.class)
     public ResponseEntity<Map<String, Object>> handleGeneralException(Exception ex) {
+        System.out.println("Exception: " + ex.getMessage());
         Map<String, Object> response = new LinkedHashMap<>();
         response.put("status", HttpStatus.INTERNAL_SERVER_ERROR.value());
         response.put("message", "서버 오류가 발생했습니다.");

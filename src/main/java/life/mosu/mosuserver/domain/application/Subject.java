@@ -1,8 +1,10 @@
 package life.mosu.mosuserver.domain.application;
 
 import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 
 @Getter
+@RequiredArgsConstructor
 public enum Subject {
 
     // 공통 과목
@@ -33,8 +35,4 @@ public enum Subject {
     EARTH_SCIENCE_2("지구과학Ⅱ");
 
     private final String subjectName;
-
-    Subject(String subjectName) {
-        this.subjectName = subjectName;
-    }
 }

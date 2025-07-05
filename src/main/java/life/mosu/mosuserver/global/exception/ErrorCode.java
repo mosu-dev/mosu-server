@@ -9,7 +9,7 @@ import org.springframework.http.HttpStatus;
 public enum ErrorCode {
 
     // OAuth 관련 에러
-    UNSUPPORTED_OAUTH2_PROVIDER( HttpStatus.BAD_REQUEST, "지원하지 않는 OAuth2 제공자입니다."),
+    UNSUPPORTED_OAUTH2_PROVIDER(HttpStatus.BAD_REQUEST, "지원하지 않는 OAuth2 제공자입니다."),
     OAUTH_USER_ALREADY_EXISTS(HttpStatus.CONFLICT, "이미 존재하는 OAuth 사용자입니다."),
     FAILED_TO_GET_KAKAO_OAUTH_USER(HttpStatus.INTERNAL_SERVER_ERROR, "OAuth 사용자 생성에 실패했습니다."),
 
@@ -19,6 +19,20 @@ public enum ErrorCode {
     EXPIRED_TOKEN(HttpStatus.UNAUTHORIZED, "토큰이 만료되었습니다."),
     INVALID_TOKEN(HttpStatus.UNAUTHORIZED, "유효하지 않은 토큰입니다."),
     INVALID_REFRESH_TOKEN(HttpStatus.UNAUTHORIZED, "유효하지 않은 리프레시 토큰입니다."),
+
+    // 신청 관련 에러
+    WRONG_SUBJECT_TYPE(HttpStatus.BAD_REQUEST, "잘못된 과목명 입니다."),
+    WRONG_LUNCH_TYPE(HttpStatus.BAD_REQUEST, "잘못된 도시락명 입니다."),
+    WRONG_AREA_TYPE(HttpStatus.BAD_REQUEST, "잘못된 지역명 입니다."),
+
+    // 신청 학교 관련 에러
+    APPLICATION_SCHOOL_NOT_FOUND(HttpStatus.NOT_FOUND, "신청한 학교 정보를 찾을 수 없습니다."),
+    APPLICATION_SCHOOL_LIST_NOT_FOUND(HttpStatus.NOT_FOUND, "신청한 학교 목록을 찾을 수 없습니다."),
+    APPLICATION_NOT_FOUND(HttpStatus.NOT_FOUND, "신청 정보를 찾을 수 없습니다."),
+    APPLICATION_LIST_NOT_FOUND(HttpStatus.NOT_FOUND, "신청 내역을 찾을 수 없습니다."),
+    SCHOOL_NOT_FOUND(HttpStatus.NOT_FOUND, "학교가 존재하지 않습니다."),
+    SCHOOL_FULL(HttpStatus.CONFLICT, "해당 학교의 신청 정원이 모두 찼습니다."),
+    APPLICATION_SCHOOL_ALREADY_APPLIED(HttpStatus.CONFLICT, "해당 학교를 이미 예약하였습니다."),
 
     //프로필 관련 에러
     PROFILE_ALREADY_EXISTS(HttpStatus.CONFLICT, "프로필이 이미 존재합니다."),
