@@ -15,6 +15,7 @@ import lombok.ToString;
 @AllArgsConstructor
 @ToString
 public class ConfirmTossPaymentResponse {
+
     private String paymentKey;
     private String orderId;
     private String status;
@@ -26,12 +27,11 @@ public class ConfirmTossPaymentResponse {
     private Integer taxFreeAmount;
     private String method;
 
-    public PaymentJpaEntity toPaymentJpaEntity(Long applicationId, Integer quantity) {
+    public PaymentJpaEntity toEntity(Long applicationId) {
         return PaymentJpaEntity.of(
                 applicationId,
                 paymentKey,
                 orderId,
-                quantity,
                 toPaymentStatus(),
                 toPaymentAmount(),
                 toPaymentMethod());
