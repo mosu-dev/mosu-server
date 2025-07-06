@@ -69,6 +69,10 @@ dependencies {
     implementation 'software.amazon.awssdk:core:2.30.20'
     implementation 'software.amazon.awssdk:ec2'
 
+    //retry
+    implementation 'org.springframework.retry:spring-retry'
+    implementation 'org.springframework.boot:spring-boot-starter-aop'
+
     //monitoring
     implementation 'org.springframework.boot:spring-boot-starter-actuator'
     implementation 'io.micrometer:micrometer-registry-prometheus'
