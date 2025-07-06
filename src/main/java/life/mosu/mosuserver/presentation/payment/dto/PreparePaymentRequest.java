@@ -10,6 +10,10 @@ public record PreparePaymentRequest(
         List<@Valid Item> items
 ) {
 
+    public int getSize() {
+        return items.size();
+    }
+
     public record Item(
             @NotNull(message = "applicationId는 필수입니다.")
             Long applicationId,
