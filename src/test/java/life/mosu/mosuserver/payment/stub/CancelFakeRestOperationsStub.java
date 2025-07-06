@@ -21,8 +21,8 @@ public class CancelFakeRestOperationsStub extends BaseFakeRestOperationsStub {
             Class<T> responseType,
             Object... uriVariables) {
 
-        if (!url.contains("/confirm")) {
-            throw new IllegalArgumentException("ConfirmFakeRestOperations can only handle /confirm");
+        if (!url.contains("/cancel")) {
+            throw new IllegalArgumentException("CancelFakeRestOperations can only handle /cancel");
         }
         return ResponseEntity.ok(responseType.cast(confirmResponse));
     }
