@@ -6,18 +6,20 @@ import life.mosu.mosuserver.domain.faq.FaqJpaEntity;
 
 public record FaqCreateRequest(
 
-    @NotNull String question,
-    @NotNull String answer,
-    Long userId,
-    List<FileRequest> attachments
+        @NotNull String question,
+        @NotNull String answer,
+        Long userId,
+        List<FileRequest> attachments
 
 ) {
+
     public FaqJpaEntity toEntity() {
         return FaqJpaEntity.builder()
-            .question(question)
-            .answer(answer)
-            .userId(userId)
-            .build();
+                .question(question)
+                .answer(answer)
+                .userId(userId)
+                .build();
     }
+
 
 }
