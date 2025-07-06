@@ -1,6 +1,11 @@
 package life.mosu.mosuserver.domain.inquiryAnswer;
 
-import jakarta.persistence.*;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
 import life.mosu.mosuserver.domain.base.BaseTimeEntity;
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -12,6 +17,7 @@ import lombok.NoArgsConstructor;
 @Table(name = "inquiry_answer")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class InquiryAnswerJpaEntity extends BaseTimeEntity {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "inquiry_answer_id", nullable = false)
@@ -28,9 +34,9 @@ public class InquiryAnswerJpaEntity extends BaseTimeEntity {
 
     @Builder
     public InquiryAnswerJpaEntity(
-        final String content,
-        final Long inquiryId,
-        final Long userId
+            final String content,
+            final Long inquiryId,
+            final Long userId
     ) {
         this.content = content;
         this.inquiryId = inquiryId;
