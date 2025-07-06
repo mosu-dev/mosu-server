@@ -43,8 +43,17 @@ public class InquiryService {
     public InquiryDetailResponse getInquiryDetail(Long postId) {
         InquiryJpaEntity inquiry = inquiryRepository.findById(postId)
                 .orElseThrow(() -> new CustomRuntimeException(ErrorCode.FILE_NOT_FOUND));
-        
+
         return toInquiryDetailResponse(inquiry);
+    }
+
+    @Transactional
+    public void delete(Long postId) {
+        InquiryJpaEntity inquiryEntity = inquiryRepository.findById(postId)
+                .orElseThrow(() -> new CustomRuntimeException(ErrorCode.FILE_NOT_FOUND));
+
+        inquiryRepository.delete(inquiryEntity);
+        inquiryAttachmentService.deleteAttachment(inquiryEntity);
     }
 
     private InquiryResponse toInquiryResponse(InquiryJpaEntity inquiry) {
