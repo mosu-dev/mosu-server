@@ -1,13 +1,16 @@
 package life.mosu.mosuserver.application.application;
 
+import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 import life.mosu.mosuserver.domain.application.AdmissionTicketImageJpaEntity;
 import life.mosu.mosuserver.domain.application.AdmissionTicketImageJpaRepository;
 import life.mosu.mosuserver.domain.application.ApplicationJpaEntity;
+import life.mosu.mosuserver.domain.application.ApplicationJpaRepository;
 import life.mosu.mosuserver.domain.applicationschool.ApplicationSchoolJpaEntity;
+import life.mosu.mosuserver.domain.applicationschool.ApplicationSchoolJpaRepository;
 import life.mosu.mosuserver.global.exception.CustomRuntimeException;
 import life.mosu.mosuserver.global.exception.ErrorCode;
-import life.mosu.mosuserver.persistence.application.ApplicationJpaRepository;
-import life.mosu.mosuserver.persistence.application.ApplicationSchoolJpaRepository;
 import life.mosu.mosuserver.presentation.application.dto.ApplicationRequest;
 import life.mosu.mosuserver.presentation.application.dto.ApplicationResponse;
 import life.mosu.mosuserver.presentation.application.dto.ApplicationSchoolRequest;
@@ -17,10 +20,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.List;
-import java.util.Set;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -38,8 +37,8 @@ public class ApplicationService {
         List<ApplicationSchoolJpaEntity> schoolEntities = new java.util.ArrayList<>(List.of());
 
         Set<Long> schoolIds = schools.stream()
-            .map(ApplicationSchoolRequest::schoolId)
-            .collect(Collectors.toSet());
+                .map(ApplicationSchoolRequest::schoolId)
+                .collect(Collectors.toSet());
 
         if (applicationSchoolJpaRepository.existsByUserIdAndSchoolIdIn(userId, schoolIds)) {
             throw new CustomRuntimeException(ErrorCode.APPLICATION_SCHOOL_ALREADY_APPLIED);
@@ -49,10 +48,12 @@ public class ApplicationService {
 
         ApplicationJpaEntity applicationJpaEntity = applicationJpaRepository.save(application);
         Long applicationId = applicationJpaEntity.getId();
-        admissionTicketImageJpaRepository.save(createAdmissionTicketImageIfPresent(request.admissionTicket(), applicationId));
+        admissionTicketImageJpaRepository.save(
+                createAdmissionTicketImageIfPresent(request.admissionTicket(), applicationId));
 
         schools.forEach(applicationSchoolRequest -> {
-            ApplicationSchoolJpaEntity applicationSchoolJpaEntity = applicationSchoolRequest.toEntity(userId, applicationId);
+            ApplicationSchoolJpaEntity applicationSchoolJpaEntity = applicationSchoolRequest.toEntity(
+                    userId, applicationId);
             schoolEntities.add(applicationSchoolJpaRepository.save(applicationSchoolJpaEntity));
         });
 
@@ -66,15 +67,19 @@ public class ApplicationService {
         List<ApplicationJpaEntity> applications = applicationJpaRepository.findAllByUserId(userId);
 
         return applications.stream()
-            .map(application -> {
-                List<ApplicationSchoolJpaEntity> schools = applicationSchoolJpaRepository.findAllByApplicationId(application.getId());
-                return ApplicationResponse.of(application.getId(), schools);
-            })
-            .toList();
+                .map(application -> {
+                    List<ApplicationSchoolJpaEntity> schools = applicationSchoolJpaRepository.findAllByApplicationId(
+                            application.getId());
+                    return ApplicationResponse.of(application.getId(), schools);
+                })
+                .toList();
     }
 
-    private AdmissionTicketImageJpaEntity createAdmissionTicketImageIfPresent(FileRequest fileRequest, Long applicationId) {
-        return admissionTicketImageJpaRepository.save(fileRequest.toAdmissionTicketImageEntity(fileRequest.fileName(), fileRequest.s3Key(), applicationId));
+    private AdmissionTicketImageJpaEntity createAdmissionTicketImageIfPresent(
+            FileRequest fileRequest, Long applicationId) {
+        return admissionTicketImageJpaRepository.save(
+                fileRequest.toAdmissionTicketImageEntity(fileRequest.fileName(),
+                        fileRequest.s3Key(), applicationId));
     }
 
 }
