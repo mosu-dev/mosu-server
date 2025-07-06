@@ -9,6 +9,7 @@ public record InquiryCreateRequest(
         @NotNull String title,
         @NotNull String content,
         Long userId,
+        String author,
         List<FileRequest> attachments
 ) {
 
@@ -17,6 +18,7 @@ public record InquiryCreateRequest(
                 .title(title)
                 .content(content)
                 .userId(userId)
+                .author(author)
                 .build();
     }
 }

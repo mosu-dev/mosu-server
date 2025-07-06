@@ -6,5 +6,6 @@ import org.springframework.data.domain.Pageable;
 
 public interface InquiryQueryRepository {
 
-    Page<InquiryResponse> searchInquiries(InquiryStatus status, Pageable pageable);
+    Page<InquiryResponse> searchInquiries(InquiryStatus status, String sortField, boolean asc,
+            Pageable pageable);
 }

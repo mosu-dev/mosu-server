@@ -45,6 +45,7 @@ public class InquiryJpaEntity extends BaseTimeEntity {
         this.content = content;
         this.userId = userId;
         this.author = author;
+        this.status = InquiryStatus.PENDING;
     }
 
     public void updateStatusToComplete() {

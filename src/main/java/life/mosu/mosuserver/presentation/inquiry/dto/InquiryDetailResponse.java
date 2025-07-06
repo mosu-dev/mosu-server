@@ -1,6 +1,5 @@
 package life.mosu.mosuserver.presentation.inquiry.dto;
 
-import java.time.LocalDateTime;
 import java.util.List;
 import life.mosu.mosuserver.domain.inquiry.InquiryJpaEntity;
 import life.mosu.mosuserver.domain.inquiry.InquiryStatus;
@@ -11,7 +10,7 @@ public record InquiryDetailResponse(
         String content,
         String author,
         InquiryStatus status,
-        LocalDateTime createdAt,
+        String createdAt,
         List<AttachmentResponse> attachments
 ) {
 
