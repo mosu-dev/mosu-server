@@ -8,23 +8,25 @@ public class QuantityPercentageDiscountCalculator implements DiscountCalculator 
     private static final int DISCOUNT_RATE_ONE = 10;
     private static final int DISCOUNT_RATE_TWO = 20;
     private static final int DISCOUNT_RATE_THREE_OR_MORE = 30;
+    private static final int UNIT_PRICE = 1_000;
 
     @Override
-    public int calculateDiscount(int quantity, int unitPrice) {
-        validateInputs(quantity, unitPrice);
+    public int calculateDiscount(int quantity) {
+        validateInputs(quantity);
 
         int discountRate = determineDiscountRate(quantity);
-        int totalPrice = calculateTotalPrice(quantity, unitPrice);
+        int totalPrice = calculateTotalPrice(quantity, UNIT_PRICE);
 
         return calculateDiscountAmount(totalPrice, discountRate);
     }
 
-    private void validateInputs(int quantity, int unitPrice) {
+    private void validateInputs(int quantity) {
         if (quantity < 0) {
             throw new IllegalArgumentException("수량(quantity)은 음수일 수 없습니다: " + quantity);
         }
-        if (unitPrice < 0) {
-            throw new IllegalArgumentException("단가(unitPrice)는 음수일 수 없습니다: " + unitPrice);
+        if (QuantityPercentageDiscountCalculator.UNIT_PRICE < 0) {
+            throw new IllegalArgumentException("단가(unitPrice)는 음수일 수 없습니다: "
+                    + QuantityPercentageDiscountCalculator.UNIT_PRICE);
         }
     }
 
