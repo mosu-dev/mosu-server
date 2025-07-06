@@ -1,37 +1,61 @@
 package life.mosu.mosuserver.application.payment;
 
+import life.mosu.mosuserver.domain.payment.PaymentRepository;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.retry.annotation.Backoff;
+import org.springframework.retry.annotation.Recover;
+import org.springframework.retry.annotation.Retryable;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.event.TransactionPhase;
 import org.springframework.transaction.event.TransactionalEventListener;
 
+@Transactional(propagation = Propagation.NOT_SUPPORTED)
 @Component
+@Slf4j
+@RequiredArgsConstructor
 public class PaymentEventListener {
 
-    // 1. 트랜잭션 커밋 직전에 호출됨 (롤백 가능 상태)
+    private final PaymentRepository paymentRepository;
+    private final PaymentFailureHandler paymentFailureHandler;
+
     @TransactionalEventListener(phase = TransactionPhase.BEFORE_COMMIT)
     public void beforeCommitHandler(PaymentEvent event) {
-        System.out.println("[BEFORE_COMMIT] 커밋 직전 처리: " + event.orderId());
-        // 예) 캐시 업데이트, 커밋 직전 검증 등
+        log.debug("[BEFORE_COMMIT] 커밋 직전 처리: orderId={}", event.orderId());
+        // 예: 캐시 업데이트, 커밋 직전 검증
     }
 
-    // 2. 트랜잭션 성공적으로 커밋된 후 호출 (기본값)
     @TransactionalEventListener(phase = TransactionPhase.AFTER_COMMIT)
     public void afterCommitHandler(PaymentEvent event) {
-        System.out.println("[AFTER_COMMIT] 커밋 성공 후 처리: " + event.orderId());
-        // 예) 외부 API 호출, 메시지 큐 발행, 알림 전송
+        log.info("[AFTER_COMMIT] 커밋 성공 후 처리: orderId={}", event.orderId());
+        // 예: 외부 API 호출, 메시지 큐 발행, 알림 전송
     }
 
-    // 3. 트랜잭션이 롤백된 후 호출됨
     @TransactionalEventListener(phase = TransactionPhase.AFTER_ROLLBACK)
+    @Retryable(
+            retryFor = Exception.class,
+            maxAttempts = 3,
+            backoff = @Backoff(delay = 2000, multiplier = 2)
+    )
     public void afterRollbackHandler(PaymentEvent event) {
-        System.out.println("[AFTER_ROLLBACK] 롤백 후 처리: " + event.orderId());
-        // 예) 보상 트랜잭션, 로그 기록, 장애 알림
+        log.warn("[AFTER_ROLLBACK] 롤백 후 처리 시작: orderId={}", event.orderId());
+        paymentFailureHandler.handlePaymentFailure(event);
+        log.info("[AFTER_ROLLBACK] 롤백 후 처리 완료: orderId={}", event.orderId());
     }
 
-    // 4. 트랜잭션 커밋 성공 또는 롤백 후 무조건 호출됨
     @TransactionalEventListener(phase = TransactionPhase.AFTER_COMPLETION)
     public void afterCompletionHandler(PaymentEvent event) {
-        System.out.println("[AFTER_COMPLETION] 커밋/롤백 후 무조건 처리: " + event.orderId());
-        // 예) 리소스 정리, 상태 초기화 등
+        log.debug("[AFTER_COMPLETION] 커밋/롤백 후 무조건 처리: orderId={}", event.orderId());
+        // 리소스 정리, 상태 초기화 등
     }
+
+    @Recover
+    public void recoverAfterRollbackHandler(Exception ex, PaymentEvent event) {
+        log.error("[RECOVER] 롤백 후 처리 재시도 실패: orderId={}, error={}", event.orderId(),
+                ex.getMessage(), ex);
+    }
+
 }
+
