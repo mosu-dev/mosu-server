@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.Optional;
 import life.mosu.mosuserver.domain.application.QApplicationJpaEntity;
 import life.mosu.mosuserver.domain.profile.QProfileJpaEntity;
+import life.mosu.mosuserver.presentation.admin.dto.StudentExcelDto;
 import life.mosu.mosuserver.presentation.admin.dto.StudentFilter;
 import life.mosu.mosuserver.presentation.admin.dto.StudentListResponse;
 import lombok.RequiredArgsConstructor;
@@ -24,6 +25,8 @@ public class StudentQueryRepositoryImpl implements StudentQueryRepository {
     private final JPAQueryFactory queryFactory;
 
     NumberExpression<Long> examCountExpr = QApplicationJpaEntity.applicationJpaEntity.userId.count();
+    QProfileJpaEntity profile = QProfileJpaEntity.profileJpaEntity;
+    QApplicationJpaEntity application = QApplicationJpaEntity.applicationJpaEntity;
 
     @Override
     public Page<StudentListResponse> searchAllStudents(
@@ -33,9 +36,6 @@ public class StudentQueryRepositoryImpl implements StudentQueryRepository {
         String name = filter.name();
         String phone = filter.phone();
         String order = filter.order();
-
-        QProfileJpaEntity profile = QProfileJpaEntity.profileJpaEntity;
-        QApplicationJpaEntity application = QApplicationJpaEntity.applicationJpaEntity;
 
         JPAQuery<Tuple> query = baseQuery(profile, application)
                 .where(
@@ -56,6 +56,16 @@ public class StudentQueryRepositoryImpl implements StudentQueryRepository {
                 .toList();
 
         return new PageImpl<>(content, pageable, total);
+    }
+
+    @Override
+    public List<StudentExcelDto> searchAllStudentsForExcel(
+    ) {
+        JPAQuery<Tuple> query = baseQuery(profile, application);
+
+        return query.fetch().stream()
+                .map(tuple -> mapToExcel(tuple, profile))
+                .toList();
     }
 
     private JPAQuery<Tuple> baseQuery(QProfileJpaEntity profile,
@@ -111,6 +121,21 @@ public class StudentQueryRepositoryImpl implements StudentQueryRepository {
         Long examCount = Optional.ofNullable(tuple.get(examCountExpr))
                 .orElse(0L);
         return new StudentListResponse(
+                tuple.get(profile.userName),
+                tuple.get(profile.birth) != null ? tuple.get(profile.birth).toString() : null,
+                tuple.get(profile.phoneNumber),
+                tuple.get(profile.gender) != null ? tuple.get(profile.gender).name() : null,
+                tuple.get(profile.education),
+                tuple.get(profile.schoolInfo.schoolName),
+                tuple.get(profile.grade),
+                examCount.intValue()
+        );
+    }
+
+    private StudentExcelDto mapToExcel(Tuple tuple, QProfileJpaEntity profile) {
+        Long examCount = Optional.ofNullable(tuple.get(examCountExpr))
+                .orElse(0L);
+        return new StudentExcelDto(
                 tuple.get(profile.userName),
                 tuple.get(profile.birth) != null ? tuple.get(profile.birth).toString() : null,
                 tuple.get(profile.phoneNumber),

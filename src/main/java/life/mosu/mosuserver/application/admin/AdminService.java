@@ -1,6 +1,8 @@
 package life.mosu.mosuserver.application.admin;
 
+import java.util.List;
 import life.mosu.mosuserver.domain.admin.StudentQueryRepositoryImpl;
+import life.mosu.mosuserver.presentation.admin.dto.StudentExcelDto;
 import life.mosu.mosuserver.presentation.admin.dto.StudentFilter;
 import life.mosu.mosuserver.presentation.admin.dto.StudentListResponse;
 import lombok.RequiredArgsConstructor;
@@ -18,5 +20,9 @@ public class AdminService {
 
     public Page<StudentListResponse> getStudents(StudentFilter filter, Pageable pageable) {
         return studentQueryRepository.searchAllStudents(filter, pageable);
+    }
+
+    public List<StudentExcelDto> getStudentExcelData() {
+        return studentQueryRepository.searchAllStudentsForExcel();
     }
 }
