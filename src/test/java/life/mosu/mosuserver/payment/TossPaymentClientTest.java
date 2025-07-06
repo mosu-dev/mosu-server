@@ -15,10 +15,12 @@ import org.springframework.web.client.RestOperations;
 
 @Slf4j
 public class TossPaymentClientTest {
+
     private static TossPaymentClient tossPaymentClient;
 
     @Nested
     static class 성공응답 {
+
         @BeforeAll
         static void beforeAll() {
             ConfirmTossPaymentResponse dummyResponse = createDummySuccessResponse();
@@ -26,9 +28,24 @@ public class TossPaymentClientTest {
             tossPaymentClient = new TossPaymentClient(restOperations, "http://baseUrl.com");
         }
 
+        private static ConfirmTossPaymentResponse createDummySuccessResponse() {
+            return new ConfirmTossPaymentResponse(
+                    "tviva20250702231345mODA4",     // paymentKey
+                    "IDMAoki7azYp8SzQ06LMt12323235", // orderId
+                    "DONE",                          // status
+                    "2025-07-02T23:14:33+09:00",    // approvedAt
+                    1_000,                           // totalAmount
+                    1_000,                           // balanceAmount
+                    1_000,                           // suppliedAmount
+                    1_000,                           // vat
+                    1_000,                           // taxFreeAmount
+                    "간편결제"                            // method
+            );
+        }
+
         @Test
         void 성공시_변환_된_응답에_NULL이_포함되면_안됩니다() {
-            TossPaymentPayload payload = new TossPaymentPayload("test", "test", 1000L);
+            TossPaymentPayload payload = new TossPaymentPayload("test", "test", 1000);
             ConfirmTossPaymentResponse response = tossPaymentClient.confirmPayment(payload);
 
             assertNotNull(response, "응답 객체는 null이 아니어야 합니다");
@@ -48,27 +65,13 @@ public class TossPaymentClientTest {
             );
         }
 
-        private static ConfirmTossPaymentResponse createDummySuccessResponse() {
-            return new ConfirmTossPaymentResponse(
-                    "tviva20250702231345mODA4",     // paymentKey
-                    "IDMAoki7azYp8SzQ06LMt12323235", // orderId
-                    "DONE",                          // status
-                    "2025-07-02T23:14:33+09:00",    // approvedAt
-                    1_000,                           // totalAmount
-                    1_000,                           // balanceAmount
-                    1_000,                           // suppliedAmount
-                    1_000,                           // vat
-                    1_000,                           // taxFreeAmount
-                    "간편결제"                            // method
-            );
-        }
-
     }
 //    private static TossPaymentResponse createDummyFailureResponse() {
 //        return new TossPaymentFailureResponse();
 //    }
 
-    static class TossPaymentFailureResponse{
+    static class TossPaymentFailureResponse {
+
         private String code;
         private String message;
     }
