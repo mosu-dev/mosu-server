@@ -1,11 +1,11 @@
 package life.mosu.mosuserver.application.payment;
 
+import life.mosu.mosuserver.domain.application.ApplicationSchoolJpaRepository;
 import life.mosu.mosuserver.domain.discount.DiscountPolicy;
 import life.mosu.mosuserver.domain.payment.PaymentJpaEntity;
 import life.mosu.mosuserver.domain.payment.PaymentRepository;
 import life.mosu.mosuserver.infra.payment.TossPaymentClient;
 import life.mosu.mosuserver.infra.payment.dto.ConfirmTossPaymentResponse;
-import life.mosu.mosuserver.persistence.application.ApplicationSchoolJpaRepository;
 import life.mosu.mosuserver.presentation.payment.dto.CancelPaymentRequest;
 import life.mosu.mosuserver.presentation.payment.dto.PaymentPrepareResponse;
 import life.mosu.mosuserver.presentation.payment.dto.PaymentRequest;
