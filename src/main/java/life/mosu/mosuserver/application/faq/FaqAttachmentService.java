@@ -5,8 +5,8 @@ import java.util.List;
 import life.mosu.mosuserver.domain.faq.FaqAttachmentJpaEntity;
 import life.mosu.mosuserver.domain.faq.FaqAttachmentRepository;
 import life.mosu.mosuserver.domain.faq.FaqJpaEntity;
+import life.mosu.mosuserver.infra.storage.FileUploadHelper;
 import life.mosu.mosuserver.infra.storage.application.AttachmentService;
-import life.mosu.mosuserver.infra.storage.application.FileUploadHelper;
 import life.mosu.mosuserver.infra.storage.application.S3Service;
 import life.mosu.mosuserver.presentation.faq.dto.FaqResponse;
 import life.mosu.mosuserver.presentation.faq.dto.FileRequest;
@@ -26,15 +26,15 @@ public class FaqAttachmentService implements AttachmentService<FaqJpaEntity, Fil
     private int durationTime;
 
     @Override
-    public void createAttachment(List<FileRequest> requests, FaqJpaEntity entity) {
+    public void createAttachment(List<FileRequest> requests, FaqJpaEntity faqEntity) {
         if (requests == null) {
             return;
         }
-        Long faqId = entity.getId();
+        Long faqId = faqEntity.getId();
 
         requests.forEach(req -> {
             fileUploadHelper.updateTag(req.s3Key());
-            faqAttachmentRepository.save(req.toAttachmentEntity(
+            faqAttachmentRepository.save(req.toFaqAttachmentEntity(
                     req.fileName(), req.s3Key(), faqId
             ));
         });

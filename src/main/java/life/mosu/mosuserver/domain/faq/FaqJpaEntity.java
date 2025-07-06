@@ -1,6 +1,11 @@
 package life.mosu.mosuserver.domain.faq;
 
-import jakarta.persistence.*;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
 import life.mosu.mosuserver.domain.base.BaseTimeEntity;
 import lombok.Builder;
 import lombok.Getter;
@@ -11,6 +16,7 @@ import lombok.NoArgsConstructor;
 @Table(name = "faq")
 @NoArgsConstructor(access = lombok.AccessLevel.PROTECTED)
 public class FaqJpaEntity extends BaseTimeEntity {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "faq_id", nullable = false)
