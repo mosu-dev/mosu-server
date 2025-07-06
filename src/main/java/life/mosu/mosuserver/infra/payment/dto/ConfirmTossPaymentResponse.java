@@ -26,11 +26,12 @@ public class ConfirmTossPaymentResponse {
     private Integer taxFreeAmount;
     private String method;
 
-    public PaymentJpaEntity toEntity(Long applicationId) {
+    public PaymentJpaEntity toPaymentJpaEntity(Long applicationId, Integer quantity) {
         return PaymentJpaEntity.of(
                 applicationId,
                 paymentKey,
                 orderId,
+                quantity,
                 toPaymentStatus(),
                 toPaymentAmount(),
                 toPaymentMethod());
