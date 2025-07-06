@@ -10,8 +10,6 @@ public interface ApplicationJpaRepository extends JpaRepository<ApplicationJpaEn
     @Query("SELECT COUNT(a) = :size FROM ApplicationJpaEntity a WHERE a.id IN :applicationIds")
     boolean existsAllByIds(@Param("applicationIds") List<Long> applicationIds,
             @Param("size") long size);
-
+  
     List<ApplicationJpaEntity> findAllByUserId(Long userId);
-
-
 }

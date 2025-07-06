@@ -7,6 +7,7 @@ import life.mosu.mosuserver.domain.application.AdmissionTicketImageJpaEntity;
 import life.mosu.mosuserver.domain.application.AdmissionTicketImageJpaRepository;
 import life.mosu.mosuserver.domain.application.ApplicationJpaEntity;
 import life.mosu.mosuserver.domain.application.ApplicationJpaRepository;
+import life.mosu.mosuserver.domain.application.ApplicationSchoolJpaRepository;
 import life.mosu.mosuserver.domain.applicationschool.ApplicationSchoolJpaEntity;
 import life.mosu.mosuserver.domain.applicationschool.ApplicationSchoolJpaRepository;
 import life.mosu.mosuserver.global.exception.CustomRuntimeException;
