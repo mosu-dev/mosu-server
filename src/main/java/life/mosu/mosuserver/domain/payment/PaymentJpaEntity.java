@@ -46,6 +46,7 @@ public class PaymentJpaEntity extends BaseTimeEntity {
             Long applicationId,
             String paymentKey,
             String orderId,
+            Integer quantity,
             PaymentAmountVO paymentAmount,
             PaymentStatus paymentStatus,
             PaymentMethod paymentMethod
@@ -53,6 +54,7 @@ public class PaymentJpaEntity extends BaseTimeEntity {
         this.applicationId = applicationId;
         this.paymentKey = paymentKey;
         this.orderId = orderId;
+        this.quantity = quantity;
         this.paymentAmount = paymentAmount;
         this.paymentStatus = paymentStatus;
         this.paymentMethod = paymentMethod;
@@ -62,6 +64,7 @@ public class PaymentJpaEntity extends BaseTimeEntity {
             Long applicationId,
             String paymentKey,
             String orderId,
+            Integer quantity,
             PaymentStatus paymentStatus,
             PaymentAmountVO paymentAmount,
             PaymentMethod paymentMethod
@@ -70,6 +73,7 @@ public class PaymentJpaEntity extends BaseTimeEntity {
                 .applicationId(applicationId)
                 .paymentKey(paymentKey)
                 .orderId(orderId)
+                .quantity(quantity)
                 .paymentStatus(paymentStatus)
                 .paymentAmount(paymentAmount)
                 .paymentMethod(paymentMethod)
