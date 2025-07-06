@@ -11,13 +11,14 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class PaymentAmountVO {
+
     @Column(name = "total_amount", nullable = false)
     private Integer totalAmount;
 
-    @Column(name = "supplied_amount", nullable = false)
+    @Column(name = "supplied_amount")
     private Integer suppliedAmount;
 
-    @Column(name = "vat_amount", nullable = false)
+    @Column(name = "vat_amount")
     private Integer vatAmount;
 
     @Column(name = "balance_amount")
@@ -54,6 +55,12 @@ public class PaymentAmountVO {
                 .vatAmount(vatAmount)
                 .balanceAmount(balanceAmount)
                 .taxFreeAmount(taxFreeAmount)
+                .build();
+    }
+
+    public static PaymentAmountVO ofFailure(Integer totalAmount) {
+        return PaymentAmountVO.builder()
+                .totalAmount(totalAmount)
                 .build();
     }
 }
