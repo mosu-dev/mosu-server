@@ -8,9 +8,9 @@ import org.springframework.http.HttpStatus;
 @Slf4j
 public class CustomRuntimeException extends RuntimeException {
 
-    private HttpStatus status;
-    private String message;
-    private String code;
+    private final HttpStatus status;
+    private final String message;
+    private final String code;
 
     public CustomRuntimeException(ErrorCode errorCode) {
         this.status = errorCode.getStatus();

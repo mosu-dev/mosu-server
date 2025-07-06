@@ -1,11 +1,25 @@
 package life.mosu.mosuserver.domain.payment;
 
+import java.util.Arrays;
+
 public enum PaymentStatus {
-    PENDING,           // 결제 대기
-    COMPLETED,         // 결제 완료
-    FAILED,            // 결제 실패
-    CANCELLED,         // 결제 취소
-    REFUND_REQUESTED,  // 환불 요청
-    REFUND_APPROVED,   // 환불 승인
-    REFUND_COMPLETED   // 환불 완료
+    //결제
+    PREPARE,
+    DONE,
+    EXPIRED,
+    ABORTED,
+    //환불
+    CANCELLED_DONE,
+    CANCELLED_ABORTED;
+
+    public static PaymentStatus from(String raw) {
+        return Arrays.stream(values())
+                    .filter(v -> v.name().equalsIgnoreCase(raw))
+                    .findFirst()
+                    .orElseThrow(() -> new IllegalArgumentException("Unknown status: " + raw));
+    }
+
+    public boolean isPaySuccess() {
+        return this == DONE;
+    }
 }
