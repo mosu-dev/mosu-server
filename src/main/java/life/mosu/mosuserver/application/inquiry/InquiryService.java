@@ -3,6 +3,8 @@ package life.mosu.mosuserver.application.inquiry;
 import life.mosu.mosuserver.domain.inquiry.InquiryJpaEntity;
 import life.mosu.mosuserver.domain.inquiry.InquiryRepository;
 import life.mosu.mosuserver.domain.inquiry.InquiryStatus;
+import life.mosu.mosuserver.global.exception.CustomRuntimeException;
+import life.mosu.mosuserver.global.exception.ErrorCode;
 import life.mosu.mosuserver.presentation.inquiry.dto.InquiryCreateRequest;
 import life.mosu.mosuserver.presentation.inquiry.dto.InquiryDetailResponse;
 import life.mosu.mosuserver.presentation.inquiry.dto.InquiryResponse;
@@ -35,6 +37,14 @@ public class InquiryService {
 
         return inquiryRepository.searchInquiries(status, sortField, asc, pageable);
 
+    }
+
+    @Transactional(readOnly = true, propagation = Propagation.SUPPORTS)
+    public InquiryDetailResponse getInquiryDetail(Long postId) {
+        InquiryJpaEntity inquiry = inquiryRepository.findById(postId)
+                .orElseThrow(() -> new CustomRuntimeException(ErrorCode.FILE_NOT_FOUND));
+        
+        return toInquiryDetailResponse(inquiry);
     }
 
     private InquiryResponse toInquiryResponse(InquiryJpaEntity inquiry) {
