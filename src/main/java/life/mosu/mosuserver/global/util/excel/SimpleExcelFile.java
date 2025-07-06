@@ -48,31 +48,19 @@ public class SimpleExcelFile<T> {
         int columnIndex = columnStartIndex;
         for (Object dataFieldName : excelMetaData.getDataFieldNames()) {
             String fieldName = (String) dataFieldName;
-            Cell cell = row.createCell(columnIndex++);
+            Cell cell = row.createCell(columnIndex);
             cell.setCellValue(excelMetaData.getExcelHeaderName(fieldName));
+
+            sheet.setColumnWidth(columnIndex, 20 * 256);
+            columnIndex++;
+
         }
     }
 
     private void renderBody(Object data, int rowStartIndex, int columnStartIndex) {
-
-        System.out.println("==== data 객체 디버그 ====");
-        System.out.println("data 클래스: " + data.getClass());
-        System.out.println("data toString: " + data);
-        // 모든 필드 값 출력
-        for (Field f : data.getClass().getDeclaredFields()) {
-            f.setAccessible(true);
-            try {
-                System.out.println("필드명: " + f.getName() + ", 값: " + f.get(data));
-            } catch (Exception e) {
-                System.out.println("필드명: " + f.getName() + ", 값: 접근 불가");
-            }
-        }
-        System.out.println("========================");
-
         Row row = sheet.createRow(rowStartIndex);
         int columnIndex = columnStartIndex;
         for (Object dataFieldName : excelMetaData.getDataFieldNames()) {
-            System.out.println("디버그: " + dataFieldName);
 
             String fieldName = (String) dataFieldName;
             Cell cell = row.createCell(columnIndex++);
