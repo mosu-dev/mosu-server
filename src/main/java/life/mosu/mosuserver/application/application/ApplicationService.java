@@ -9,7 +9,6 @@ import life.mosu.mosuserver.domain.application.ApplicationJpaEntity;
 import life.mosu.mosuserver.domain.application.ApplicationJpaRepository;
 import life.mosu.mosuserver.domain.application.ApplicationSchoolJpaRepository;
 import life.mosu.mosuserver.domain.applicationschool.ApplicationSchoolJpaEntity;
-import life.mosu.mosuserver.domain.applicationschool.ApplicationSchoolJpaRepository;
 import life.mosu.mosuserver.global.exception.CustomRuntimeException;
 import life.mosu.mosuserver.global.exception.ErrorCode;
 import life.mosu.mosuserver.presentation.application.dto.ApplicationRequest;
