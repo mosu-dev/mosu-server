@@ -40,7 +40,7 @@ public class InquiryAnswerService {
                 .orElseThrow(() -> new CustomRuntimeException(ErrorCode.INQUIRY_NOT_FOUND));
 
         InquiryAnswerJpaEntity answerEntity = inquiryAnswerRepository.findByInquiryId(postId)
-                .orElseThrow(() -> new CustomRuntimeException(ErrorCode.INQURIY_ANSWER_NOT_FOUND));
+                .orElseThrow(() -> new CustomRuntimeException(ErrorCode.INQUIRY_ANSWER_NOT_FOUND));
 
         inquiryAnswerRepository.delete(answerEntity);
         answerAttachmentService.deleteAttachment(answerEntity);
@@ -55,6 +55,6 @@ public class InquiryAnswerService {
                         answer,
                         answerAttachmentService.toAttachmentResponses(answer)
                 ))
-                .orElse(null);  // 답변이 없으면 null 반환
+                .orElse(null);
     }
 }

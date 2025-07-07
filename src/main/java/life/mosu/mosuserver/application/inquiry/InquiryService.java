@@ -3,6 +3,7 @@ package life.mosu.mosuserver.application.inquiry;
 import life.mosu.mosuserver.domain.inquiry.InquiryJpaEntity;
 import life.mosu.mosuserver.domain.inquiry.InquiryRepository;
 import life.mosu.mosuserver.domain.inquiry.InquiryStatus;
+import life.mosu.mosuserver.domain.inquiryAnswer.InquiryAnswerRepository;
 import life.mosu.mosuserver.global.exception.CustomRuntimeException;
 import life.mosu.mosuserver.global.exception.ErrorCode;
 import life.mosu.mosuserver.presentation.inquiry.dto.InquiryCreateRequest;
@@ -23,6 +24,7 @@ public class InquiryService {
     private final InquiryAttachmentService inquiryAttachmentService;
     private final InquiryRepository inquiryRepository;
     private final InquiryAnswerService inquiryAnswerService;
+    private final InquiryAnswerRepository inquiryAnswerRepository;
 
     @Transactional
     public void createInquiry(InquiryCreateRequest request) {
@@ -43,21 +45,22 @@ public class InquiryService {
 
     @Transactional(readOnly = true, propagation = Propagation.SUPPORTS)
     public InquiryDetailResponse getInquiryDetail(Long postId) {
-        InquiryJpaEntity inquiry = inquiryRepository.findById(postId)
-                .orElseThrow(() -> new CustomRuntimeException(ErrorCode.INQUIRY_NOT_FOUND));
+        InquiryJpaEntity inquiry = getInquiryOrThrow(postId);
 
         return toInquiryDetailResponse(inquiry);
     }
 
     @Transactional
     public void deleteInquiry(Long postId) {
-        InquiryJpaEntity inquiryEntity = inquiryRepository.findById(postId)
-                .orElseThrow(() -> new CustomRuntimeException(ErrorCode.INQUIRY_NOT_FOUND));
+        InquiryJpaEntity inquiryEntity = getInquiryOrThrow(postId);
 
-        inquiryRepository.delete(inquiryEntity);
+        inquiryAnswerRepository.findByInquiryId(postId).ifPresent(answer -> {
+            inquiryAnswerService.deleteInquiryAnswer(postId);
+        });
+
         inquiryAttachmentService.deleteAttachment(inquiryEntity);
 
-        inquiryAnswerService.deleteInquiryAnswer(postId);
+        inquiryRepository.delete(inquiryEntity);
     }
 
 
@@ -71,6 +74,11 @@ public class InquiryService {
 
         return InquiryDetailResponse.of(inquiry,
                 inquiryAttachmentService.toAttachmentResponses(inquiry), answer);
+    }
+
+    private InquiryJpaEntity getInquiryOrThrow(Long postId) {
+        return inquiryRepository.findById(postId)
+                .orElseThrow(() -> new CustomRuntimeException(ErrorCode.INQUIRY_NOT_FOUND));
     }
 
 }

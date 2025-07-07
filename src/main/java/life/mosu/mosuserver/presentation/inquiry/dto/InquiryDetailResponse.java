@@ -56,9 +56,6 @@ public record InquiryDetailResponse(
             );
         }
 
-        public static InquiryAnswerDetailResponse empty() {
-            return new InquiryAnswerDetailResponse(null, null, null, null, List.of());
-        }
     }
 
 

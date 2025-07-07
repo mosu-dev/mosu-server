@@ -23,7 +23,7 @@ public class InquiryQueryRepositoryImpl implements InquiryQueryRepository {
     private static final DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
     private final JPAQueryFactory queryFactory;
-    QInquiryJpaEntity inquiry = QInquiryJpaEntity.inquiryJpaEntity;
+    private final QInquiryJpaEntity inquiry = QInquiryJpaEntity.inquiryJpaEntity;
 
     @Override
     public Page<InquiryResponse> searchInquiries(

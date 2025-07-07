@@ -30,14 +30,9 @@ public class InquiryAnswerAttachmentService implements
             return;
         }
         Long inquiryId = inquiryEntity.getId();
-
-        requests.forEach(req -> {
-            fileUploadHelper.updateTag(req.s3Key());
-            attachmentReposiory.save(req.toInquiryAnswerAttachmentEntity(
-                    req.fileName(), req.s3Key(), inquiryId
-            ));
-        });
+        saveAttachments(requests, inquiryId);
     }
+
 
     @Override
     public void deleteAttachment(InquiryAnswerJpaEntity entity) {
@@ -54,14 +49,30 @@ public class InquiryAnswerAttachmentService implements
                 inquiry.getId());
 
         return attachments.stream()
-                .map(attachment -> new InquiryDetailResponse.AttachmentResponse(
-                        attachment.getFileName(),
-                        s3Service.getPreSignedUrl(
-                                attachment.getS3Key(),
-                                Duration.ofMinutes(s3Properties.getPresignedUrlExpirationMinutes())
-                        )
-                ))
+                .map(this::createAttachResponse)
                 .toList();
+    }
+
+    private InquiryDetailResponse.AttachmentResponse createAttachResponse(
+            InquiryAnswerAttachmentEntity attachment) {
+        String presignedUrl = s3Service.getPreSignedUrl(
+                attachment.getS3Key(),
+                Duration.ofMinutes(s3Properties.getPresignedUrlExpirationMinutes())
+        );
+
+        return new InquiryDetailResponse.AttachmentResponse(
+                attachment.getFileName(),
+                presignedUrl
+        );
+    }
+
+    private void saveAttachments(List<FileRequest> requests, Long inquiryId) {
+        requests.forEach(req -> {
+            fileUploadHelper.updateTag(req.s3Key());
+            attachmentReposiory.save(req.toInquiryAnswerAttachmentEntity(
+                    req.fileName(), req.s3Key(), inquiryId
+            ));
+        });
     }
 
 }
