@@ -1,6 +1,11 @@
 package life.mosu.mosuserver.domain.notice;
 
-import jakarta.persistence.*;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
 import life.mosu.mosuserver.domain.base.BaseTimeEntity;
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -12,6 +17,7 @@ import lombok.NoArgsConstructor;
 @Table(name = "notice")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class NoticeJpaEntity extends BaseTimeEntity {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "notice_id", nullable = false)
@@ -20,7 +26,7 @@ public class NoticeJpaEntity extends BaseTimeEntity {
     @Column(name = "title", nullable = false)
     private String title;
 
-    @Column(name = "content", nullable = false)
+    @Column(name = "content", nullable = false, length = 3000)
     private String content;
 
     @Column(name = "user_id", nullable = false)
@@ -28,9 +34,9 @@ public class NoticeJpaEntity extends BaseTimeEntity {
 
     @Builder
     public NoticeJpaEntity(
-        final String title,
-        final String content,
-        final Long userId
+            final String title,
+            final String content,
+            final Long userId
     ) {
         this.title = title;
         this.content = content;
