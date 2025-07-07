@@ -40,4 +40,8 @@ public class AuthTokenManager {
 
         return generateAuthToken(user);
     }
+
+    public Long getAccessTokenExpireTime() {
+        return accessTokenService.expireTime;
+    }
 }

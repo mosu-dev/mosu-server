@@ -35,4 +35,7 @@ jwt:
     expire-time: ${JWT_REFRESH_TOKEN_EXPIRE_TIME}
 
 endpoints:
-  reissue: ${REISSUE_ENDPOINT}
+  reissue: /api/v1/auth/reissue
+
+target:
+  url: ${TARGET_URL}

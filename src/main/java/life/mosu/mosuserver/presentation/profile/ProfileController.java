@@ -37,7 +37,8 @@ public class ProfileController {
     }
 
     @PutMapping
-    @PreAuthorize("isAuthenticated() and hasRole('USER')")
+    @PreAuthorize("isAuthenticated()")
+//    @PreAuthorize("isAuthenticated() and hasRole('USER')")
     public ApiResponseWrapper<Void> update(
             @UserId Long userId,
             @Valid @RequestBody EditProfileRequest request

@@ -3,12 +3,14 @@ package life.mosu.mosuserver.presentation.auth;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import life.mosu.mosuserver.application.auth.AuthService;
+import life.mosu.mosuserver.application.auth.AuthTokenManager;
 import life.mosu.mosuserver.global.util.ApiResponseWrapper;
 import life.mosu.mosuserver.presentation.auth.dto.LoginRequest;
 import life.mosu.mosuserver.presentation.auth.dto.Token;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseCookie;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -21,6 +23,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class AuthController {
 
     private final AuthService authService;
+    private final AuthTokenManager authTokenManager;
 
     /**
      * 로그인
@@ -32,9 +35,16 @@ public class AuthController {
     public ResponseEntity<ApiResponseWrapper<Token>> login(
             @RequestBody @Valid final LoginRequest request) {
         final Token token = authService.login(request);
-        final String authorization = token.grantType() + " " + token.accessToken();
+
+        final ResponseCookie cookie = ResponseCookie.from("accessToken", token.accessToken())
+                .httpOnly(true)
+                .secure(true)
+                .path("/")
+                .maxAge(authTokenManager.getAccessTokenExpireTime())
+                .build();
+
         return ResponseEntity.status(HttpStatus.CREATED)
-                .header(HttpHeaders.AUTHORIZATION, authorization)
+                .header(HttpHeaders.SET_COOKIE, cookie.toString())
                 .body(ApiResponseWrapper.success(HttpStatus.CREATED, token));
     }
 
