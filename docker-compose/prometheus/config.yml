@@ -5,16 +5,16 @@ scrape_configs:
   - job_name: 'prometheus'
     metrics_path: '/api/v1/actuator/prometheus'
     static_configs:
-      - targets: ['mosu-server:20000']
+      - targets: [ 'mosu-server:20000' ]
 
   - job_name: 'mysql'
     static_configs:
-      - targets: ['mosu-database:9104']
+      - targets: [ 'mosu-mysql-exporter:9104' ]
 
   - job_name: 'redis'
     static_configs:
-      - targets: ["mosu-redis-exporter:9121"]
+      - targets: [ "mosu-redis-exporter:9121" ]
 
   - job_name: 'prometheus-self'
     static_configs:
-      - targets: ['mosu-prometheus:9090']
+      - targets: [ 'mosu-prometheus:9090' ]
