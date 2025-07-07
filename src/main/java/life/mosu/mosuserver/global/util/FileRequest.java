@@ -1,4 +1,4 @@
-package life.mosu.mosuserver.presentation.faq.dto;
+package life.mosu.mosuserver.global.util;
 
 import life.mosu.mosuserver.domain.application.AdmissionTicketImageJpaEntity;
 import life.mosu.mosuserver.domain.faq.FaqAttachmentJpaEntity;

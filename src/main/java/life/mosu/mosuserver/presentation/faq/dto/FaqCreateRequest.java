@@ -3,6 +3,7 @@ package life.mosu.mosuserver.presentation.faq.dto;
 import jakarta.validation.constraints.NotNull;
 import java.util.List;
 import life.mosu.mosuserver.domain.faq.FaqJpaEntity;
+import life.mosu.mosuserver.global.util.FileRequest;
 
 public record FaqCreateRequest(
 

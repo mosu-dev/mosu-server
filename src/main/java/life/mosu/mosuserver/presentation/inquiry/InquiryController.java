@@ -1,5 +1,6 @@
 package life.mosu.mosuserver.presentation.inquiry;
 
+import jakarta.validation.Valid;
 import life.mosu.mosuserver.application.inquiry.InquiryAnswerService;
 import life.mosu.mosuserver.application.inquiry.InquiryService;
 import life.mosu.mosuserver.domain.inquiry.InquiryStatus;
@@ -35,7 +36,7 @@ public class InquiryController {
 
     @PostMapping
     public ResponseEntity<ApiResponseWrapper<Void>> create(
-            @RequestBody InquiryCreateRequest request) {
+            @RequestBody @Valid InquiryCreateRequest request) {
         inquiryService.createInquiry(request);
         return ResponseEntity.ok(ApiResponseWrapper.success(HttpStatus.CREATED, "질문 등록 성공"));
     }
