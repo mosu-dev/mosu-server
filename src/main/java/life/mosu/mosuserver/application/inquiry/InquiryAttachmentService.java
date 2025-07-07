@@ -5,13 +5,13 @@ import java.util.List;
 import life.mosu.mosuserver.domain.inquiry.InquiryAttachmentJpaEntity;
 import life.mosu.mosuserver.domain.inquiry.InquiryAttachmentRepository;
 import life.mosu.mosuserver.domain.inquiry.InquiryJpaEntity;
+import life.mosu.mosuserver.infra.property.S3Properties;
 import life.mosu.mosuserver.infra.storage.FileUploadHelper;
 import life.mosu.mosuserver.infra.storage.application.AttachmentService;
 import life.mosu.mosuserver.infra.storage.application.S3Service;
 import life.mosu.mosuserver.presentation.faq.dto.FileRequest;
 import life.mosu.mosuserver.presentation.inquiry.dto.InquiryDetailResponse;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -21,9 +21,7 @@ public class InquiryAttachmentService implements AttachmentService<InquiryJpaEnt
     private final InquiryAttachmentRepository inquiryAttachmentRepository;
     private final FileUploadHelper fileUploadHelper;
     private final S3Service s3Service;
-
-    @Value("${aws.s3.presigned-url-expiration-minutes}")
-    private int durationTime;
+    private final S3Properties s3Properties;
 
     @Override
     public void createAttachment(List<FileRequest> requests, InquiryJpaEntity inquiryEntity) {
@@ -60,7 +58,7 @@ public class InquiryAttachmentService implements AttachmentService<InquiryJpaEnt
                         attachment.getFileName(),
                         s3Service.getPreSignedUrl(
                                 attachment.getS3Key(),
-                                Duration.ofMinutes(durationTime)
+                                Duration.ofMinutes(s3Properties.getPresignedUrlExpirationMinutes())
                         )
                 ))
                 .toList();

@@ -5,15 +5,17 @@ import java.util.List;
 import life.mosu.mosuserver.domain.faq.FaqAttachmentJpaEntity;
 import life.mosu.mosuserver.domain.faq.FaqAttachmentRepository;
 import life.mosu.mosuserver.domain.faq.FaqJpaEntity;
+import life.mosu.mosuserver.infra.property.S3Properties;
 import life.mosu.mosuserver.infra.storage.FileUploadHelper;
 import life.mosu.mosuserver.infra.storage.application.AttachmentService;
 import life.mosu.mosuserver.infra.storage.application.S3Service;
 import life.mosu.mosuserver.presentation.faq.dto.FaqResponse;
 import life.mosu.mosuserver.presentation.faq.dto.FileRequest;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Value;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class FaqAttachmentService implements AttachmentService<FaqJpaEntity, FileRequest> {
@@ -21,9 +23,8 @@ public class FaqAttachmentService implements AttachmentService<FaqJpaEntity, Fil
     private final FaqAttachmentRepository faqAttachmentRepository;
     private final FileUploadHelper fileUploadHelper;
     private final S3Service s3Service;
+    private final S3Properties s3Properties;
 
-    @Value("${aws.s3.presigned-url-expiration-minutes}")
-    private int durationTime;
 
     @Override
     public void createAttachment(List<FileRequest> requests, FaqJpaEntity faqEntity) {
@@ -58,7 +59,7 @@ public class FaqAttachmentService implements AttachmentService<FaqJpaEntity, Fil
                         attachment.getFileName(),
                         s3Service.getPreSignedUrl(
                                 attachment.getS3Key(),
-                                Duration.ofMinutes(durationTime)
+                                Duration.ofMinutes(s3Properties.getPresignedUrlExpirationMinutes())
                         )
                 ))
                 .toList();
