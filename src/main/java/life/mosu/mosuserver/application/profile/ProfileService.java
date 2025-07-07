@@ -32,7 +32,7 @@ public class ProfileService {
     @Transactional
     public void editProfile(Long userId, EditProfileRequest request) {
         ProfileJpaEntity profile = profileJpaRepository.findByUserId(userId)
-            .orElseThrow(() -> new CustomRuntimeException(ErrorCode.PROFILE_NOT_FOUND, userId));
+                .orElseThrow(() -> new CustomRuntimeException(ErrorCode.PROFILE_NOT_FOUND, userId));
 
         profile.edit(request);
     }
@@ -40,7 +40,8 @@ public class ProfileService {
     @Transactional(readOnly = true, propagation = Propagation.SUPPORTS)
     public ProfileDetailResponse getProfile(Long userId) {
         ProfileJpaEntity profile = profileJpaRepository.findByUserId(userId)
-            .orElseThrow(() -> new CustomRuntimeException(ErrorCode.PROFILE_DOES_NOT_EXIST, userId));
+                .orElseThrow(
+                        () -> new CustomRuntimeException(ErrorCode.PROFILE_DOES_NOT_EXIST, userId));
 
         return ProfileDetailResponse.from(profile);
     }

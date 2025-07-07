@@ -1,6 +1,8 @@
-package life.mosu.mosuserver.infra.storage.domain;
+package life.mosu.mosuserver.domain.inquiryAnswer;
 
 import jakarta.persistence.Embeddable;
+import life.mosu.mosuserver.infra.storage.domain.File;
+import life.mosu.mosuserver.infra.storage.domain.Visibility;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
