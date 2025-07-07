@@ -3,6 +3,7 @@ package life.mosu.mosuserver.presentation.inquiry.dto;
 import java.util.List;
 import life.mosu.mosuserver.domain.inquiry.InquiryJpaEntity;
 import life.mosu.mosuserver.domain.inquiry.InquiryStatus;
+import life.mosu.mosuserver.domain.inquiryAnswer.InquiryAnswerJpaEntity;
 
 public record InquiryDetailResponse(
         Long id,
@@ -11,11 +12,14 @@ public record InquiryDetailResponse(
         String author,
         InquiryStatus status,
         String createdAt,
-        List<AttachmentResponse> attachments
+        List<AttachmentResponse> attachments,
+        InquiryAnswerDetailResponse answer
 ) {
 
-    public static InquiryDetailResponse of(InquiryJpaEntity inquiry,
-            List<AttachmentResponse> attachments
+    public static InquiryDetailResponse of(
+            InquiryJpaEntity inquiry,
+            List<AttachmentResponse> attachments,
+            InquiryAnswerDetailResponse answer
     ) {
         return new InquiryDetailResponse(
                 inquiry.getId(),
@@ -24,11 +28,38 @@ public record InquiryDetailResponse(
                 inquiry.getAuthor(),
                 inquiry.getStatus(),
                 inquiry.getCreatedAt(),
-                attachments
+                attachments,
+                answer
         );
     }
 
     public record AttachmentResponse(String fileName, String url) {
 
     }
+
+    public record InquiryAnswerDetailResponse(
+            Long id,
+            String title,
+            String content,
+            String createdAt,
+            List<AttachmentResponse> attachments
+    ) {
+
+        public static InquiryAnswerDetailResponse of(InquiryAnswerJpaEntity answer,
+                List<AttachmentResponse> attachments) {
+            return new InquiryAnswerDetailResponse(
+                    answer.getId(),
+                    answer.getTitle(),
+                    answer.getContent(),
+                    answer.getCreatedAt(),
+                    attachments
+            );
+        }
+
+        public static InquiryAnswerDetailResponse empty() {
+            return new InquiryAnswerDetailResponse(null, null, null, null, List.of());
+        }
+    }
+
+
 }

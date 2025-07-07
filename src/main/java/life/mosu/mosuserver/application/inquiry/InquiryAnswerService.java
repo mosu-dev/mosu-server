@@ -7,8 +7,11 @@ import life.mosu.mosuserver.domain.inquiryAnswer.InquiryAnswerRepository;
 import life.mosu.mosuserver.global.exception.CustomRuntimeException;
 import life.mosu.mosuserver.global.exception.ErrorCode;
 import life.mosu.mosuserver.presentation.inquiry.dto.InquiryAnswerRequest;
+import life.mosu.mosuserver.presentation.inquiry.dto.InquiryDetailResponse;
+import life.mosu.mosuserver.presentation.inquiry.dto.InquiryDetailResponse.InquiryAnswerDetailResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
@@ -35,8 +38,8 @@ public class InquiryAnswerService {
     public void deleteInquiryAnswer(Long postId) {
         InquiryJpaEntity inquiryEntity = inquiryRepository.findById(postId)
                 .orElseThrow(() -> new CustomRuntimeException(ErrorCode.INQUIRY_NOT_FOUND));
-        
-        InquiryAnswerJpaEntity answerEntity = inquiryAnswerRepository.findById(postId)
+
+        InquiryAnswerJpaEntity answerEntity = inquiryAnswerRepository.findByInquiryId(postId)
                 .orElseThrow(() -> new CustomRuntimeException(ErrorCode.INQURIY_ANSWER_NOT_FOUND));
 
         inquiryAnswerRepository.delete(answerEntity);
@@ -44,4 +47,14 @@ public class InquiryAnswerService {
         inquiryEntity.updateStatusToPending();
     }
 
+    @Transactional(readOnly = true, propagation = Propagation.SUPPORTS)
+    public InquiryDetailResponse.InquiryAnswerDetailResponse getInquiryAnswerDetail(
+            Long inquiryId) {
+        return inquiryAnswerRepository.findByInquiryId(inquiryId)
+                .map(answer -> InquiryAnswerDetailResponse.of(
+                        answer,
+                        answerAttachmentService.toAttachmentResponses(answer)
+                ))
+                .orElse(null);  // 답변이 없으면 null 반환
+    }
 }

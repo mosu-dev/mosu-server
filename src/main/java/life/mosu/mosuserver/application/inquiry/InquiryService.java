@@ -7,6 +7,7 @@ import life.mosu.mosuserver.global.exception.CustomRuntimeException;
 import life.mosu.mosuserver.global.exception.ErrorCode;
 import life.mosu.mosuserver.presentation.inquiry.dto.InquiryCreateRequest;
 import life.mosu.mosuserver.presentation.inquiry.dto.InquiryDetailResponse;
+import life.mosu.mosuserver.presentation.inquiry.dto.InquiryDetailResponse.InquiryAnswerDetailResponse;
 import life.mosu.mosuserver.presentation.inquiry.dto.InquiryResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -21,6 +22,7 @@ public class InquiryService {
 
     private final InquiryAttachmentService inquiryAttachmentService;
     private final InquiryRepository inquiryRepository;
+    private final InquiryAnswerService inquiryAnswerService;
 
     @Transactional
     public void createInquiry(InquiryCreateRequest request) {
@@ -42,7 +44,7 @@ public class InquiryService {
     @Transactional(readOnly = true, propagation = Propagation.SUPPORTS)
     public InquiryDetailResponse getInquiryDetail(Long postId) {
         InquiryJpaEntity inquiry = inquiryRepository.findById(postId)
-                .orElseThrow(() -> new CustomRuntimeException(ErrorCode.FILE_NOT_FOUND));
+                .orElseThrow(() -> new CustomRuntimeException(ErrorCode.INQUIRY_NOT_FOUND));
 
         return toInquiryDetailResponse(inquiry);
     }
@@ -54,6 +56,8 @@ public class InquiryService {
 
         inquiryRepository.delete(inquiryEntity);
         inquiryAttachmentService.deleteAttachment(inquiryEntity);
+
+        inquiryAnswerService.deleteInquiryAnswer(postId);
     }
 
 
@@ -62,8 +66,11 @@ public class InquiryService {
     }
 
     private InquiryDetailResponse toInquiryDetailResponse(InquiryJpaEntity inquiry) {
+        InquiryAnswerDetailResponse answer = inquiryAnswerService.getInquiryAnswerDetail(
+                inquiry.getId());
+
         return InquiryDetailResponse.of(inquiry,
-                inquiryAttachmentService.toAttachmentResponses(inquiry));
+                inquiryAttachmentService.toAttachmentResponses(inquiry), answer);
     }
 
 }
