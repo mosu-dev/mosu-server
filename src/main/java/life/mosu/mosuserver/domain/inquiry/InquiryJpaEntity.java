@@ -51,4 +51,8 @@ public class InquiryJpaEntity extends BaseTimeEntity {
     public void updateStatusToComplete() {
         this.status = InquiryStatus.COMPLETED;
     }
+
+    public void updateStatusToPending() {
+        this.status = InquiryStatus.PENDING;
+    }
 }

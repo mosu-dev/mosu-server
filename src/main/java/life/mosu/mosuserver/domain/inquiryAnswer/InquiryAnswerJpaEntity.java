@@ -23,6 +23,9 @@ public class InquiryAnswerJpaEntity extends BaseTimeEntity {
     @Column(name = "inquiry_answer_id", nullable = false)
     private Long id;
 
+    @Column(name = "title", nullable = false, length = 3000)
+    private String title;
+
     @Column(name = "content", nullable = false)
     private String content;
 
@@ -34,10 +37,12 @@ public class InquiryAnswerJpaEntity extends BaseTimeEntity {
 
     @Builder
     public InquiryAnswerJpaEntity(
+            final String title,
             final String content,
             final Long inquiryId,
             final Long userId
     ) {
+        this.title = title;
         this.content = content;
         this.inquiryId = inquiryId;
         this.userId = userId;

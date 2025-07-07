@@ -1,8 +1,10 @@
 package life.mosu.mosuserver.presentation.inquiry;
 
+import life.mosu.mosuserver.application.inquiry.InquiryAnswerService;
 import life.mosu.mosuserver.application.inquiry.InquiryService;
 import life.mosu.mosuserver.domain.inquiry.InquiryStatus;
 import life.mosu.mosuserver.global.util.ApiResponseWrapper;
+import life.mosu.mosuserver.presentation.inquiry.dto.InquiryAnswerRequest;
 import life.mosu.mosuserver.presentation.inquiry.dto.InquiryCreateRequest;
 import life.mosu.mosuserver.presentation.inquiry.dto.InquiryDetailResponse;
 import life.mosu.mosuserver.presentation.inquiry.dto.InquiryResponse;
@@ -27,6 +29,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class InquiryController {
 
     private final InquiryService inquiryService;
+    private final InquiryAnswerService inquiryAnswerService;
 
     @PostMapping
     public ResponseEntity<ApiResponseWrapper<Void>> create(
@@ -59,8 +62,22 @@ public class InquiryController {
 
     @DeleteMapping("/{postId}")
     public ResponseEntity<ApiResponseWrapper<Void>> deleteInquiry(@PathVariable Long postId) {
-        inquiryService.delete(postId);
+        inquiryService.deleteInquiry(postId);
         return ResponseEntity.ok(ApiResponseWrapper.success(HttpStatus.OK, "질문 삭제 성공"));
+    }
+
+    @PostMapping("/{postId}/answer")
+    public ResponseEntity<ApiResponseWrapper<Void>> inquiryAnswer(
+            @PathVariable Long postId,
+            @RequestBody InquiryAnswerRequest request) {
+        inquiryAnswerService.createInquiryAnswer(postId, request);
+        return ResponseEntity.ok(ApiResponseWrapper.success(HttpStatus.OK, "답변 등록 성공"));
+    }
+
+    @DeleteMapping("/{postId}/answer")
+    public ResponseEntity<ApiResponseWrapper<Void>> deleteInquiryAnswer(@PathVariable Long postId) {
+        inquiryAnswerService.deleteInquiryAnswer(postId);
+        return ResponseEntity.ok(ApiResponseWrapper.success(HttpStatus.OK, "답변 삭제 성공"));
     }
 
 

@@ -19,8 +19,8 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 public class InquiryService {
 
-    private final InquiryRepository inquiryRepository;
     private final InquiryAttachmentService inquiryAttachmentService;
+    private final InquiryRepository inquiryRepository;
 
     @Transactional
     public void createInquiry(InquiryCreateRequest request) {
@@ -48,13 +48,14 @@ public class InquiryService {
     }
 
     @Transactional
-    public void delete(Long postId) {
+    public void deleteInquiry(Long postId) {
         InquiryJpaEntity inquiryEntity = inquiryRepository.findById(postId)
-                .orElseThrow(() -> new CustomRuntimeException(ErrorCode.FILE_NOT_FOUND));
+                .orElseThrow(() -> new CustomRuntimeException(ErrorCode.INQUIRY_NOT_FOUND));
 
         inquiryRepository.delete(inquiryEntity);
         inquiryAttachmentService.deleteAttachment(inquiryEntity);
     }
+
 
     private InquiryResponse toInquiryResponse(InquiryJpaEntity inquiry) {
         return InquiryResponse.of(inquiry);

@@ -3,6 +3,7 @@ package life.mosu.mosuserver.presentation.faq.dto;
 import life.mosu.mosuserver.domain.application.AdmissionTicketImageJpaEntity;
 import life.mosu.mosuserver.domain.faq.FaqAttachmentJpaEntity;
 import life.mosu.mosuserver.domain.inquiry.InquiryAttachmentJpaEntity;
+import life.mosu.mosuserver.domain.inquiryAnswer.InquiryAnswerAttachmentEntity;
 import life.mosu.mosuserver.infra.storage.domain.Visibility;
 
 public record FileRequest(
@@ -37,6 +38,17 @@ public record FileRequest(
                 .s3Key(s3Key)
                 .visibility(Visibility.PRIVATE)
                 .applicationId(applicationId)
+                .build();
+    }
+
+    public InquiryAnswerAttachmentEntity toInquiryAnswerAttachmentEntity(String fileName,
+            String s3Key,
+            Long inquiryAnswerId) {
+        return InquiryAnswerAttachmentEntity.builder()
+                .fileName(fileName)
+                .s3Key(s3Key)
+                .visibility(Visibility.PRIVATE)
+                .inquiryAnswerId(inquiryAnswerId)
                 .build();
     }
 }
