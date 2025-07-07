@@ -1,9 +1,9 @@
 package life.mosu.mosuserver.application.profile;
 
 import life.mosu.mosuserver.domain.profile.ProfileJpaEntity;
+import life.mosu.mosuserver.domain.profile.ProfileJpaRepository;
 import life.mosu.mosuserver.global.exception.CustomRuntimeException;
 import life.mosu.mosuserver.global.exception.ErrorCode;
-import life.mosu.mosuserver.persistence.profile.ProfileJpaRepository;
 import life.mosu.mosuserver.presentation.profile.dto.EditProfileRequest;
 import life.mosu.mosuserver.presentation.profile.dto.ProfileDetailResponse;
 import life.mosu.mosuserver.presentation.profile.dto.ProfileRequest;

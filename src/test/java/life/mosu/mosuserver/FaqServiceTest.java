@@ -12,6 +12,7 @@ import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
+import life.mosu.mosuserver.application.faq.FaqAttachmentService;
 import life.mosu.mosuserver.application.faq.FaqService;
 import life.mosu.mosuserver.domain.faq.FaqAttachmentRepository;
 import life.mosu.mosuserver.domain.faq.FaqJpaEntity;
@@ -33,8 +34,7 @@ import org.springframework.web.multipart.MultipartFile;
 public class FaqServiceTest {
 
     @Mock private FaqRepository faqRepository;
-    @Mock private FaqAttachmentRepository faqAttachmentRepository;
-    @Mock private S3Service s3Service;
+    @Mock private FaqAttachmentService faqAttachmentService;
 
     private FaqService faqService;
 
@@ -43,9 +43,7 @@ public class FaqServiceTest {
 
         faqService = new FaqService(
                 faqRepository,
-                faqAttachmentRepository,
-                s3Service,
-                null
+                faqAttachmentService
         );
     }
 

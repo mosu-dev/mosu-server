@@ -1,11 +1,11 @@
 package life.mosu.mosuserver.global.exception;
 
-import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 
 @Getter
-@AllArgsConstructor
+@RequiredArgsConstructor
 public enum ErrorCode {
 
     // Principal 관련 에러
@@ -43,7 +43,7 @@ public enum ErrorCode {
     SCHOOL_FULL(HttpStatus.CONFLICT, "해당 학교의 신청 정원이 모두 찼습니다."),
     APPLICATION_SCHOOL_ALREADY_APPLIED(HttpStatus.CONFLICT, "해당 학교를 이미 예약하였습니다."),
 
-    //프로필 관련 에러
+    // 프로필 관련 에러
     PROFILE_ALREADY_EXISTS(HttpStatus.CONFLICT, "프로필이 이미 존재합니다."),
     PROFILE_NOT_FOUND(HttpStatus.NOT_FOUND, "프로필을 찾을 수 없습니다."),
     PROFILE_DOES_NOT_EXIST(HttpStatus.BAD_REQUEST, "프로필이 존재하지 않습니다."),
@@ -62,8 +62,16 @@ public enum ErrorCode {
     FAQ_NOT_FOUND(HttpStatus.NOT_FOUND, "FAQ를 찾을 수 없습니다."),
     FAQ_CREATION_FAILED(HttpStatus.INTERNAL_SERVER_ERROR, "FAQ 등록에 실패했습니다."),
 
-    //서버 관련 에러
-    SERVER_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "서버 오류가 발생했습니다.");
+    // 서버 관련 에러
+    SERVER_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "서버 오류가 발생했습니다."),
+
+    // 엑셀 생성 관련 에러
+    EXCEL_CREATION_FAILED(HttpStatus.INTERNAL_SERVER_ERROR, "엑셀 생성에 실패했습니다."),
+
+    // 문의 관련 에러
+    INQUIRY_NOT_FOUND(HttpStatus.NOT_FOUND, "문의 내역을 찾을 수 없습니다."),
+    INQUIRY_ANSWER_NOT_FOUND(HttpStatus.NOT_FOUND, "문의 답변을 찾을 수 없습니다."),
+    INQUIRY_ANSWER_ALREADY_EXISTS(HttpStatus.CONFLICT, "이미 문의 답변이 존재합니다.");
 
     private final HttpStatus status;
     private final String message;
