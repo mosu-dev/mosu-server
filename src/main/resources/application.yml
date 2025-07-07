@@ -64,6 +64,6 @@ logging:
     name: app.log
 
 toss:
-    secret-key: test_sk_kYG57Eba3GYBMGeobgbLrpWDOxmA
-    api:
-        base-url: https://api.tosspayments.com/v1/payments
+  secret-key: test_sk_kYG57Eba3GYBMGeobgbLrpWDOxmA
+  api:
+    base-url: https://api.tosspayments.com/v1/payments
