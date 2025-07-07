@@ -7,6 +7,7 @@ import life.mosu.mosuserver.domain.inquiryAnswer.InquiryAnswerRepository;
 import life.mosu.mosuserver.global.exception.CustomRuntimeException;
 import life.mosu.mosuserver.global.exception.ErrorCode;
 import life.mosu.mosuserver.presentation.inquiry.dto.InquiryAnswerRequest;
+import life.mosu.mosuserver.presentation.inquiry.dto.InquiryAnswerUpdateRequest;
 import life.mosu.mosuserver.presentation.inquiry.dto.InquiryDetailResponse;
 import life.mosu.mosuserver.presentation.inquiry.dto.InquiryDetailResponse.InquiryAnswerDetailResponse;
 import lombok.RequiredArgsConstructor;
@@ -24,8 +25,11 @@ public class InquiryAnswerService {
 
     @Transactional
     public void createInquiryAnswer(Long postId, InquiryAnswerRequest request) {
-        InquiryJpaEntity inquiryEntity = inquiryRepository.findById(postId)
-                .orElseThrow(() -> new CustomRuntimeException(ErrorCode.INQUIRY_NOT_FOUND));
+        InquiryJpaEntity inquiryEntity = getInquiryOrThrow(postId);
+
+        if (inquiryAnswerRepository.findByInquiryId(postId).isPresent()) {
+            throw new CustomRuntimeException(ErrorCode.INQUIRY_ANSWER_ALREADY_EXISTS);
+        }
 
         InquiryAnswerJpaEntity answerEntity = inquiryAnswerRepository.save(
                 request.toEntity(postId));
@@ -36,8 +40,7 @@ public class InquiryAnswerService {
 
     @Transactional
     public void deleteInquiryAnswer(Long postId) {
-        InquiryJpaEntity inquiryEntity = inquiryRepository.findById(postId)
-                .orElseThrow(() -> new CustomRuntimeException(ErrorCode.INQUIRY_NOT_FOUND));
+        InquiryJpaEntity inquiryEntity = getInquiryOrThrow(postId);
 
         InquiryAnswerJpaEntity answerEntity = inquiryAnswerRepository.findByInquiryId(postId)
                 .orElseThrow(() -> new CustomRuntimeException(ErrorCode.INQUIRY_ANSWER_NOT_FOUND));
@@ -57,4 +60,25 @@ public class InquiryAnswerService {
                 ))
                 .orElse(null);
     }
+
+    @Transactional
+    public void updateInquiryAnswer(Long postId, InquiryAnswerUpdateRequest request) {
+        InquiryJpaEntity inquiryEntity = getInquiryOrThrow(postId);
+
+        InquiryAnswerJpaEntity answerEntity = inquiryAnswerRepository.findByInquiryId(postId)
+                .orElseThrow(() -> new CustomRuntimeException(ErrorCode.INQUIRY_ANSWER_NOT_FOUND));
+
+        answerEntity.update(request.title(), request.content());
+        inquiryAnswerRepository.save(answerEntity);
+
+        answerAttachmentService.deleteAttachment(answerEntity);
+        answerAttachmentService.createAttachment(request.attachments(), answerEntity);
+    }
+
+    private InquiryJpaEntity getInquiryOrThrow(Long postId) {
+        return inquiryRepository.findById(postId)
+                .orElseThrow(() -> new CustomRuntimeException(ErrorCode.INQUIRY_NOT_FOUND));
+    }
+
+
 }

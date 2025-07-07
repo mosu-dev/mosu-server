@@ -42,14 +42,15 @@ public class InquiryAnswerAttachmentService implements
         attachmentReposiory.deleteAll(attachments);
     }
 
-    public List<InquiryDetailResponse.AttachmentResponse> toAttachmentResponses(
+
+    public List<InquiryDetailResponse.AttachmentDetailResponse> toAttachmentResponses(
             InquiryAnswerJpaEntity inquiry) {
 
         List<InquiryAnswerAttachmentEntity> attachments = attachmentReposiory.findAllByInquiryAnswerId(
                 inquiry.getId());
 
         return attachments.stream()
-                .map(this::createAttachResponse)
+                .map(this::createAttachDetailResponse)
                 .toList();
     }
 
@@ -63,6 +64,20 @@ public class InquiryAnswerAttachmentService implements
         return new InquiryDetailResponse.AttachmentResponse(
                 attachment.getFileName(),
                 presignedUrl
+        );
+    }
+
+    private InquiryDetailResponse.AttachmentDetailResponse createAttachDetailResponse(
+            InquiryAnswerAttachmentEntity attachment) {
+        String presignedUrl = s3Service.getPreSignedUrl(
+                attachment.getS3Key(),
+                Duration.ofMinutes(s3Properties.getPresignedUrlExpirationMinutes())
+        );
+
+        return new InquiryDetailResponse.AttachmentDetailResponse(
+                attachment.getFileName(),
+                presignedUrl,
+                attachment.getS3Key()
         );
     }
 

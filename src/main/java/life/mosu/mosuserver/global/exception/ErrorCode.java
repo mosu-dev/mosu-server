@@ -61,7 +61,8 @@ public enum ErrorCode {
 
     // 문의 관련 에러
     INQUIRY_NOT_FOUND(HttpStatus.NOT_FOUND, "문의 내역을 찾을 수 없습니다."),
-    INQUIRY_ANSWER_NOT_FOUND(HttpStatus.NOT_FOUND, "문의 답변을 찾을 수 없습니다.");
+    INQUIRY_ANSWER_NOT_FOUND(HttpStatus.NOT_FOUND, "문의 답변을 찾을 수 없습니다."),
+    INQUIRY_ANSWER_ALREADY_EXISTS(HttpStatus.CONFLICT, "이미 문의 답변이 존재합니다.");
 
     private final HttpStatus status;
     private final String message;

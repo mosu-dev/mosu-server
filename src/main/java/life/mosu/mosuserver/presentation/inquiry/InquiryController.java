@@ -5,6 +5,7 @@ import life.mosu.mosuserver.application.inquiry.InquiryService;
 import life.mosu.mosuserver.domain.inquiry.InquiryStatus;
 import life.mosu.mosuserver.global.util.ApiResponseWrapper;
 import life.mosu.mosuserver.presentation.inquiry.dto.InquiryAnswerRequest;
+import life.mosu.mosuserver.presentation.inquiry.dto.InquiryAnswerUpdateRequest;
 import life.mosu.mosuserver.presentation.inquiry.dto.InquiryCreateRequest;
 import life.mosu.mosuserver.presentation.inquiry.dto.InquiryDetailResponse;
 import life.mosu.mosuserver.presentation.inquiry.dto.InquiryResponse;
@@ -18,6 +19,7 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -72,6 +74,14 @@ public class InquiryController {
             @RequestBody InquiryAnswerRequest request) {
         inquiryAnswerService.createInquiryAnswer(postId, request);
         return ResponseEntity.ok(ApiResponseWrapper.success(HttpStatus.OK, "답변 등록 성공"));
+    }
+
+    @PutMapping("/{postId}/answer")
+    public ResponseEntity<ApiResponseWrapper<Void>> updateInquiryAnswer(
+            @PathVariable Long postId,
+            @RequestBody InquiryAnswerUpdateRequest request) {
+        inquiryAnswerService.updateInquiryAnswer(postId, request);
+        return ResponseEntity.ok(ApiResponseWrapper.success(HttpStatus.OK, "답변 수정 성공"));
     }
 
     @DeleteMapping("/{postId}/answer")

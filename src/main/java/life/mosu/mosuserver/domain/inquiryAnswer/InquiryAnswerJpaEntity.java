@@ -47,4 +47,9 @@ public class InquiryAnswerJpaEntity extends BaseTimeEntity {
         this.inquiryId = inquiryId;
         this.userId = userId;
     }
+
+    public void update(final String title, final String content) {
+        this.title = title;
+        this.content = content;
+    }
 }

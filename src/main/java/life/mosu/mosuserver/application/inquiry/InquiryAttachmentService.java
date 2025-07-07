@@ -46,22 +46,28 @@ public class InquiryAttachmentService implements AttachmentService<InquiryJpaEnt
     }
 
 
-    public List<InquiryDetailResponse.AttachmentResponse> toAttachmentResponses(
-
+    public List<InquiryDetailResponse.AttachmentDetailResponse> toAttachmentResponses(
             InquiryJpaEntity inquiry) {
-
         List<InquiryAttachmentJpaEntity> attachments = inquiryAttachmentRepository.findAllByInquiryId(
                 inquiry.getId());
 
         return attachments.stream()
-                .map(attachment -> new InquiryDetailResponse.AttachmentResponse(
-                        attachment.getFileName(),
-                        s3Service.getPreSignedUrl(
-                                attachment.getS3Key(),
-                                Duration.ofMinutes(s3Properties.getPresignedUrlExpirationMinutes())
-                        )
-                ))
+                .map(this::createAttachDetailResponse)
                 .toList();
+    }
+
+    private InquiryDetailResponse.AttachmentDetailResponse createAttachDetailResponse(
+            InquiryAttachmentJpaEntity attachment) {
+        String presignedUrl = s3Service.getPreSignedUrl(
+                attachment.getS3Key(),
+                Duration.ofMinutes(s3Properties.getPresignedUrlExpirationMinutes())
+        );
+
+        return new InquiryDetailResponse.AttachmentDetailResponse(
+                attachment.getFileName(),
+                presignedUrl,
+                attachment.getS3Key()
+        );
     }
 
 

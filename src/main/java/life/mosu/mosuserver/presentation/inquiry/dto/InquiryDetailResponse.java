@@ -12,13 +12,13 @@ public record InquiryDetailResponse(
         String author,
         InquiryStatus status,
         String createdAt,
-        List<AttachmentResponse> attachments,
+        List<AttachmentDetailResponse> attachments,
         InquiryAnswerDetailResponse answer
 ) {
 
     public static InquiryDetailResponse of(
             InquiryJpaEntity inquiry,
-            List<AttachmentResponse> attachments,
+            List<AttachmentDetailResponse> attachments,
             InquiryAnswerDetailResponse answer
     ) {
         return new InquiryDetailResponse(
@@ -37,16 +37,20 @@ public record InquiryDetailResponse(
 
     }
 
+    public record AttachmentDetailResponse(String fileName, String url, String s3Key) {
+
+    }
+
     public record InquiryAnswerDetailResponse(
             Long id,
             String title,
             String content,
             String createdAt,
-            List<AttachmentResponse> attachments
+            List<AttachmentDetailResponse> attachments
     ) {
 
         public static InquiryAnswerDetailResponse of(InquiryAnswerJpaEntity answer,
-                List<AttachmentResponse> attachments) {
+                List<AttachmentDetailResponse> attachments) {
             return new InquiryAnswerDetailResponse(
                     answer.getId(),
                     answer.getTitle(),
