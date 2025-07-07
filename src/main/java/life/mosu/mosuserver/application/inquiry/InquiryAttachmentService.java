@@ -25,17 +25,17 @@ public class InquiryAttachmentService implements AttachmentService<InquiryJpaEnt
 
     @Override
     public void createAttachment(List<FileRequest> requests, InquiryJpaEntity inquiryEntity) {
-        if (requests == null) {
-            return;
-        }
-        Long inquiryId = inquiryEntity.getId();
-
-        requests.forEach(req -> {
-            fileUploadHelper.updateTag(req.s3Key());
-            inquiryAttachmentRepository.save(req.toInquiryAttachmentEntity(
-                    req.fileName(), req.s3Key(), inquiryId
-            ));
-        });
+        fileUploadHelper.saveAttachments(
+                requests,
+                inquiryEntity.getId(),
+                inquiryAttachmentRepository,
+                (req, id) -> req.toInquiryAttachmentEntity(
+                        req.fileName(),
+                        req.s3Key(),
+                        inquiryEntity.getId()
+                ),
+                FileRequest::s3Key
+        );
     }
 
     @Override

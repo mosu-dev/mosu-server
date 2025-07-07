@@ -1,10 +1,11 @@
 package life.mosu.mosuserver.infra.storage;
 
-import java.util.concurrent.ExecutorService;
-import life.mosu.mosuserver.domain.faq.FaqAttachmentRepository;
+import java.util.List;
+import java.util.function.BiFunction;
+import java.util.function.Function;
 import life.mosu.mosuserver.infra.storage.application.S3Service;
-import life.mosu.mosuserver.infra.storage.domain.FileMoveFailLogRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -12,13 +13,27 @@ import org.springframework.stereotype.Component;
 public class FileUploadHelper {
 
     private final S3Service s3Service;
-    private final FileMoveFailLogRepository fileMoveFailLogRepository;
-    private final FaqAttachmentRepository faqAttachmentRepository;
-    private final ExecutorService executorService;
 
     public void updateTag(String s3Key) {
         s3Service.updateFileTagToActive(s3Key);
     }
 
+    public <R, E> void saveAttachments(
+            List<R> requests,
+            Long parentId,
+            JpaRepository<E, Long> repository,
+            BiFunction<R, Long, E> toEntityMapper,
+            Function<R, String> getKey
+    ) {
+        if (requests == null || requests.isEmpty()) {
+            return;
+        }
 
+        for (R req : requests) {
+            String s3Key = getKey.apply(req);
+            updateTag(s3Key);
+            E entity = toEntityMapper.apply(req, parentId); //DTO -> ToEntity
+            repository.save(entity);
+        }
+    }
 }

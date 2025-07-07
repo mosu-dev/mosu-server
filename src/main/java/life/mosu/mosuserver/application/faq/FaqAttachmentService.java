@@ -28,17 +28,17 @@ public class FaqAttachmentService implements AttachmentService<FaqJpaEntity, Fil
 
     @Override
     public void createAttachment(List<FileRequest> requests, FaqJpaEntity faqEntity) {
-        if (requests == null) {
-            return;
-        }
-        Long faqId = faqEntity.getId();
-
-        requests.forEach(req -> {
-            fileUploadHelper.updateTag(req.s3Key());
-            faqAttachmentRepository.save(req.toFaqAttachmentEntity(
-                    req.fileName(), req.s3Key(), faqId
-            ));
-        });
+        fileUploadHelper.saveAttachments(
+                requests,
+                faqEntity.getId(),
+                faqAttachmentRepository,
+                (req, id) -> req.toFaqAttachmentEntity(
+                        req.fileName(),
+                        req.s3Key(),
+                        faqEntity.getId()
+                ),
+                FileRequest::s3Key
+        );
     }
 
     @Override

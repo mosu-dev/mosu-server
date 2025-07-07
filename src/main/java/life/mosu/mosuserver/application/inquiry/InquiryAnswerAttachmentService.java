@@ -26,11 +26,17 @@ public class InquiryAnswerAttachmentService implements
 
     @Override
     public void createAttachment(List<FileRequest> requests, InquiryAnswerJpaEntity answerEntity) {
-        if (requests == null) {
-            return;
-        }
-        Long answerId = answerEntity.getId();
-        saveAttachments(requests, answerId);
+        fileUploadHelper.saveAttachments(
+                requests,
+                answerEntity.getId(),
+                attachmentRepository,
+                (req, id) -> req.toInquiryAnswerAttachmentEntity(
+                        req.fileName(),
+                        req.s3Key(),
+                        answerEntity.getId()
+                ),
+                FileRequest::s3Key
+        );
     }
 
 
@@ -79,15 +85,6 @@ public class InquiryAnswerAttachmentService implements
                 presignedUrl,
                 attachment.getS3Key()
         );
-    }
-
-    private void saveAttachments(List<FileRequest> requests, Long inquiryId) {
-        requests.forEach(req -> {
-            fileUploadHelper.updateTag(req.s3Key());
-            attachmentRepository.save(req.toInquiryAnswerAttachmentEntity(
-                    req.fileName(), req.s3Key(), inquiryId
-            ));
-        });
     }
 
 }
