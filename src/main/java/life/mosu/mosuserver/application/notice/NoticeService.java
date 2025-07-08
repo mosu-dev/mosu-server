@@ -7,6 +7,7 @@ import life.mosu.mosuserver.global.exception.CustomRuntimeException;
 import life.mosu.mosuserver.global.exception.ErrorCode;
 import life.mosu.mosuserver.presentation.notice.dto.NoticeCreateRequest;
 import life.mosu.mosuserver.presentation.notice.dto.NoticeResponse;
+import life.mosu.mosuserver.presentation.notice.dto.NoticeUpdateRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -45,6 +46,16 @@ public class NoticeService {
                 .orElseThrow(() -> new CustomRuntimeException(ErrorCode.FILE_NOT_FOUND));
         noticeRepository.delete(noticeEntity);
         attachmentService.deleteAttachment(noticeEntity);
+    }
+
+    @Transactional
+    public void updateNotice(Long noticeId, NoticeUpdateRequest request) {
+        NoticeJpaEntity noticeEntity = noticeRepository.findById(noticeId)
+                .orElseThrow(() -> new CustomRuntimeException(ErrorCode.FILE_NOT_FOUND));
+
+        noticeEntity.update(request.title(), request.content());
+        attachmentService.deleteAttachment(noticeEntity);
+        attachmentService.createAttachment(request.attachments(), noticeEntity);
     }
 
     private NoticeResponse toNoticeResponse(NoticeJpaEntity notice) {

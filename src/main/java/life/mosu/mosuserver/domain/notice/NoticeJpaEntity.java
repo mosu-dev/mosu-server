@@ -42,4 +42,12 @@ public class NoticeJpaEntity extends BaseTimeEntity {
         this.content = content;
         this.userId = userId;
     }
+
+    public void update(
+            final String title,
+            final String content
+    ) {
+        this.title = title;
+        this.content = content;
+    }
 }
