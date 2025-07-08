@@ -1,6 +1,11 @@
 package life.mosu.mosuserver.domain.application;
 
-import jakarta.persistence.*;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
 import life.mosu.mosuserver.domain.base.BaseTimeEntity;
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -21,6 +26,9 @@ public class ApplicationJpaEntity extends BaseTimeEntity {
     @Column(name = "user_id")
     private Long userId;
 
+    @Column(name = "guardian_phone_number")
+    private String guardianPhoneNumber;
+
     @Column(name = "recommender_phone_number")
     private String recommenderPhoneNumber;
 
@@ -33,13 +41,15 @@ public class ApplicationJpaEntity extends BaseTimeEntity {
 
     @Builder
     public ApplicationJpaEntity(
-        final Long userId,
-        final String recommenderPhoneNumber,
-        final boolean agreedToNotices,
-        final boolean agreedToRefundPolicy
+            final Long userId,
+            final String guardianPhoneNumber,
+            final String recommenderPhoneNumber,
+            final boolean agreedToNotices,
+            final boolean agreedToRefundPolicy
 
     ) {
         this.userId = userId;
+        this.guardianPhoneNumber = guardianPhoneNumber;
         this.recommenderPhoneNumber = recommenderPhoneNumber;
         this.agreedToNotices = agreedToNotices;
         this.agreedToRefundPolicy = agreedToRefundPolicy;
