@@ -2,39 +2,29 @@ package life.mosu.mosuserver;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.atLeastOnce;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-import java.util.List;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-
 import life.mosu.mosuserver.application.faq.FaqAttachmentService;
 import life.mosu.mosuserver.application.faq.FaqService;
-import life.mosu.mosuserver.domain.faq.FaqAttachmentRepository;
 import life.mosu.mosuserver.domain.faq.FaqJpaEntity;
 import life.mosu.mosuserver.domain.faq.FaqRepository;
-import life.mosu.mosuserver.infra.storage.application.S3Service;
-import life.mosu.mosuserver.infra.storage.domain.Folder;
 import life.mosu.mosuserver.presentation.faq.dto.FaqCreateRequest;
-
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-
-import org.springframework.web.multipart.MultipartFile;
 
 @ExtendWith(MockitoExtension.class)
 public class FaqServiceTest {
 
-    @Mock private FaqRepository faqRepository;
-    @Mock private FaqAttachmentService faqAttachmentService;
+    @Mock
+    private FaqRepository faqRepository;
+    @Mock
+    private FaqAttachmentService faqAttachmentService;
 
     private FaqService faqService;
 
