@@ -56,10 +56,7 @@ public class NoticeAttachmentService implements AttachmentService<NoticeJpaEntit
         return attachments.stream()
                 .map(attachment -> new NoticeResponse.AttachmentResponse(
                         attachment.getFileName(),
-                        s3Service.getPreSignedUrl(
-                                attachment.getS3Key(),
-                                Duration.ofMinutes(s3Properties.getPresignedUrlExpirationMinutes())
-                        )
+                        fileUrl(attachment.getS3Key())
                 ))
                 .toList();
     }

@@ -50,16 +50,14 @@ public class NoticeService {
 
     @Transactional
     public void deleteNotice(Long noticeId) {
-        NoticeJpaEntity noticeEntity = noticeRepository.findById(noticeId)
-                .orElseThrow(() -> new CustomRuntimeException(ErrorCode.FILE_NOT_FOUND));
+        NoticeJpaEntity noticeEntity = getNoticeOrThrow(noticeId);
         noticeRepository.delete(noticeEntity);
         attachmentService.deleteAttachment(noticeEntity);
     }
 
     @Transactional
     public void updateNotice(Long noticeId, NoticeUpdateRequest request) {
-        NoticeJpaEntity noticeEntity = noticeRepository.findById(noticeId)
-                .orElseThrow(() -> new CustomRuntimeException(ErrorCode.FILE_NOT_FOUND));
+        NoticeJpaEntity noticeEntity = getNoticeOrThrow(noticeId);
 
         noticeEntity.update(request.title(), request.content());
         attachmentService.deleteAttachment(noticeEntity);

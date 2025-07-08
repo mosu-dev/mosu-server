@@ -1,15 +1,18 @@
 package life.mosu.mosuserver.infra.storage;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.function.BiFunction;
 import java.util.function.Function;
 import life.mosu.mosuserver.infra.storage.application.S3Service;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Component;
 
 @Component
 @RequiredArgsConstructor
+@Slf4j
 public class FileUploadHelper {
 
     private final S3Service s3Service;
@@ -28,12 +31,20 @@ public class FileUploadHelper {
         if (requests == null || requests.isEmpty()) {
             return;
         }
+        List<E> entitiesToSave = new ArrayList<>(requests.size());
+        R req = null;
 
-        for (R req : requests) {
-            String s3Key = getKey.apply(req);
-            updateTag(s3Key);
-            E entity = toEntityMapper.apply(req, parentId); //DTO -> ToEntity
-            repository.save(entity);
+        try {
+            for (R r : requests) {
+                req = r;
+                String s3Key = getKey.apply(req);
+                updateTag(s3Key);
+                E entity = toEntityMapper.apply(req, parentId); //DTO -> ToEntity
+                entitiesToSave.add(entity);
+            }
+        } catch (Exception e) {
+            log.error("saving attachments 에러 발생{}: {}", req, e.getMessage());
         }
+        repository.saveAll(entitiesToSave);
     }
 }
