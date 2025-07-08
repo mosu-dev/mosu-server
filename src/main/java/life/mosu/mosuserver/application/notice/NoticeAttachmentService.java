@@ -10,6 +10,7 @@ import life.mosu.mosuserver.infra.property.S3Properties;
 import life.mosu.mosuserver.infra.storage.FileUploadHelper;
 import life.mosu.mosuserver.infra.storage.application.AttachmentService;
 import life.mosu.mosuserver.infra.storage.application.S3Service;
+import life.mosu.mosuserver.presentation.notice.dto.NoticeDetailResponse;
 import life.mosu.mosuserver.presentation.notice.dto.NoticeResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -61,6 +62,29 @@ public class NoticeAttachmentService implements AttachmentService<NoticeJpaEntit
                         )
                 ))
                 .toList();
+    }
+
+    public List<NoticeDetailResponse.AttachmentDetailResponse> toDetailAttResponses(
+            NoticeJpaEntity notice) {
+
+        List<NoticeAttachmentJpaEntity> attachments = noticeAttachmentRepository.findAllByNoticeId(
+                notice.getId());
+
+        return attachments.stream()
+                .map(attachment -> new NoticeDetailResponse.AttachmentDetailResponse(
+                        attachment.getFileName(),
+                        fileUrl(attachment.getS3Key()),
+                        attachment.getS3Key()
+
+                ))
+                .toList();
+    }
+
+    private String fileUrl(String s3Key) {
+        return s3Service.getPreSignedUrl(
+                s3Key,
+                Duration.ofMinutes(s3Properties.getPresignedUrlExpirationMinutes())
+        );
     }
 }
 

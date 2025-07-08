@@ -6,6 +6,7 @@ import life.mosu.mosuserver.domain.notice.NoticeRepository;
 import life.mosu.mosuserver.global.exception.CustomRuntimeException;
 import life.mosu.mosuserver.global.exception.ErrorCode;
 import life.mosu.mosuserver.presentation.notice.dto.NoticeCreateRequest;
+import life.mosu.mosuserver.presentation.notice.dto.NoticeDetailResponse;
 import life.mosu.mosuserver.presentation.notice.dto.NoticeResponse;
 import life.mosu.mosuserver.presentation.notice.dto.NoticeUpdateRequest;
 import lombok.RequiredArgsConstructor;
@@ -40,6 +41,13 @@ public class NoticeService {
                 .toList();
     }
 
+    @Transactional(readOnly = true, propagation = Propagation.SUPPORTS)
+    public NoticeDetailResponse getNoticeDetail(Long noticeId) {
+        NoticeJpaEntity notice = getNoticeOrThrow(noticeId);
+
+        return toNoticeDetailResponse(notice);
+    }
+
     @Transactional
     public void deleteNotice(Long noticeId) {
         NoticeJpaEntity noticeEntity = noticeRepository.findById(noticeId)
@@ -61,4 +69,18 @@ public class NoticeService {
     private NoticeResponse toNoticeResponse(NoticeJpaEntity notice) {
         return NoticeResponse.of(notice, attachmentService.toAttachmentResponses(notice));
     }
+
+
+    private NoticeDetailResponse toNoticeDetailResponse(NoticeJpaEntity notice) {
+        return NoticeDetailResponse.of(
+                notice,
+                attachmentService.toDetailAttResponses(notice)
+        );
+    }
+
+    private NoticeJpaEntity getNoticeOrThrow(Long noticeId) {
+        return noticeRepository.findById(noticeId)
+                .orElseThrow(() -> new CustomRuntimeException(ErrorCode.NOTICE_NOT_FOUND));
+    }
+
 }

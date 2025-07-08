@@ -5,6 +5,7 @@ import java.util.List;
 import life.mosu.mosuserver.application.notice.NoticeService;
 import life.mosu.mosuserver.global.util.ApiResponseWrapper;
 import life.mosu.mosuserver.presentation.notice.dto.NoticeCreateRequest;
+import life.mosu.mosuserver.presentation.notice.dto.NoticeDetailResponse;
 import life.mosu.mosuserver.presentation.notice.dto.NoticeResponse;
 import life.mosu.mosuserver.presentation.notice.dto.NoticeUpdateRequest;
 import lombok.RequiredArgsConstructor;
@@ -42,6 +43,13 @@ public class NoticeController {
     ) {
         List<NoticeResponse> notices = noticeService.getNoticeWithAttachments(page, size);
         return ResponseEntity.ok(ApiResponseWrapper.success(HttpStatus.OK, "게시글 조회 성공", notices));
+    }
+
+    @GetMapping("/{noticeId}")
+    public ResponseEntity<ApiResponseWrapper<NoticeDetailResponse>> getNoticeDetail(
+            @PathVariable Long noticeId) {
+        NoticeDetailResponse notice = noticeService.getNoticeDetail(noticeId);
+        return ResponseEntity.ok(ApiResponseWrapper.success(HttpStatus.OK, "게시글 상세 조회 성공", notice));
     }
 
     // TODO: 관리자 권한 체크 추가
