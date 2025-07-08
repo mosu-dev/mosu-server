@@ -25,12 +25,24 @@ public class NoticeService {
     private final NoticeRepository noticeRepository;
     private final NoticeAttachmentService attachmentService;
 
+    /**
+     * Creates a new notice and its associated attachments.
+     *
+     * Persists a notice entity based on the provided request and delegates attachment creation to the attachment service.
+     */
     @Transactional
     public void createNotice(NoticeCreateRequest request) {
         NoticeJpaEntity noticeEntity = noticeRepository.save(request.toEntity());
         attachmentService.createAttachment(request.attachments(), noticeEntity);
     }
 
+    /**
+     * Retrieves a paginated list of notices, each including its associated attachments.
+     *
+     * @param page the zero-based page index to retrieve
+     * @param size the number of notices per page
+     * @return a list of notice responses with their attachments
+     */
     @Transactional(readOnly = true, propagation = Propagation.SUPPORTS)
     public List<NoticeResponse> getNoticeWithAttachments(int page, int size) {
         Pageable pageable = PageRequest.of(page, size, Sort.by("id"));
@@ -41,6 +53,13 @@ public class NoticeService {
                 .toList();
     }
 
+    /**
+     * Retrieves detailed information for a specific notice, including its attachments.
+     *
+     * @param noticeId the unique identifier of the notice to retrieve
+     * @return a detailed response containing notice information and its attachments
+     * @throws CustomRuntimeException if the notice with the given ID is not found
+     */
     @Transactional(readOnly = true, propagation = Propagation.SUPPORTS)
     public NoticeDetailResponse getNoticeDetail(Long noticeId) {
         NoticeJpaEntity notice = getNoticeOrThrow(noticeId);
@@ -48,6 +67,13 @@ public class NoticeService {
         return toNoticeDetailResponse(notice);
     }
 
+    /**
+     * Deletes a notice and its associated attachments by notice ID.
+     *
+     * Throws a {@code CustomRuntimeException} with {@code ErrorCode.FILE_NOT_FOUND} if the notice does not exist.
+     *
+     * @param noticeId the ID of the notice to delete
+     */
     @Transactional
     public void deleteNotice(Long noticeId) {
         NoticeJpaEntity noticeEntity = noticeRepository.findById(noticeId)
@@ -56,6 +82,15 @@ public class NoticeService {
         attachmentService.deleteAttachment(noticeEntity);
     }
 
+    /**
+     * Updates the title, content, and attachments of an existing notice.
+     *
+     * Replaces the notice's current attachments with the new attachments provided in the request.
+     *
+     * @param noticeId the ID of the notice to update
+     * @param request the update request containing new title, content, and attachments
+     * @throws CustomRuntimeException if the notice is not found
+     */
     @Transactional
     public void updateNotice(Long noticeId, NoticeUpdateRequest request) {
         NoticeJpaEntity noticeEntity = noticeRepository.findById(noticeId)
@@ -66,11 +101,23 @@ public class NoticeService {
         attachmentService.createAttachment(request.attachments(), noticeEntity);
     }
 
+    /**
+     * Converts a notice entity to a response DTO, including its attachments.
+     *
+     * @param notice the notice entity to convert
+     * @return the response DTO representing the notice and its attachments
+     */
     private NoticeResponse toNoticeResponse(NoticeJpaEntity notice) {
         return NoticeResponse.of(notice, attachmentService.toAttachmentResponses(notice));
     }
 
 
+    /**
+     * Converts a notice entity to a detailed response DTO, including detailed attachment information.
+     *
+     * @param notice the notice entity to convert
+     * @return a detailed response DTO representing the notice and its attachments
+     */
     private NoticeDetailResponse toNoticeDetailResponse(NoticeJpaEntity notice) {
         return NoticeDetailResponse.of(
                 notice,
@@ -78,6 +125,13 @@ public class NoticeService {
         );
     }
 
+    /**
+     * Retrieves a notice entity by its ID or throws a {@code CustomRuntimeException} if not found.
+     *
+     * @param noticeId the ID of the notice to retrieve
+     * @return the {@code NoticeJpaEntity} corresponding to the given ID
+     * @throws CustomRuntimeException if the notice does not exist
+     */
     private NoticeJpaEntity getNoticeOrThrow(Long noticeId) {
         return noticeRepository.findById(noticeId)
                 .orElseThrow(() -> new CustomRuntimeException(ErrorCode.NOTICE_NOT_FOUND));

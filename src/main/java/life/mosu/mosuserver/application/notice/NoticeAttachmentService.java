@@ -26,6 +26,14 @@ public class NoticeAttachmentService implements AttachmentService<NoticeJpaEntit
     private final S3Service s3Service;
     private final S3Properties s3Properties;
 
+    /**
+     * Saves a list of file attachments associated with the specified notice entity.
+     *
+     * Each file request is converted into a notice attachment entity and persisted using the attachment repository.
+     *
+     * @param requests      the list of file requests to be attached to the notice
+     * @param noticeEntity  the notice entity to which the attachments will be linked
+     */
     @Override
     public void createAttachment(List<FileRequest> requests, NoticeJpaEntity noticeEntity) {
         fileUploadHelper.saveAttachments(
@@ -41,6 +49,11 @@ public class NoticeAttachmentService implements AttachmentService<NoticeJpaEntit
         );
     }
 
+    /**
+     * Deletes all attachments associated with the specified notice entity.
+     *
+     * @param entity the notice entity whose attachments will be deleted
+     */
     @Override
     public void deleteAttachment(NoticeJpaEntity entity) {
         List<NoticeAttachmentJpaEntity> attachments = noticeAttachmentRepository.findAllByNoticeId(
@@ -48,6 +61,13 @@ public class NoticeAttachmentService implements AttachmentService<NoticeJpaEntit
         noticeAttachmentRepository.deleteAll(attachments);
     }
 
+    /**
+     * Converts all attachments of the specified notice entity into a list of response DTOs,
+     * each containing the file name and a pre-signed URL for secure access.
+     *
+     * @param notice the notice entity whose attachments are to be converted
+     * @return a list of attachment response DTOs with file names and pre-signed URLs
+     */
     public List<NoticeResponse.AttachmentResponse> toAttachmentResponses(NoticeJpaEntity notice) {
 
         List<NoticeAttachmentJpaEntity> attachments = noticeAttachmentRepository.findAllByNoticeId(
@@ -64,6 +84,14 @@ public class NoticeAttachmentService implements AttachmentService<NoticeJpaEntit
                 .toList();
     }
 
+    /**
+     * Converts all attachments associated with the given notice entity into a list of detailed attachment response DTOs.
+     *
+     * Each response includes the file name, a pre-signed URL for accessing the file, and the S3 key.
+     *
+     * @param notice the notice entity whose attachments are to be converted
+     * @return a list of detailed attachment response DTOs for the notice
+     */
     public List<NoticeDetailResponse.AttachmentDetailResponse> toDetailAttResponses(
             NoticeJpaEntity notice) {
 
@@ -80,6 +108,12 @@ public class NoticeAttachmentService implements AttachmentService<NoticeJpaEntit
                 .toList();
     }
 
+    /**
+     * Generates a pre-signed URL for the specified S3 key with an expiration time defined in the S3 properties.
+     *
+     * @param s3Key the S3 object key for which to generate the pre-signed URL
+     * @return a pre-signed URL granting temporary access to the S3 object
+     */
     private String fileUrl(String s3Key) {
         return s3Service.getPreSignedUrl(
                 s3Key,

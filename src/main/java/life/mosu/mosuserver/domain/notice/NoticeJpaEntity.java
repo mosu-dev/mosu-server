@@ -32,6 +32,13 @@ public class NoticeJpaEntity extends BaseTimeEntity {
     @Column(name = "user_id", nullable = false)
     private Long userId;
 
+    /**
+     * Constructs a new NoticeJpaEntity with the specified title, content, and user ID.
+     *
+     * @param title   the title of the notice
+     * @param content the content of the notice
+     * @param userId  the ID of the user associated with the notice
+     */
     @Builder
     public NoticeJpaEntity(
             final String title,
@@ -43,6 +50,12 @@ public class NoticeJpaEntity extends BaseTimeEntity {
         this.userId = userId;
     }
 
+    /**
+     * Updates the title and content of this notice entity.
+     *
+     * @param title   the new title for the notice
+     * @param content the new content for the notice
+     */
     public void update(
             final String title,
             final String content

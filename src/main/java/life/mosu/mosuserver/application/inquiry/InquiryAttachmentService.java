@@ -23,6 +23,14 @@ public class InquiryAttachmentService implements AttachmentService<InquiryJpaEnt
     private final S3Service s3Service;
     private final S3Properties s3Properties;
 
+    /**
+     * Saves a list of file attachments associated with the specified inquiry entity.
+     *
+     * Each file request is converted into an attachment entity and persisted using the repository.
+     *
+     * @param requests      the list of file requests to attach to the inquiry
+     * @param inquiryEntity the inquiry entity to associate the attachments with
+     */
     @Override
     public void createAttachment(List<FileRequest> requests, InquiryJpaEntity inquiryEntity) {
         fileUploadHelper.saveAttachments(
@@ -38,6 +46,11 @@ public class InquiryAttachmentService implements AttachmentService<InquiryJpaEnt
         );
     }
 
+    /**
+     * Deletes all attachments associated with the specified inquiry entity.
+     *
+     * @param entity the inquiry entity whose attachments should be deleted
+     */
     @Override
     public void deleteAttachment(InquiryJpaEntity entity) {
         List<InquiryAttachmentJpaEntity> attachments = inquiryAttachmentRepository.findAllByInquiryId(

@@ -10,6 +10,13 @@ public record NoticeResponse(
         List<AttachmentResponse> attachments
 ) {
 
+    /**
+     * Creates a NoticeResponse from a NoticeJpaEntity and a list of attachments.
+     *
+     * @param notice the notice entity containing the id, title, and content
+     * @param attachments the list of attachments to associate with the notice
+     * @return a NoticeResponse representing the notice and its attachments
+     */
     public static NoticeResponse of(NoticeJpaEntity notice, List<AttachmentResponse> attachments) {
         return new NoticeResponse(
                 notice.getId(),

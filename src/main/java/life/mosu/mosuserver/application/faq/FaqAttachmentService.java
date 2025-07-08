@@ -26,6 +26,14 @@ public class FaqAttachmentService implements AttachmentService<FaqJpaEntity, Fil
     private final S3Properties s3Properties;
 
 
+    /**
+     * Saves multiple file attachments associated with the specified FAQ entity.
+     *
+     * Each file request is processed and stored as an attachment linked to the given FAQ entity.
+     *
+     * @param requests   the list of file requests to be attached
+     * @param faqEntity  the FAQ entity to associate the attachments with
+     */
     @Override
     public void createAttachment(List<FileRequest> requests, FaqJpaEntity faqEntity) {
         fileUploadHelper.saveAttachments(
@@ -41,6 +49,11 @@ public class FaqAttachmentService implements AttachmentService<FaqJpaEntity, Fil
         );
     }
 
+    /**
+     * Deletes all attachments associated with the specified FAQ entity.
+     *
+     * @param entity the FAQ entity whose attachments will be deleted
+     */
     @Override
     public void deleteAttachment(FaqJpaEntity entity) {
         List<FaqAttachmentJpaEntity> attachments = faqAttachmentRepository.findAllByFaqId(

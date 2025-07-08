@@ -12,6 +12,14 @@ public record FileRequest(
         String s3Key
 ) {
 
+    /**
+     * Creates a FaqAttachmentJpaEntity with the specified file name, S3 key, and FAQ ID, setting its visibility to public.
+     *
+     * @param fileName the name of the file to associate with the FAQ attachment
+     * @param s3Key the S3 storage key for the file
+     * @param faqId the identifier of the FAQ to which the attachment belongs
+     * @return a new FaqAttachmentJpaEntity instance with public visibility
+     */
     public FaqAttachmentJpaEntity toFaqAttachmentEntity(String fileName, String s3Key, Long faqId) {
         return FaqAttachmentJpaEntity.builder()
                 .fileName(fileName)
@@ -21,6 +29,14 @@ public record FileRequest(
                 .build();
     }
 
+    /**
+     * Creates a NoticeAttachmentJpaEntity with the specified file name, S3 key, and notice ID, setting its visibility to public.
+     *
+     * @param fileName the name of the file to associate with the notice attachment
+     * @param s3Key the S3 storage key for the file
+     * @param noticeId the identifier of the notice to which the attachment belongs
+     * @return a NoticeAttachmentJpaEntity configured with the provided details and public visibility
+     */
     public NoticeAttachmentJpaEntity toNoticeAttachmentEntity(String fileName, String s3Key,
             Long noticeId) {
         return NoticeAttachmentJpaEntity.builder()
@@ -31,6 +47,14 @@ public record FileRequest(
                 .build();
     }
 
+    /**
+     * Creates an InquiryAttachmentJpaEntity with the specified file name, S3 key, and inquiry ID, setting the visibility to private.
+     *
+     * @param fileName the name of the file to associate with the inquiry attachment
+     * @param s3Key the S3 storage key for the file
+     * @param inquiryId the ID of the inquiry to which the attachment belongs
+     * @return a new InquiryAttachmentJpaEntity configured with the provided values and private visibility
+     */
     public InquiryAttachmentJpaEntity toInquiryAttachmentEntity(String fileName, String s3Key,
             Long inquiryId) {
         return InquiryAttachmentJpaEntity.builder()

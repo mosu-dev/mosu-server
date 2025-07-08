@@ -14,6 +14,11 @@ public record NoticeCreateRequest(
 
 ) {
 
+    /**
+     * Converts this notice creation request into a NoticeJpaEntity.
+     *
+     * @return a NoticeJpaEntity with the title, content, and userId from this request
+     */
     public NoticeJpaEntity toEntity() {
         return NoticeJpaEntity.builder()
                 .title(title)

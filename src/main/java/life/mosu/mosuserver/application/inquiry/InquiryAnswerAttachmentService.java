@@ -24,6 +24,14 @@ public class InquiryAnswerAttachmentService implements
     private final FileUploadHelper fileUploadHelper;
     private final S3Service s3Service;
 
+    /**
+     * Saves a list of file attachments associated with the specified inquiry answer entity.
+     *
+     * Each file request is converted into an attachment entity and persisted, linking it to the given inquiry answer.
+     *
+     * @param requests      the list of file requests to be attached
+     * @param answerEntity  the inquiry answer entity to associate the attachments with
+     */
     @Override
     public void createAttachment(List<FileRequest> requests, InquiryAnswerJpaEntity answerEntity) {
         fileUploadHelper.saveAttachments(
@@ -73,6 +81,12 @@ public class InquiryAnswerAttachmentService implements
         );
     }
 
+    /**
+     * Creates an attachment detail response containing the file name, a presigned S3 URL, and the S3 key for the given attachment entity.
+     *
+     * @param attachment the attachment entity to convert
+     * @return an AttachmentDetailResponse with file name, presigned URL, and S3 key
+     */
     private InquiryDetailResponse.AttachmentDetailResponse createAttachDetailResponse(
             InquiryAnswerAttachmentEntity attachment) {
         String presignedUrl = s3Service.getPreSignedUrl(
