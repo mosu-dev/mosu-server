@@ -2,10 +2,10 @@ package life.mosu.mosuserver.presentation.profile.dto;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Pattern;
 import life.mosu.mosuserver.domain.profile.Education;
 import life.mosu.mosuserver.domain.profile.Gender;
 import life.mosu.mosuserver.domain.profile.Grade;
+import life.mosu.mosuserver.global.annotation.PhoneNumberPattern;
 import life.mosu.mosuserver.global.exception.CustomRuntimeException;
 import life.mosu.mosuserver.global.exception.ErrorCode;
 
@@ -22,10 +22,7 @@ public record EditProfileRequest(
     String gender,
 
     @NotBlank(message = "휴대폰 번호는 필수입니다.")
-    @Pattern(
-        regexp = "^01[016789]\\d{7,8}$",
-        message = "휴대폰 번호 형식이 올바르지 않습니다. 예: 01012345678"
-    )
+    @PhoneNumberPattern
     String phoneNumber,
 
     String email,

@@ -1,11 +1,14 @@
 package life.mosu.mosuserver.application.applicationschool;
 
 import java.time.Duration;
+import java.util.Set;
+import java.util.stream.Collectors;
 import life.mosu.mosuserver.domain.application.AdmissionTicketImageJpaEntity;
 import life.mosu.mosuserver.domain.application.AdmissionTicketImageJpaRepository;
 import life.mosu.mosuserver.domain.application.ApplicationJpaEntity;
 import life.mosu.mosuserver.domain.application.ApplicationJpaRepository;
 import life.mosu.mosuserver.domain.application.ApplicationSchoolJpaRepository;
+import life.mosu.mosuserver.domain.application.Subject;
 import life.mosu.mosuserver.domain.applicationschool.ApplicationSchoolJpaEntity;
 import life.mosu.mosuserver.domain.profile.ProfileJpaEntity;
 import life.mosu.mosuserver.domain.profile.ProfileJpaRepository;
@@ -23,7 +26,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.RequestParam;
 
 @Service
 @RequiredArgsConstructor
@@ -41,7 +43,6 @@ public class ApplicationSchoolService {
 
     @Transactional
     public ApplicationSchoolResponse updateSubjects(
-            @RequestParam Long userId,
             Long applicationSchoolId,
             SubjectUpdateRequest request
     ) {
@@ -56,7 +57,6 @@ public class ApplicationSchoolService {
 
     @Transactional
     public void cancelApplicationSchool(
-            @RequestParam Long userId,
             Long applicationSchoolId,
             RefundRequest request
     ) {
@@ -104,12 +104,16 @@ public class ApplicationSchoolService {
         AdmissionTicketImageJpaEntity admissionTicketImage = admissionTicketImageJpaRepository.findByApplicationId(
                 application.getId());
 
+        Set<String> subjectNames = applicationSchool.getSubjects().stream()
+                .map(Subject::getSubjectName)
+                .collect(Collectors.toSet());
+
         return AdmissionTicketResponse.of(
                 getAdmissionTicketImageUrl(admissionTicketImage),
                 profile.getUserName(),
                 profile.getBirth(),
                 applicationSchool.getExaminationNumber(),
-                applicationSchool.getSubjects(),
+                subjectNames,
                 applicationSchool.getSchoolName()
         );
 
