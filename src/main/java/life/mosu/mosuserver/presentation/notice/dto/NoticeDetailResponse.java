@@ -8,6 +8,7 @@ public record NoticeDetailResponse(
         String title,
         String content,
         String author,
+        String createdAt,
         List<AttachmentDetailResponse> attachments
 ) {
 
@@ -20,6 +21,7 @@ public record NoticeDetailResponse(
                 notice.getTitle(),
                 notice.getContent(),
                 notice.getAuthor(),
+                notice.getCreatedAt(),
                 attachments
         );
     }
