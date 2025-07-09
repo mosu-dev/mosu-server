@@ -1,5 +1,6 @@
 package life.mosu.mosuserver.global.util;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import life.mosu.mosuserver.domain.application.AdmissionTicketImageJpaEntity;
 import life.mosu.mosuserver.domain.faq.FaqAttachmentJpaEntity;
 import life.mosu.mosuserver.domain.inquiry.InquiryAttachmentJpaEntity;
@@ -8,7 +9,9 @@ import life.mosu.mosuserver.domain.notice.NoticeAttachmentJpaEntity;
 import life.mosu.mosuserver.infra.storage.domain.Visibility;
 
 public record FileRequest(
+        @Schema(description = "파일 이름", example = "example.jpg")
         String fileName,
+        @Schema(description = "S3 키", example = "비공개 이미지를 처리하기 위한 키")
         String s3Key
 ) {
 
