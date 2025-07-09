@@ -4,6 +4,7 @@ import life.mosu.mosuserver.domain.application.AdmissionTicketImageJpaEntity;
 import life.mosu.mosuserver.domain.faq.FaqAttachmentJpaEntity;
 import life.mosu.mosuserver.domain.inquiry.InquiryAttachmentJpaEntity;
 import life.mosu.mosuserver.domain.inquiryAnswer.InquiryAnswerAttachmentEntity;
+import life.mosu.mosuserver.domain.notice.NoticeAttachmentJpaEntity;
 import life.mosu.mosuserver.infra.storage.domain.Visibility;
 
 public record FileRequest(
@@ -17,6 +18,16 @@ public record FileRequest(
                 .s3Key(s3Key)
                 .visibility(Visibility.PUBLIC)
                 .faqId(faqId)
+                .build();
+    }
+
+    public NoticeAttachmentJpaEntity toNoticeAttachmentEntity(String fileName, String s3Key,
+            Long noticeId) {
+        return NoticeAttachmentJpaEntity.builder()
+                .fileName(fileName)
+                .s3Key(s3Key)
+                .visibility(Visibility.PUBLIC)
+                .noticeId(noticeId)
                 .build();
     }
 
