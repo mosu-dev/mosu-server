@@ -20,7 +20,6 @@ import life.mosu.mosuserver.domain.applicationschool.QApplicationSchoolJpaEntity
 import life.mosu.mosuserver.domain.payment.QPaymentJpaEntity;
 import life.mosu.mosuserver.domain.profile.QProfileJpaEntity;
 import life.mosu.mosuserver.domain.school.QSchoolJpaEntity;
-import life.mosu.mosuserver.domain.user.QOAuthUserJpaEntity;
 import life.mosu.mosuserver.domain.user.QUserJpaEntity;
 import life.mosu.mosuserver.infra.property.S3Properties;
 import life.mosu.mosuserver.infra.storage.application.S3Service;
@@ -52,7 +51,6 @@ public class ApplicationQueryRepositoryImpl implements ApplicationQueryRepositor
     private final QPaymentJpaEntity payment = QPaymentJpaEntity.paymentJpaEntity;
     private final QAdmissionTicketImageJpaEntity admissionTicketImage = QAdmissionTicketImageJpaEntity.admissionTicketImageJpaEntity;
     private final QUserJpaEntity user = QUserJpaEntity.userJpaEntity;
-    private final QOAuthUserJpaEntity oAuthUser = QOAuthUserJpaEntity.oAuthUserJpaEntity;
     private final QSchoolJpaEntity school = QSchoolJpaEntity.schoolJpaEntity;
 
     @Override
@@ -142,7 +140,6 @@ public class ApplicationQueryRepositoryImpl implements ApplicationQueryRepositor
                 .leftJoin(application).on(applicationSchool.applicationId.eq(application.id))
                 .leftJoin(payment).on(payment.applicationId.eq(application.id))
                 .leftJoin(user).on(application.userId.eq(user.id))
-                .leftJoin(oAuthUser).on(application.userId.eq(user.id))
                 .leftJoin(profile).on(profile.userId.eq(user.id))
                 .leftJoin(admissionTicketImage)
                 .on(admissionTicketImage.applicationId.eq(application.id));

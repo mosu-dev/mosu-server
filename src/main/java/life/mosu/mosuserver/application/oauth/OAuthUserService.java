@@ -1,8 +1,10 @@
 package life.mosu.mosuserver.application.oauth;
 
+import java.time.LocalDate;
 import java.util.Map;
-import life.mosu.mosuserver.domain.user.OAuthUserJpaEntity;
-import life.mosu.mosuserver.domain.user.OAuthUserJpaRepository;
+import life.mosu.mosuserver.domain.profile.Gender;
+import life.mosu.mosuserver.domain.user.UserJpaEntity;
+import life.mosu.mosuserver.domain.user.UserJpaRepository;
 import life.mosu.mosuserver.domain.user.UserRole;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService;
@@ -16,7 +18,7 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class OAuthUserService extends DefaultOAuth2UserService {
 
-    private final OAuthUserJpaRepository userRepository;
+    private final UserJpaRepository userRepository;
 
     @Override
     public OAuth2User loadUser(final OAuth2UserRequest userRequest)
@@ -34,21 +36,21 @@ public class OAuthUserService extends DefaultOAuth2UserService {
         final OAuthUserInfo userInfo = OAuthUserInfo.of(OAuthProvider.from(registrationId),
                 oAuth2UserAttributes);
 
-        final OAuthUserJpaEntity oAuthUser = updateOrWrite(userInfo);
+        final UserJpaEntity oAuthUser = updateOrWrite(userInfo);
 
         return new OAuthUser(oAuthUser, oAuth2UserAttributes, userNameAttributeName);
     }
 
-    private OAuthUserJpaEntity updateOrWrite(final OAuthUserInfo info) {
-        return userRepository.findByEmail(info.email())
-                .map(user -> {
-                    user.updateInfo(info);
-                    return user;
-                })
+    private UserJpaEntity updateOrWrite(final OAuthUserInfo info) {
+        return userRepository.findByLoginId(info.email())
+
                 .orElseGet(() -> {
-                    final OAuthUserJpaEntity newUser = OAuthUserJpaEntity.builder()
+                    final UserJpaEntity newUser = UserJpaEntity.builder()
+                            .loginId(info.email())
+                            .gender(Gender.MALE)
                             .name(info.name())
-                            .email(info.email())
+                            .password("")
+                            .birth(LocalDate.now())
                             .userRole(UserRole.ROLE_USER)
                             .build();
                     return userRepository.save(newUser);
