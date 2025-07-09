@@ -8,14 +8,12 @@ import java.util.stream.Collectors;
 import life.mosu.mosuserver.domain.application.Lunch;
 import life.mosu.mosuserver.domain.application.Subject;
 import life.mosu.mosuserver.domain.applicationschool.ApplicationSchoolJpaEntity;
-import life.mosu.mosuserver.domain.school.AddressJpaVO;
 import life.mosu.mosuserver.domain.school.Area;
+import life.mosu.mosuserver.domain.school.SchoolJpaEntity;
 import life.mosu.mosuserver.global.exception.CustomRuntimeException;
 import life.mosu.mosuserver.global.exception.ErrorCode;
 
 public record ApplicationSchoolRequest(
-        @NotNull(message = "학교 ID는 필수입니다.")
-        Long schoolId,
 
         @NotBlank(message = "학교 이름은 필수입니다.")
         String schoolName,
@@ -32,14 +30,14 @@ public record ApplicationSchoolRequest(
 ) {
 
     public ApplicationSchoolJpaEntity toEntity(Long userId, Long applicationId,
-            AddressJpaVO address) {
+            SchoolJpaEntity school) {
         return ApplicationSchoolJpaEntity.builder()
                 .userId(userId)
                 .applicationId(applicationId)
-                .schoolId(schoolId)
-                .schoolName(schoolName)
-                .area(validatedArea(area))
-                .address(address)
+                .schoolId(school.getId())
+                .schoolName(school.getSchoolName())
+                .area(school.getArea())
+                .address(school.getAddress())
                 .examDate(examDate)
                 .lunch(validatedLunch(lunch))
                 .subjects(validatedSubjects(subjects))
@@ -64,7 +62,7 @@ public record ApplicationSchoolRequest(
         }
     }
 
-    private Area validatedArea(String area) {
+    public Area validatedArea(String area) {
         try {
             return Area.valueOf(area.toUpperCase());
         } catch (IllegalArgumentException e) {
