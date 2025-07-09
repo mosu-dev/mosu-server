@@ -7,6 +7,7 @@ public record NoticeResponse(
         Long id,
         String title,
         String content,
+        String author,
         List<AttachmentResponse> attachments
 ) {
 
@@ -15,6 +16,7 @@ public record NoticeResponse(
                 notice.getId(),
                 notice.getTitle(),
                 notice.getContent(),
+                notice.getAuthor(),
                 attachments
         );
     }

@@ -7,6 +7,7 @@ import life.mosu.mosuserver.global.util.FileRequest;
 public record NoticeUpdateRequest(
         @NotNull String title,
         @NotNull String content,
+        @NotNull String author,
         Long userId,
         List<FileRequest> attachments
 

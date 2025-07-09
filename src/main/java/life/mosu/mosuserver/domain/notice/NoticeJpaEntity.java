@@ -32,22 +32,29 @@ public class NoticeJpaEntity extends BaseTimeEntity {
     @Column(name = "user_id", nullable = false)
     private Long userId;
 
+    @Column(name = "author", nullable = false)
+    private String author;
+
     @Builder
     public NoticeJpaEntity(
             final String title,
             final String content,
-            final Long userId
+            final Long userId,
+            final String author
     ) {
         this.title = title;
         this.content = content;
         this.userId = userId;
+        this.author = author;
     }
 
     public void update(
             final String title,
-            final String content
+            final String content,
+            final String author
     ) {
         this.title = title;
         this.content = content;
+        this.author = author;
     }
 }

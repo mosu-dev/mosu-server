@@ -9,6 +9,7 @@ public record NoticeCreateRequest(
 
         @NotNull String title,
         @NotNull String content,
+        @NotNull String author,
         Long userId,
         List<FileRequest> attachments
 
@@ -19,6 +20,7 @@ public record NoticeCreateRequest(
                 .title(title)
                 .content(content)
                 .userId(userId)
+                .author(author)
                 .build();
     }
 }
