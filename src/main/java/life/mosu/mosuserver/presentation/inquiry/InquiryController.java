@@ -29,11 +29,11 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/inquiry")
-public class InquiryController {
+public class InquiryController implements InquiryControllerDocs {
 
     private final InquiryService inquiryService;
     private final InquiryAnswerService inquiryAnswerService;
-
+    
     @PostMapping
     public ResponseEntity<ApiResponseWrapper<Void>> create(
             @RequestBody @Valid InquiryCreateRequest request) {
