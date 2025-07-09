@@ -1,5 +1,7 @@
 package life.mosu.mosuserver.domain.auth.security;
 
+import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.Id;
 import lombok.Getter;
 import org.springframework.data.redis.core.RedisHash;
@@ -10,6 +12,8 @@ import java.util.concurrent.TimeUnit;
 
 @Getter
 @RedisHash(value = "token_verification")
+@AllArgsConstructor(access = lombok.AccessLevel.PRIVATE)
+@NoArgsConstructor(access = lombok.AccessLevel.PROTECTED)
 public class RefreshTokenRedisEntity {
 
     @Id
@@ -22,10 +26,6 @@ public class RefreshTokenRedisEntity {
     private Long expiration;
 
     public static RefreshTokenRedisEntity from(final RefreshToken token) {
-        final RefreshTokenRedisEntity entity = new RefreshTokenRedisEntity();
-        entity.userId = token.userId();
-        entity.refreshToken = token.refreshToken();
-        entity.expiration = token.expiration();
-        return entity;
+        return new RefreshTokenRedisEntity(token.userId(), token.refreshToken(), token.expiration());
     }
 }

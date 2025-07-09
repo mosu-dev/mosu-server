@@ -1,17 +1,21 @@
 package life.mosu.mosuserver.application.applicationschool;
 
 import java.time.Duration;
+import java.util.Set;
+import java.util.stream.Collectors;
 import life.mosu.mosuserver.domain.application.AdmissionTicketImageJpaEntity;
 import life.mosu.mosuserver.domain.application.AdmissionTicketImageJpaRepository;
 import life.mosu.mosuserver.domain.application.ApplicationJpaEntity;
 import life.mosu.mosuserver.domain.application.ApplicationJpaRepository;
 import life.mosu.mosuserver.domain.application.ApplicationSchoolJpaRepository;
+import life.mosu.mosuserver.domain.application.Subject;
 import life.mosu.mosuserver.domain.applicationschool.ApplicationSchoolJpaEntity;
 import life.mosu.mosuserver.domain.profile.ProfileJpaEntity;
 import life.mosu.mosuserver.domain.profile.ProfileJpaRepository;
 import life.mosu.mosuserver.domain.refund.RefundJpaRepository;
 import life.mosu.mosuserver.global.exception.CustomRuntimeException;
 import life.mosu.mosuserver.global.exception.ErrorCode;
+import life.mosu.mosuserver.infra.property.S3Properties;
 import life.mosu.mosuserver.infra.storage.application.S3Service;
 import life.mosu.mosuserver.presentation.application.dto.ApplicationSchoolResponse;
 import life.mosu.mosuserver.presentation.applicationschool.dto.AdmissionTicketResponse;
@@ -19,11 +23,9 @@ import life.mosu.mosuserver.presentation.applicationschool.dto.RefundRequest;
 import life.mosu.mosuserver.presentation.applicationschool.dto.SubjectUpdateRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.RequestParam;
 
 @Service
 @RequiredArgsConstructor
@@ -36,13 +38,11 @@ public class ApplicationSchoolService {
     private final ProfileJpaRepository profileJpaRepository;
     private final AdmissionTicketImageJpaRepository admissionTicketImageJpaRepository;
     private final S3Service s3Service;
+    private final S3Properties s3Properties;
 
-    @Value("${aws.s3.presigned-url-expiration-minutes}")
-    private int durationTime;
 
     @Transactional
     public ApplicationSchoolResponse updateSubjects(
-            @RequestParam Long userId,
             Long applicationSchoolId,
             SubjectUpdateRequest request
     ) {
@@ -57,7 +57,6 @@ public class ApplicationSchoolService {
 
     @Transactional
     public void cancelApplicationSchool(
-            @RequestParam Long userId,
             Long applicationSchoolId,
             RefundRequest request
     ) {
@@ -105,12 +104,16 @@ public class ApplicationSchoolService {
         AdmissionTicketImageJpaEntity admissionTicketImage = admissionTicketImageJpaRepository.findByApplicationId(
                 application.getId());
 
+        Set<String> subjectNames = applicationSchool.getSubjects().stream()
+                .map(Subject::getSubjectName)
+                .collect(Collectors.toSet());
+
         return AdmissionTicketResponse.of(
                 getAdmissionTicketImageUrl(admissionTicketImage),
                 profile.getUserName(),
                 profile.getBirth(),
                 applicationSchool.getExaminationNumber(),
-                applicationSchool.getSubjects(),
+                subjectNames,
                 applicationSchool.getSchoolName()
         );
 
@@ -119,7 +122,7 @@ public class ApplicationSchoolService {
     private String getAdmissionTicketImageUrl(AdmissionTicketImageJpaEntity admissionTicketImage) {
         return s3Service.getPreSignedUrl(
                 admissionTicketImage.getS3Key(),
-                Duration.ofMinutes(durationTime)
+                Duration.ofMinutes(s3Properties.getPresignedUrlExpirationMinutes())
         );
     }
 

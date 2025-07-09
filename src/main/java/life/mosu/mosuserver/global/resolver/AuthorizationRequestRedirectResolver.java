@@ -1,6 +1,7 @@
-package life.mosu.mosuserver.presentation.oauth;
+package life.mosu.mosuserver.global.resolver;
 
 import jakarta.servlet.http.HttpServletRequest;
+import java.util.Map;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.oauth2.client.web.DefaultOAuth2AuthorizationRequestResolver;
@@ -9,8 +10,6 @@ import org.springframework.security.oauth2.core.endpoint.OAuth2AuthorizationRequ
 import org.springframework.security.web.util.UrlUtils;
 import org.springframework.stereotype.Component;
 import org.springframework.web.util.UriComponentsBuilder;
-
-import java.util.Map;
 
 @Slf4j
 @Component
@@ -21,30 +20,30 @@ public class AuthorizationRequestRedirectResolver implements OAuth2Authorization
     private final DefaultOAuth2AuthorizationRequestResolver defaultResolver;
 
     @Override
-    public OAuth2AuthorizationRequest resolve(final HttpServletRequest request) {
+    public OAuth2AuthorizationRequest resolve(HttpServletRequest request) {
         return addRedirectState(defaultResolver.resolve(request), request);
     }
 
     @Override
     public OAuth2AuthorizationRequest resolve(
-        final HttpServletRequest request,
-        final String clientRegistrationId
+            HttpServletRequest request,
+            String clientRegistrationId
     ) {
         return addRedirectState(
-            defaultResolver.resolve(request, clientRegistrationId),
-            request
+                defaultResolver.resolve(request, clientRegistrationId),
+                request
         );
     }
 
     private OAuth2AuthorizationRequest addRedirectState(
-        final OAuth2AuthorizationRequest authorizationRequest,
-        final HttpServletRequest request
+            OAuth2AuthorizationRequest authorizationRequest,
+            HttpServletRequest request
     ) {
         if (authorizationRequest == null) {
             return null;
         }
 
-        final String redirect = request.getParameter(REDIRECT_PARAM_KEY);
+        String redirect = request.getParameter(REDIRECT_PARAM_KEY);
         if (!UrlUtils.isValidRedirectUrl(redirect)) {
             log.debug("Invalid redirect URL: {}", redirect);
             return authorizationRequest;
@@ -53,15 +52,16 @@ public class AuthorizationRequestRedirectResolver implements OAuth2Authorization
         log.debug("Adding redirect state to authorization request: {}", redirect);
 
         return OAuth2AuthorizationRequest.from(authorizationRequest)
-            .state(appendToState(authorizationRequest.getState(), Map.of(REDIRECT_PARAM_KEY, redirect)))
-            .build();
+                .state(appendToState(authorizationRequest.getState(),
+                        Map.of(REDIRECT_PARAM_KEY, redirect)))
+                .build();
     }
 
     private String appendToState(
-        final String state,
-        final Map<String, String> additionalParams
+            String state,
+            Map<String, String> additionalParams
     ) {
-        final UriComponentsBuilder uriBuilder = UriComponentsBuilder.newInstance();
+        UriComponentsBuilder uriBuilder = UriComponentsBuilder.newInstance();
         if (state != null) {
             uriBuilder.query(state);
         }

@@ -1,7 +1,12 @@
 package life.mosu.mosuserver.application.admin;
 
 import java.util.List;
+import life.mosu.mosuserver.domain.admin.ApplicationQueryRepositoryImpl;
 import life.mosu.mosuserver.domain.admin.StudentQueryRepositoryImpl;
+import life.mosu.mosuserver.presentation.admin.dto.ApplicationExcelDto;
+import life.mosu.mosuserver.presentation.admin.dto.ApplicationFilter;
+import life.mosu.mosuserver.presentation.admin.dto.ApplicationListResponse;
+import life.mosu.mosuserver.presentation.admin.dto.SchoolLunchResponse;
 import life.mosu.mosuserver.presentation.admin.dto.StudentExcelDto;
 import life.mosu.mosuserver.presentation.admin.dto.StudentFilter;
 import life.mosu.mosuserver.presentation.admin.dto.StudentListResponse;
@@ -17,6 +22,7 @@ import org.springframework.stereotype.Service;
 public class AdminService {
 
     private final StudentQueryRepositoryImpl studentQueryRepository;
+    private final ApplicationQueryRepositoryImpl applicationQueryRepository;
 
     public Page<StudentListResponse> getStudents(StudentFilter filter, Pageable pageable) {
         return studentQueryRepository.searchAllStudents(filter, pageable);
@@ -25,4 +31,18 @@ public class AdminService {
     public List<StudentExcelDto> getStudentExcelData() {
         return studentQueryRepository.searchAllStudentsForExcel();
     }
+
+    public List<SchoolLunchResponse> getLunchCounts() {
+        return applicationQueryRepository.searchAllSchoolLunches();
+    }
+
+    public Page<ApplicationListResponse> getApplications(ApplicationFilter filter,
+            Pageable pageable) {
+        return applicationQueryRepository.searchAllApplications(filter, pageable);
+    }
+
+    public List<ApplicationExcelDto> getApplicationExcelData() {
+        return applicationQueryRepository.searchAllApplicationsForExcel();
+    }
+
 }

@@ -2,7 +2,9 @@ package life.mosu.mosuserver.infra.storage.application;
 
 import java.util.List;
 
-public interface AttachmentService<T, R>{
-    void createAttachment(List<R> fileRequests, T entity);
-    void deleteAttachment(T entity);
+public interface AttachmentService<E, R> {
+
+    void createAttachment(List<R> fileRequests, E entity);
+
+    void deleteAttachment(E entity);
 }
