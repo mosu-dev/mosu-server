@@ -21,7 +21,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -30,12 +29,12 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/admin")
-public class AdminController {
+public class AdminController implements AdminControllerDocs {
 
     private final AdminService adminService;
 
     @GetMapping("/students")
-    @PreAuthorize("isAuthenticated() and hasRole('ADMIN')")
+//    @PreAuthorize("isAuthenticated() and hasRole('ADMIN')")
     public ResponseEntity<ApiResponseWrapper<Page<StudentListResponse>>> getStudents(
             @Valid @ModelAttribute StudentFilter filter,
             Pageable pageable
@@ -45,7 +44,7 @@ public class AdminController {
     }
 
     @GetMapping("/excel/students")
-    @PreAuthorize("isAuthenticated() and hasRole('ADMIN')")
+//    @PreAuthorize("isAuthenticated() and hasRole('ADMIN')")
     public void downloadStudentInfo(
             HttpServletResponse response) throws IOException {
         String fileName = URLEncoder.encode("학생정보목록.xlsx", StandardCharsets.UTF_8)
@@ -63,7 +62,7 @@ public class AdminController {
     }
 
     @GetMapping("/lunches")
-    @PreAuthorize("isAuthenticated() and hasRole('ADMIN')")
+//    @PreAuthorize("isAuthenticated() and hasRole('ADMIN')")
     public ResponseEntity<ApiResponseWrapper<List<SchoolLunchResponse>>> getLunchCounts() {
         List<SchoolLunchResponse> result = adminService.getLunchCounts();
         return ResponseEntity.ok(
@@ -71,7 +70,7 @@ public class AdminController {
     }
 
     @GetMapping("/applications")
-    @PreAuthorize("isAuthenticated() and hasRole('ADMIN')")
+//    @PreAuthorize("isAuthenticated() and hasRole('ADMIN')")
     public ResponseEntity<ApiResponseWrapper<Page<ApplicationListResponse>>> getApplications(
             @Valid @ModelAttribute ApplicationFilter filter,
             Pageable pageable
@@ -81,7 +80,7 @@ public class AdminController {
     }
 
     @GetMapping("/excel/applications")
-    @PreAuthorize("isAuthenticated() and hasRole('ADMIN')")
+//    @PreAuthorize("isAuthenticated() and hasRole('ADMIN')")
     public void downloadApplicationInfo(HttpServletResponse response) throws IOException {
         String fileName = URLEncoder.encode("신청 목록.xlsx", StandardCharsets.UTF_8)
                 .replaceAll("\\+", "%20");
