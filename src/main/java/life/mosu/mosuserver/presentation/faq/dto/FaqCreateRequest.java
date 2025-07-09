@@ -9,6 +9,7 @@ public record FaqCreateRequest(
 
         @NotNull String question,
         @NotNull String answer,
+        @NotNull String author,
         Long userId,
         List<FileRequest> attachments
 
@@ -19,6 +20,7 @@ public record FaqCreateRequest(
                 .question(question)
                 .answer(answer)
                 .userId(userId)
+                .author(author)
                 .build();
     }
 

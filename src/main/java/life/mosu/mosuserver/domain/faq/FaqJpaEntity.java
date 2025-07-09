@@ -28,13 +28,24 @@ public class FaqJpaEntity extends BaseTimeEntity {
     @Column(name = "answer", nullable = false)
     private String answer;
 
+    @Column(name = "author", nullable = false)
+    private String author;
+
     @Column(name = "user_id", nullable = false)
     private Long userId;
 
     @Builder
-    public FaqJpaEntity(final String question, final String answer, final Long userId) {
+    public FaqJpaEntity(final String question, final String answer, final Long userId,
+            final String author) {
         this.question = question;
         this.answer = answer;
         this.userId = userId;
+        this.author = author;
+    }
+
+    public void update(final String question, final String answer, final String author) {
+        this.question = question;
+        this.answer = answer;
+        this.author = author;
     }
 }
