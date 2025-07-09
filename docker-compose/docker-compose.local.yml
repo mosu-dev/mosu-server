@@ -37,7 +37,7 @@ services:
   velkey:
     image: ghcr.io/valkey-io/valkey:7.2
     container_name: mosu-velkey
-    command: [ "valkey-server", "--port", "${VELKEY_PORT}", "--requirepass","${REDIS_PASSWORD}"]
+    command: [ "valkey-server", "--port", "${VELKEY_PORT}" ]
     ports:
       - ${VELKEY_PORT}:${VELKEY_PORT}
     networks:
