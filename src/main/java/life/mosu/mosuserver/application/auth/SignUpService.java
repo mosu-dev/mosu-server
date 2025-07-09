@@ -24,7 +24,7 @@ public class SignUpService {
             throw new CustomRuntimeException(ErrorCode.USER_ALREADY_EXISTS);
         }
 
-        UserJpaEntity user = request.toEntity(passwordEncoder);
+        UserJpaEntity user = request.toAuthEntity(passwordEncoder);
 
         userRepository.save(user);
     }

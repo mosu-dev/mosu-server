@@ -12,10 +12,10 @@ import life.mosu.mosuserver.infra.storage.domain.Visibility;
 @Schema(description = "파일 요청 DTO (S3 파일 정보)")
 public record FileRequest(
 
-        @Schema(description = "파일 이름", example = "수험표사진이름.png")
+        @Schema(description = "파일 이름", example = "example.jpg")
         String fileName,
-
-        @Schema(description = "S3 저장 경로 키", example = "")
+  
+        @Schema(description = "S3 키", example = "비공개 이미지를 처리하기 위한 키")
         String s3Key
 
 ) {
