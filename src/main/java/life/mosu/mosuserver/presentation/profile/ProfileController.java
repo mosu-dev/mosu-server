@@ -10,6 +10,7 @@ import life.mosu.mosuserver.presentation.profile.dto.ProfileRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -23,34 +24,34 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/profile")
-public class ProfileController {
+public class ProfileController implements ProfileControllerDocs {
 
     private final ProfileService profileService;
 
     @PostMapping
-    public ApiResponseWrapper<Void> create(
-            @UserId Long userId,
+    public ResponseEntity<ApiResponseWrapper<Void>> create(
+            @RequestParam Long userId,
             @Valid @RequestBody ProfileRequest request
     ) {
         profileService.registerProfile(userId, request);
-        return ApiResponseWrapper.success(HttpStatus.CREATED, "프로필 등록 성공");
+        return ResponseEntity.ok(ApiResponseWrapper.success(HttpStatus.CREATED, "프로필 등록 성공"));
     }
 
     @PutMapping
     @PreAuthorize("isAuthenticated()")
-    public ApiResponseWrapper<Void> update(
-            @UserId Long userId,
+    public ResponseEntity<ApiResponseWrapper<Void>> update(
+            @RequestParam Long userId,
             @Valid @RequestBody EditProfileRequest request
     ) {
         profileService.editProfile(userId, request);
-        return ApiResponseWrapper.success(HttpStatus.OK, "프로필 수정 성공");
+        return ResponseEntity.ok(ApiResponseWrapper.success(HttpStatus.OK, "프로필 수정 성공"));
     }
 
     @GetMapping
-    public ApiResponseWrapper<ProfileDetailResponse> getProfile(
+    public ResponseEntity<ApiResponseWrapper<ProfileDetailResponse>> getProfile(
             @UserId Long userId) {
         ProfileDetailResponse response = profileService.getProfile(userId);
-        return ApiResponseWrapper.success(HttpStatus.OK, "프로필 조회 성공", response);
+        return ResponseEntity.ok(ApiResponseWrapper.success(HttpStatus.OK, "프로필 조회 성공", response));
     }
 
 }

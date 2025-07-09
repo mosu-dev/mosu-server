@@ -8,11 +8,16 @@ import life.mosu.mosuserver.domain.inquiryAnswer.InquiryAnswerAttachmentEntity;
 import life.mosu.mosuserver.domain.notice.NoticeAttachmentJpaEntity;
 import life.mosu.mosuserver.infra.storage.domain.Visibility;
 
+
+@Schema(description = "파일 요청 DTO (S3 파일 정보)")
 public record FileRequest(
+
         @Schema(description = "파일 이름", example = "example.jpg")
         String fileName,
+  
         @Schema(description = "S3 키", example = "비공개 이미지를 처리하기 위한 키")
         String s3Key
+
 ) {
 
     public FaqAttachmentJpaEntity toFaqAttachmentEntity(String fileName, String s3Key, Long faqId) {
