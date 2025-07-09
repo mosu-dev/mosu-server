@@ -1,5 +1,6 @@
 package life.mosu.mosuserver.presentation.faq;
 
+import jakarta.validation.Valid;
 import java.util.List;
 import life.mosu.mosuserver.application.faq.FaqService;
 import life.mosu.mosuserver.global.util.ApiResponseWrapper;
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -27,7 +29,8 @@ public class FaqController {
 
     //TODO: 관리자 권한 체크 추가
     @PostMapping
-    public ResponseEntity<ApiResponseWrapper<Void>> create(@RequestBody FaqCreateRequest request) {
+    public ResponseEntity<ApiResponseWrapper<Void>> create(
+            @Valid @RequestBody FaqCreateRequest request) {
         faqService.createFaq(request);
         return ResponseEntity.ok(ApiResponseWrapper.success(HttpStatus.CREATED, "게시글 등록 성공"));
     }
@@ -39,6 +42,15 @@ public class FaqController {
     ) {
         List<FaqResponse> responses = faqService.getFaqWithAttachments(page, size);
         return ResponseEntity.ok(ApiResponseWrapper.success(HttpStatus.OK, "게시글 조회 성공", responses));
+    }
+
+    @PutMapping("/{faqId}")
+    public ResponseEntity<ApiResponseWrapper<Void>> update(
+            @PathVariable Long faqId,
+            @Valid @RequestBody FaqCreateRequest request
+    ) {
+        faqService.update(request, faqId);
+        return ResponseEntity.ok(ApiResponseWrapper.success(HttpStatus.OK, "게시글 수정 성공"));
     }
 
     //TODO: 관리자 권한 체크 추가

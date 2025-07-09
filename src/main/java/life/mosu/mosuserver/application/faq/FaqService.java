@@ -41,6 +41,18 @@ public class FaqService {
                 .toList();
     }
 
+    @Transactional
+    public void update(FaqCreateRequest request, Long faqId) {
+        FaqJpaEntity faqEntity = faqRepository.findById(faqId)
+                .orElseThrow(() -> new CustomRuntimeException(ErrorCode.FAQ_NOT_FOUND));
+
+        faqEntity.update(request.question(), request.answer(), request.author());
+        faqRepository.save(faqEntity);
+
+        attachmentService.deleteAttachment(faqEntity);
+        attachmentService.createAttachment(request.attachments(), faqEntity);
+    }
+
 
     @Transactional
     public void deleteFaq(Long faqId) {
