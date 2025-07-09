@@ -41,8 +41,7 @@ spring:
   data:
     redis:
       host: ${REDIS_HOST}
-      port: ${REDIS_EXPORTER}
-      password: ${REDIS_PASSWORD}
+      port: ${VELKEY_PORT}
 
 management:
   endpoints:

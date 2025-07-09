@@ -38,7 +38,6 @@ public class ProfileController {
 
     @PutMapping
     @PreAuthorize("isAuthenticated()")
-//    @PreAuthorize("isAuthenticated() and hasRole('USER')")
     public ApiResponseWrapper<Void> update(
             @UserId Long userId,
             @Valid @RequestBody EditProfileRequest request
@@ -49,7 +48,7 @@ public class ProfileController {
 
     @GetMapping
     public ApiResponseWrapper<ProfileDetailResponse> getProfile(
-            @RequestParam Long userId) {
+            @UserId Long userId) {
         ProfileDetailResponse response = profileService.getProfile(userId);
         return ApiResponseWrapper.success(HttpStatus.OK, "프로필 조회 성공", response);
     }

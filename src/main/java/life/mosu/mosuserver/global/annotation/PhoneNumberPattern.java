@@ -9,15 +9,15 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 @Pattern(
-        regexp = "^010-\\d{4}-\\d{4}$",
-        message = "전화번호 형식은 010-XXXX-XXXX이어야 합니다."
+        regexp = "^01[016789]-\\d{3,4}-\\d{4}$",
+        message = "전화번호 형식은 010-XXXX-XXXX 이어야 합니다."
 )
 @Target({ElementType.FIELD, ElementType.PARAMETER})
 @Retention(RetentionPolicy.RUNTIME)
 @Constraint(validatedBy = {})
 public @interface PhoneNumberPattern {
 
-    String message() default "전화번호 형식은 010-XXXX-XXXX이어야 합니다.";
+    String message() default "전화번호 형식은 010-XXXX-XXXX 이어야 합니다.";
 
     Class<?>[] groups() default {};
 

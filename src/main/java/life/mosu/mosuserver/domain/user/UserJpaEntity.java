@@ -1,6 +1,13 @@
 package life.mosu.mosuserver.domain.user;
 
-import jakarta.persistence.*;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
 import life.mosu.mosuserver.domain.base.BaseTimeEntity;
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -24,15 +31,15 @@ public class UserJpaEntity extends BaseTimeEntity {
     @Column(name = "password")
     private String password;
 
-    @Column
+    @Column(name = "user_role", nullable = false, length = 50)
     @Enumerated(EnumType.STRING)
     private UserRole userRole;
 
     @Builder
     public UserJpaEntity(
-        final String loginId,
-        final String password,
-        final UserRole userRole
+            final String loginId,
+            final String password,
+            final UserRole userRole
     ) {
         this.loginId = loginId;
         this.password = password;
