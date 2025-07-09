@@ -20,8 +20,9 @@ public class OAuth2LoginFailureHandler extends SimpleUrlAuthenticationFailureHan
             AuthenticationException exception) throws IOException, ServletException {
         if (exception instanceof OAuth2AuthenticationException) {
             OAuth2Error error = ((OAuth2AuthenticationException) exception).getError();
-            log.info("OAuth2 Error" + error.getErrorCode());
-            log.info("OAuth2 Description" + error.getDescription());
+            log.info("OAuth2 Error " + error.getErrorCode());
+            log.info("OAuth2 Description " + error.getDescription());
+            log.info(error.toString());
         }
         super.onAuthenticationFailure(request, response, exception);
     }

@@ -5,8 +5,7 @@ import java.util.List;
 import life.mosu.mosuserver.application.oauth.OAuthUserService;
 import life.mosu.mosuserver.global.handler.OAuth2LoginFailureHandler;
 import life.mosu.mosuserver.global.handler.OAuth2LoginSuccessHandler;
-import life.mosu.mosuserver.presentation.oauth.AccessTokenFilter;
-import life.mosu.mosuserver.presentation.oauth.TokenExceptionFilter;
+import life.mosu.mosuserver.global.resolver.AuthorizationRequestRedirectResolver;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -23,7 +22,6 @@ import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
@@ -45,8 +43,8 @@ public class SecurityConfig {
     private final OAuth2LoginSuccessHandler loginSuccessHandler;
     private final OAuth2LoginFailureHandler loginFailureHandler;
     private final AuthenticationEntryPoint authenticationEntryPoint;
-    private final AccessTokenFilter accessTokenFilter;
-    private final TokenExceptionFilter tokenExceptionFilter;
+
+    private final AuthorizationRequestRedirectResolver authorizationRequestRedirectResolver;
 
     @Bean
     public PasswordEncoder passwordEncoder() {
@@ -76,27 +74,27 @@ public class SecurityConfig {
                 .formLogin(AbstractHttpConfigurer::disable)
                 .logout(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(authorize -> authorize
-                        .requestMatchers(
-                                "/",
-                                "/auth/success"
-                        ).permitAll()
-                        .requestMatchers(
-                                "/api/v1/profile/**",
-                                "/api/v1/admin/**"
-                        )
-                        .hasRole("ADMIN")
-                        .anyRequest().permitAll()
+//                        .requestMatchers(
+//                                "/api/v1/profile/**",
+//                                "/api/v1/admin/**"
+//                        )
+//                        .hasRole("ADMIN")
+                                .anyRequest().permitAll()
                 )
                 .oauth2Login(oauth2 -> oauth2.redirectionEndpoint(redirection ->
-                                redirection.baseUri("/api/v1/oauth2/callback/{registrationId}"))
+                                redirection.baseUri("/oauth2/callback/{registrationId}"))
+                        .loginProcessingUrl("/oauth2/login")
                         .userInfoEndpoint(userInfoEndpoint ->
                                 userInfoEndpoint.userService(userService)
+                        )
+                        .authorizationEndpoint(authorization ->
+                                authorization.authorizationRequestResolver(
+                                        authorizationRequestRedirectResolver)
                         )
                         .successHandler(loginSuccessHandler)
                         .failureHandler(loginFailureHandler)
                 )
-                .addFilterBefore(accessTokenFilter, UsernamePasswordAuthenticationFilter.class)
-                .addFilterBefore(tokenExceptionFilter, accessTokenFilter.getClass())
+                .logout(config -> config.logoutSuccessUrl("/"))
                 .exceptionHandling(exceptions ->
                         exceptions.authenticationEntryPoint(authenticationEntryPoint));
         return http.build();
