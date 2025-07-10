@@ -50,6 +50,7 @@ public enum ErrorCode {
     PROFILE_CREATE_FAILED(HttpStatus.INTERNAL_SERVER_ERROR, "프로필 등록에 실패했습니다."),
     PROFILE_UPDATE_FAILED(HttpStatus.INTERNAL_SERVER_ERROR, "프로필 수정에 실패했습니다."),
     INVALID_GENDER(HttpStatus.BAD_REQUEST, "유효하지 않은 성별 값입니다."),
+    AREADY_REGISTERED_RECOMMENDER(HttpStatus.CONFLICT, "이미 추천인을 등록하였습니다."),
 
     // 파일 관련 에러
     FILE_NOT_FOUND(HttpStatus.NOT_FOUND, "파일을 찾을 수 없습니다."),
