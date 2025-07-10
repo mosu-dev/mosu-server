@@ -4,7 +4,7 @@ import java.util.List;
 import life.mosu.mosuserver.domain.payment.PaymentStatus;
 
 public record PaymentEvent(
-        List<Long> applicationIds,
+        List<Long> applicationSchoolIds,
         String orderId,
         PaymentStatus status,
         Integer totalAmount
