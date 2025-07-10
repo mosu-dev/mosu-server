@@ -11,7 +11,7 @@ import org.springframework.http.ResponseEntity;
 public interface RecommenderControllerDocs {
 
     @Operation(description = "추천인 등록 API", summary = "추천인 등록은 전화번호로 등록가능합니다. 신청을 진행할때 호출하시면 됩니다. ")
-    public ResponseEntity<ApiResponseWrapper<Void>> regist(
+    public ResponseEntity<ApiResponseWrapper<Void>> register(
             @Schema(description = "API 연동을 위한 사용자 쿼리파라미터 userId 인증 인가 적용때 변경 예정", example = "1")
             Long userId,
             RecommenderRegistrationRequest request

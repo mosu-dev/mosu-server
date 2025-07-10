@@ -23,7 +23,7 @@ public class RecommenderService {
         ProfileJpaEntity profile = profileJpaRepository.findByUserId(userId)
                 .orElseThrow(() -> new CustomRuntimeException(ErrorCode.PROFILE_NOT_FOUND));
         if (profile.getRecommenderPhoneNumber() != null) {
-            throw new CustomRuntimeException(ErrorCode.AREADY_REGISTERED_RECOMMENDER);
+            throw new CustomRuntimeException(ErrorCode.ALREADY_REGISTERED_RECOMMENDER);
         }
 
         profile.registerRecommenderPhoneNumber(request.phoneNumber());

@@ -50,11 +50,6 @@ public class UserAndProfileInitializer {
             boolean agreedToMarketing = random.nextBoolean();
             UserRole userRole = (i == 1) ? ROLE_ADMIN : ROLE_USER;
 
-            Long referrerUserId = null;
-            if (i > 1 && createdUsers.size() >= (i - 1)) {
-                referrerUserId = createdUsers.get(i - 2).getId();
-            }
-
             UserJpaEntity user = UserJpaEntity.builder()
                     .loginId(loginId)
                     .password(passwordEncoder.encode("password" + i + "!"))

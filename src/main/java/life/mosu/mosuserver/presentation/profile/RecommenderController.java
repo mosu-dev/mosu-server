@@ -23,11 +23,12 @@ public class RecommenderController implements RecommenderControllerDocs {
 
     @Override
     @PostMapping
-    public ResponseEntity<ApiResponseWrapper<Void>> regist(
+    public ResponseEntity<ApiResponseWrapper<Void>> register(
             @RequestParam Long userId,
             @Valid @RequestBody RecommenderRegistrationRequest request) {
         recommenderService.registerRecommender(userId, request);
-        return ResponseEntity.ok(ApiResponseWrapper.success(HttpStatus.CREATED, "추천인 등록 성공"));
+        return ResponseEntity.status(HttpStatus.CREATED)
+                .body(ApiResponseWrapper.success(HttpStatus.CREATED, "추천인 등록 성공"));
     }
 
     @Override
@@ -38,10 +39,10 @@ public class RecommenderController implements RecommenderControllerDocs {
 
         if (isRegistered) {
             return ResponseEntity.ok(
-                    ApiResponseWrapper.success(HttpStatus.OK, "추천인 등록이 불가능합니다.", isRegistered));
+                    ApiResponseWrapper.success(HttpStatus.OK, "이미 추천인이 등록되었습니다.", isRegistered));
         }
         return ResponseEntity.ok(
-                ApiResponseWrapper.success(HttpStatus.OK, "추천인 등록이 가능합니다.", isRegistered));
+                ApiResponseWrapper.success(HttpStatus.OK, "추천인을 등록할 수 있습니다.", isRegistered));
     }
 
 }
