@@ -7,6 +7,7 @@ import life.mosu.mosuserver.global.exception.CustomRuntimeException;
 import life.mosu.mosuserver.global.exception.ErrorCode;
 import life.mosu.mosuserver.presentation.faq.dto.FaqCreateRequest;
 import life.mosu.mosuserver.presentation.faq.dto.FaqResponse;
+import life.mosu.mosuserver.presentation.faq.dto.FaqUpdateRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -39,6 +40,26 @@ public class FaqService {
         return faqPage.stream()
                 .map(this::toFaqResponse)
                 .toList();
+    }
+
+    @Transactional(readOnly = true, propagation = Propagation.SUPPORTS)
+    public FaqResponse getFaqDetail(Long faqId) {
+        FaqJpaEntity faq = faqRepository.findById(faqId)
+                .orElseThrow(() -> new CustomRuntimeException(ErrorCode.FAQ_NOT_FOUND));
+
+        return toFaqResponse(faq);
+    }
+
+    @Transactional
+    public void update(FaqUpdateRequest request, Long faqId) {
+        FaqJpaEntity faqEntity = faqRepository.findById(faqId)
+                .orElseThrow(() -> new CustomRuntimeException(ErrorCode.FAQ_NOT_FOUND));
+
+        faqEntity.update(request.question(), request.answer(), request.author());
+        faqRepository.save(faqEntity);
+
+        attachmentService.deleteAttachment(faqEntity);
+        attachmentService.createAttachment(request.attachments(), faqEntity);
     }
 
 

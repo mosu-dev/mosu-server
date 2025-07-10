@@ -60,7 +60,8 @@ public class FaqAttachmentService implements AttachmentService<FaqJpaEntity, Fil
                         s3Service.getPreSignedUrl(
                                 attachment.getS3Key(),
                                 Duration.ofMinutes(s3Properties.getPresignedUrlExpirationMinutes())
-                        )
+                        ),
+                        attachment.getS3Key()
                 ))
                 .toList();
     }

@@ -59,7 +59,7 @@ public class NoticeService {
     public void updateNotice(Long noticeId, NoticeUpdateRequest request) {
         NoticeJpaEntity noticeEntity = getNoticeOrThrow(noticeId);
 
-        noticeEntity.update(request.title(), request.content());
+        noticeEntity.update(request.title(), request.content(), request.author());
         attachmentService.deleteAttachment(noticeEntity);
         attachmentService.createAttachment(request.attachments(), noticeEntity);
     }
