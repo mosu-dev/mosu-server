@@ -5,7 +5,7 @@ import java.util.List;
 import life.mosu.mosuserver.infra.payment.dto.TossPaymentPayload;
 
 public record PaymentRequest(
-        @NotNull List<Long> applicationIds,
+        @NotNull List<Long> applicationSchoolIds,
         @NotNull String paymentKey,
         @NotNull String orderId,
         @NotNull Integer amount
@@ -16,6 +16,6 @@ public record PaymentRequest(
     }
 
     public int applicantSize() {
-        return applicationIds.size();
+        return applicationSchoolIds.size();
     }
 }

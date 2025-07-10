@@ -15,8 +15,8 @@ public record PreparePaymentRequest(
     }
 
     public record Item(
-            @NotNull(message = "applicationId는 필수입니다.")
-            Long applicationId,
+            @NotNull(message = "applicationSchoolId는 필수입니다.")
+            Long applicationSchoolId,
 
             @NotNull(message = "name은 필수입니다.")
             String name

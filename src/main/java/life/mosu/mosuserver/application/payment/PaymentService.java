@@ -3,7 +3,7 @@ package life.mosu.mosuserver.application.payment;
 import static life.mosu.mosuserver.domain.discount.DiscountPolicy.FIXED_QUANTITY;
 
 import java.util.List;
-import life.mosu.mosuserver.domain.application.ApplicationJpaRepository;
+import life.mosu.mosuserver.domain.applicationschool.ApplicationSchoolJpaRepository;
 import life.mosu.mosuserver.domain.discount.DiscountPolicy;
 import life.mosu.mosuserver.domain.payment.PaymentJpaEntity;
 import life.mosu.mosuserver.domain.payment.PaymentRepository;
@@ -30,15 +30,13 @@ import org.springframework.web.client.HttpStatusCodeException;
 @RequiredArgsConstructor
 public class PaymentService {
 
-    private final ApplicationJpaRepository applicationJpaRepository;
-
+    private final ApplicationSchoolJpaRepository applicationSchoolJpaRepository;
     private final TossPaymentClient tossPayment;
     private final OrderIdGenerator orderIdGenerator;
     private final PaymentRepository paymentRepository;
     private final ApplicationEventPublisher publisher;
 
     public PaymentPrepareResponse prepare(PreparePaymentRequest request) {
-        // TODO: 인원 수 체크
         /**
          * 인원 수 redis에 동기화 -> 인원수가 넘어가면, application 까지 rollback
          */
@@ -53,20 +51,20 @@ public class PaymentService {
     @Retryable(retryFor = {HttpStatusCodeException.class})
     public void confirm(PaymentRequest request) {
         String orderId = request.orderId();
-        List<Long> applicationIds = request.applicationIds();
+        List<Long> applicationSchoolIds = request.applicationSchoolIds();
         Integer amount = request.amount();
         try {
-            checkApplicationsExist(request.applicationIds());
+            checkApplicationsExist(applicationSchoolIds);
             verifyAmount(request.applicantSize(), request.amount());
             checkDuplicatePayment(orderId);
             ConfirmTossPaymentResponse response = confirmPaymentWithToss(request);
             List<PaymentJpaEntity> paymentEntities = mapToPaymentEntities(request, response);
             verifyPaymentSuccess(paymentEntities);
             savePayments(paymentEntities);
-            publisher.publishEvent(PaymentEvent.ofSuccess(applicationIds, orderId, amount));
+            publisher.publishEvent(PaymentEvent.ofSuccess(applicationSchoolIds, orderId, amount));
         } catch (Exception ex) {
             log.error("error : {}", ex.getMessage());
-            publisher.publishEvent(PaymentEvent.ofFailed(applicationIds, orderId, amount));
+            publisher.publishEvent(PaymentEvent.ofFailed(applicationSchoolIds, orderId, amount));
             throw ex;
         }
     }
@@ -87,7 +85,7 @@ public class PaymentService {
 
 
     private void checkApplicationsExist(List<Long> applicationIds) {
-        boolean existsAll = applicationJpaRepository.existsAllByIds(applicationIds,
+        boolean existsAll = applicationSchoolJpaRepository.existsAllByIds(applicationIds,
                 applicationIds.size());
         if (!existsAll) {
             log.warn("Application IDs not found: {}", applicationIds);
@@ -137,7 +135,7 @@ public class PaymentService {
 
     private List<PaymentJpaEntity> mapToPaymentEntities(PaymentRequest request,
             ConfirmTossPaymentResponse response) {
-        return request.applicationIds().stream()
+        return request.applicationSchoolIds().stream()
                 .map(response::toEntity)
                 .toList();
     }
