@@ -138,7 +138,7 @@ public class ApplicationQueryRepositoryImpl implements ApplicationQueryRepositor
                 )
                 .from(applicationSchool)
                 .leftJoin(application).on(applicationSchool.applicationId.eq(application.id))
-                .leftJoin(payment).on(payment.applicationId.eq(application.id))
+                .leftJoin(payment).on(payment.applicationSchoolId.eq(applicationSchool.id))
                 .leftJoin(user).on(application.userId.eq(user.id))
                 .leftJoin(profile).on(profile.userId.eq(user.id))
                 .leftJoin(admissionTicketImage)
