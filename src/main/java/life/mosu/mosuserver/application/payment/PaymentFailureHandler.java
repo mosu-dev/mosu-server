@@ -19,20 +19,20 @@ public class PaymentFailureHandler {
     public void handlePaymentFailure(PaymentEvent event) {
         List<PaymentJpaEntity> existingPayments = paymentRepository.findByOrderId(event.orderId());
         Set<Long> existingAppIds = existingPayments.stream()
-                .map(PaymentJpaEntity::getApplicationId)
+                .map(PaymentJpaEntity::getApplicationSchoolId)
                 .collect(Collectors.toSet());
 
-        List<Long> missingAppIds = event.applicationIds().stream()
+        List<Long> missingAppSchoolIds = event.applicationSchoolIds().stream()
                 .filter(appId -> !existingAppIds.contains(appId))
                 .toList();
 
         // 상태 변경
         existingPayments.forEach(payment -> payment.changeStatus(event.status()));
 
-        // 실패 신규 엔티티 생성
-        List<PaymentJpaEntity> newPayments = missingAppIds.stream()
-                .map(appId -> PaymentJpaEntity.ofFailure(
-                        appId,
+        // 실패 신규 엔티티 생성 ( 배치 후속 처리 필요 )
+        List<PaymentJpaEntity> newPayments = missingAppSchoolIds.stream()
+                .map(appSchoolId -> PaymentJpaEntity.ofFailure(
+                        appSchoolId,
                         event.orderId(),
                         event.status(),
                         event.totalAmount()))
