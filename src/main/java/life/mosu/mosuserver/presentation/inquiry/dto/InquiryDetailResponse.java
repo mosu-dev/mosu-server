@@ -3,7 +3,6 @@ package life.mosu.mosuserver.presentation.inquiry.dto;
 import io.swagger.v3.oas.annotations.media.Schema;
 import java.util.List;
 import life.mosu.mosuserver.domain.inquiry.InquiryJpaEntity;
-import life.mosu.mosuserver.domain.inquiry.InquiryStatus;
 import life.mosu.mosuserver.domain.inquiryAnswer.InquiryAnswerJpaEntity;
 
 @Schema(description = "1:1 문의 응답 DTO")
@@ -16,9 +15,9 @@ public record InquiryDetailResponse(
         String content,
         @Schema(description = "작성자", example = "홍길동")
         String author,
-        @Schema(description = "문의 상태 (WAITING: 답변 대기, COMPLETED: 답변 완료)", example = "WAITING")
-        InquiryStatus status,
-        @Schema(description = "문의 등록일", example = "2025-07-10T10:00:00")
+        @Schema(description = "문의 상태 (미응답, 완료)", example = "완료")
+        String status,
+        @Schema(description = "문의 등록일", example = "2025-07-10")
         String createdAt,
 
         List<AttachmentDetailResponse> attachments,
@@ -36,7 +35,7 @@ public record InquiryDetailResponse(
                 inquiry.getTitle(),
                 inquiry.getContent(),
                 inquiry.getAuthor(),
-                inquiry.getStatus(),
+                inquiry.getStatus().getStatusName(),
                 inquiry.getCreatedAt(),
                 attachments,
                 answer
