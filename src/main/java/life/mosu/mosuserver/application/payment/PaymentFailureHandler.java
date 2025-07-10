@@ -23,7 +23,7 @@ public class PaymentFailureHandler {
                 .collect(Collectors.toSet());
 
         List<Long> missingAppSchoolIds = event.applicationSchoolIds().stream()
-                .filter(appId -> !existingAppIds.contains(appId))
+                .filter(appSchoolId -> !existingAppIds.contains(appSchoolId))
                 .toList();
 
         // 상태 변경
