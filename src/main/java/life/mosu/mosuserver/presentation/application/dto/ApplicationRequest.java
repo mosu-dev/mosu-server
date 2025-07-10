@@ -13,13 +13,9 @@ public record ApplicationRequest(
         @Schema(description = "수험표 파일 정보", implementation = FileRequest.class)
         FileRequest admissionTicket,
 
-        @Schema(description = "보호자 전화번호", example = "010-1234-5678")
+        @Schema(description = "보호자 전화번호 (전화번호 형식은 010-XXXX-XXXX 이어야 합니다.)", example = "010-1234-5678")
         @PhoneNumberPattern
         String guardianPhoneNumber,
-
-        @Schema(description = "추천인 전화번호", example = "010-8765-4321")
-        @PhoneNumberPattern
-        String recommenderPhoneNumber,
 
         @Schema(description = "신청 학교 목록", required = true)
         @NotNull
@@ -35,7 +31,6 @@ public record ApplicationRequest(
         return ApplicationJpaEntity.builder()
                 .userId(userId)
                 .guardianPhoneNumber(guardianPhoneNumber)
-                .recommenderPhoneNumber(recommenderPhoneNumber)
                 .agreedToNotices(agreementRequest().agreedToNotices())
                 .agreedToRefundPolicy(agreementRequest().agreedToRefundPolicy())
                 .build();

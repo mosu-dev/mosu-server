@@ -8,4 +8,5 @@ public interface ProfileJpaRepository extends JpaRepository<ProfileJpaEntity, Lo
     boolean existsByUserId(Long userId);
 
     Optional<ProfileJpaEntity> findByUserId(Long userId);
+
 }
