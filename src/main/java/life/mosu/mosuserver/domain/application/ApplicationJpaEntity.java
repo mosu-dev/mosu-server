@@ -29,28 +29,22 @@ public class ApplicationJpaEntity extends BaseTimeEntity {
     @Column(name = "guardian_phone_number")
     private String guardianPhoneNumber;
 
-    @Column(name = "recommender_phone_number")
-    private String recommenderPhoneNumber;
-
     @Column(name = "agreed_to_notices")
     private Boolean agreedToNotices;
 
     @Column(name = "agreed_to_refund_policy")
     private Boolean agreedToRefundPolicy;
 
-
     @Builder
     public ApplicationJpaEntity(
             final Long userId,
             final String guardianPhoneNumber,
-            final String recommenderPhoneNumber,
             final boolean agreedToNotices,
             final boolean agreedToRefundPolicy
 
     ) {
         this.userId = userId;
         this.guardianPhoneNumber = guardianPhoneNumber;
-        this.recommenderPhoneNumber = recommenderPhoneNumber;
         this.agreedToNotices = agreedToNotices;
         this.agreedToRefundPolicy = agreedToRefundPolicy;
     }
