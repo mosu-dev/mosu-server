@@ -1,11 +1,13 @@
 package life.mosu.mosuserver.domain.payment;
 
 import java.util.Arrays;
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 @RequiredArgsConstructor
 @Slf4j
+@Getter
 public enum PaymentMethod {
     EASY_PAY("간편결제"),
     CARD("카드"),

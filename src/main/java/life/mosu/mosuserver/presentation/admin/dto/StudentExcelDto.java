@@ -1,8 +1,6 @@
 package life.mosu.mosuserver.presentation.admin.dto;
 
 import io.swagger.v3.oas.annotations.media.Schema;
-import life.mosu.mosuserver.domain.profile.Education;
-import life.mosu.mosuserver.domain.profile.Grade;
 import life.mosu.mosuserver.global.annotation.ExcelColumn;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -30,7 +28,7 @@ public class StudentExcelDto {
 
     @Schema(description = "학력", example = "HIGH_SCHOOL")
     @ExcelColumn(headerName = "학력")
-    private final Education educationLevel;
+    private final String educationLevel;
 
     @Schema(description = "학교명", example = "서울고등학교")
     @ExcelColumn(headerName = "학교명")
@@ -38,7 +36,7 @@ public class StudentExcelDto {
 
     @Schema(description = "학년", example = "THIRD")
     @ExcelColumn(headerName = "학년")
-    private final Grade grade;
+    private final String grade;
 
     @Schema(description = "시험 응시 횟수", example = "2")
     @ExcelColumn(headerName = "시험 응시 횟수")

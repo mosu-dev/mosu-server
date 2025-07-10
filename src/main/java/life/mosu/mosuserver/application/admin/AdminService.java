@@ -2,10 +2,12 @@ package life.mosu.mosuserver.application.admin;
 
 import java.util.List;
 import life.mosu.mosuserver.domain.admin.ApplicationQueryRepositoryImpl;
+import life.mosu.mosuserver.domain.admin.RefundQueryRepositoryImpl;
 import life.mosu.mosuserver.domain.admin.StudentQueryRepositoryImpl;
 import life.mosu.mosuserver.presentation.admin.dto.ApplicationExcelDto;
 import life.mosu.mosuserver.presentation.admin.dto.ApplicationFilter;
 import life.mosu.mosuserver.presentation.admin.dto.ApplicationListResponse;
+import life.mosu.mosuserver.presentation.admin.dto.RefundListResponse;
 import life.mosu.mosuserver.presentation.admin.dto.SchoolLunchResponse;
 import life.mosu.mosuserver.presentation.admin.dto.StudentExcelDto;
 import life.mosu.mosuserver.presentation.admin.dto.StudentFilter;
@@ -23,6 +25,7 @@ public class AdminService {
 
     private final StudentQueryRepositoryImpl studentQueryRepository;
     private final ApplicationQueryRepositoryImpl applicationQueryRepository;
+    private final RefundQueryRepositoryImpl refundQueryRepository;
 
     public Page<StudentListResponse> getStudents(StudentFilter filter, Pageable pageable) {
         return studentQueryRepository.searchAllStudents(filter, pageable);
@@ -43,6 +46,10 @@ public class AdminService {
 
     public List<ApplicationExcelDto> getApplicationExcelData() {
         return applicationQueryRepository.searchAllApplicationsForExcel();
+    }
+
+    public Page<RefundListResponse> getRefunds(Pageable pageable) {
+        return refundQueryRepository.searchAllRefunds(pageable);
     }
 
 }
