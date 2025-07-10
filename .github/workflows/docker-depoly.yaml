@@ -1,0 +1,31 @@
+name: Docker CI/CD - Deploy
+
+on:
+  workflow_run:
+    workflows: [ "Docker CI/CD" ]
+    types:
+      - completed
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    if: ${{ github.event.workflow_run.conclusion == 'success' || github.event_name == 'workflow_dispatch' }}
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Deploy via SSH
+        uses: appleboy/ssh-action@v0.1.10
+        with:
+          host: ${{ secrets.EC2_HOST }}
+          username: ${{ secrets.EC2_USER }}
+          key: ${{ secrets.EC2_SSH_KEY }}
+          script: |
+            cd /home/ubuntu/mosu
+
+            echo "${{ secrets.env }}" > .env.prod
+
+            echo "APP_IMAGE_VERSION=${{ github.sha }}" >> .env.prod
+
+            docker-compose pull
+            docker-compose down
+            docker-compose up -d
