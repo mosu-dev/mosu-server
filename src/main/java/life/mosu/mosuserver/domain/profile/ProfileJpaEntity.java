@@ -1,6 +1,16 @@
 package life.mosu.mosuserver.domain.profile;
 
-import jakarta.persistence.*;
+import jakarta.persistence.Column;
+import jakarta.persistence.Embedded;
+import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
+import jakarta.persistence.UniqueConstraint;
+import java.time.LocalDate;
 import life.mosu.mosuserver.domain.base.BaseTimeEntity;
 import life.mosu.mosuserver.presentation.profile.dto.EditProfileRequest;
 import lombok.AccessLevel;
@@ -8,12 +18,10 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import java.time.LocalDate;
-
 @Entity
 @Getter
 @Table(name = "profile",
-    uniqueConstraints = @UniqueConstraint(columnNames = "user_id"))
+        uniqueConstraints = @UniqueConstraint(columnNames = "user_id"))
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class ProfileJpaEntity extends BaseTimeEntity {
 
@@ -47,20 +55,23 @@ public class ProfileJpaEntity extends BaseTimeEntity {
     @Embedded
     private SchoolInfoJpaVO schoolInfo;
 
+    @Column(name = "recommender_phone_number")
+    private String recommenderPhoneNumber;
+
     @Enumerated(EnumType.STRING)
     private Grade grade;
 
     @Builder
     public ProfileJpaEntity(
-        final Long userId,
-        final String userName,
-        final Gender gender,
-        final LocalDate birth,
-        final String phoneNumber,
-        final String email,
-        final Education education,
-        final SchoolInfoJpaVO schoolInfo,
-        final Grade grade
+            final Long userId,
+            final String userName,
+            final Gender gender,
+            final LocalDate birth,
+            final String phoneNumber,
+            final String email,
+            final Education education,
+            final SchoolInfoJpaVO schoolInfo,
+            final Grade grade
     ) {
         this.userId = userId;
         this.userName = userName;
@@ -84,4 +95,7 @@ public class ProfileJpaEntity extends BaseTimeEntity {
         this.grade = request.grade();
     }
 
+    public void registerRecommenderPhoneNumber(final String recommenderPhoneNumber) {
+        this.recommenderPhoneNumber = recommenderPhoneNumber;
+    }
 }
