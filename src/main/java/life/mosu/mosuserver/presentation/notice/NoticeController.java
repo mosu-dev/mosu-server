@@ -30,6 +30,7 @@ public class NoticeController implements NoticeControllerDocs {
 
     // TODO: 관리자 권한 체크 추가
     @PostMapping
+    //    @PreAuthorize("isAuthenticated() and hasRole('ADMIN')")
     public ResponseEntity<ApiResponseWrapper<Void>> createNotice(
             @Valid @RequestBody NoticeCreateRequest request) {
         noticeService.createNotice(request);
@@ -54,6 +55,7 @@ public class NoticeController implements NoticeControllerDocs {
 
     // TODO: 관리자 권한 체크 추가
     @DeleteMapping("/{noticeId}")
+    //    @PreAuthorize("isAuthenticated() and hasRole('ADMIN')")
     public ResponseEntity<ApiResponseWrapper<Void>> deleteNotice(@PathVariable Long noticeId) {
         noticeService.deleteNotice(noticeId);
         return ResponseEntity.ok(ApiResponseWrapper.success(HttpStatus.OK, "게시글 삭제 성공"));
@@ -61,6 +63,7 @@ public class NoticeController implements NoticeControllerDocs {
 
     // TODO: 관리자 권한 체크 추가
     @PutMapping("/{noticeId}")
+    //    @PreAuthorize("isAuthenticated() and hasRole('ADMIN')")
     public ResponseEntity<ApiResponseWrapper<Void>> updateNotice(
             @PathVariable Long noticeId,
             @Valid @RequestBody NoticeUpdateRequest request
