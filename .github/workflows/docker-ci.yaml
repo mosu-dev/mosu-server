@@ -36,3 +36,7 @@ jobs:
       - name: Build Docker image
         run: |
           docker build -t kangtaehyun1107/mosu-server:${{ github.sha }} .
+
+      - name: Push Docker image
+        run: |
+          docker push kangtaehyun1107/mosu-server:${{ github.sha }}
