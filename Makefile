@@ -2,9 +2,6 @@
 
 # 프로덕션 환경을 실행하는 명령어
 prod-up:
-	@echo "빌드 중..."
-	./gradlew build -x test
-	@echo "빌드 완료..."
 	@echo "프로덕션 환경을 실행 중..."
 	docker compose -f docker-compose/docker-compose.prod.yml --env-file docker-compose/.env.prod up -d --build
 	@echo "프로덕션 환경이 실행되었습니다!"
@@ -18,9 +15,6 @@ prod-down:
 # 로컬 개발 환경을 실행하는 명령어
 # docker-compose/docker-compose.local.yml 및 docker-compose/.env.local 파일이 존재해야 함
 local-up:
-	@echo "빌드 중..."
-	./gradlew build -x test
-	@echo "빌드 완료..."
 	@echo "로컬 개발 환경을 실행 중..."
 	docker compose -f docker-compose/docker-compose.local.yml --env-file docker-compose/.env.local up -d --build
 	@echo "로컬 개발 환경이 실행되었습니다!"

@@ -31,7 +31,7 @@ services:
       - ${DB_PORT}
     ports:
       - ${DB_PORT}:${DB_PORT}
-    restart: no
+    restart: always
     volumes:
       - mosu-database:/var/lib/mysql
     networks:
@@ -74,13 +74,13 @@ services:
     ports:
       - ${DB_EXPORTER_PORT}:${DB_EXPORTER_PORT}
     command:
-      - "--mysqld.username=${DB_USERNAME}" # 사용자 이름
-      - "--mysqld.password=${DB_PASSWORD}" # 비밀번호
-      - "--mysqld.address=${DB_HOST}:${DB_PORT}" # MySQL 서버 주소와 포트
+      - "--mysqld.username=root:${DB_PASSWORD}"
+      - "--mysqld.address=database:${DB_PORT}"
     depends_on:
-      - mosu-database
+      - database
     networks:
       - mosu-bridge
+
   grafana:
     image: grafana/grafana:latest
     container_name: mosu-grafana
