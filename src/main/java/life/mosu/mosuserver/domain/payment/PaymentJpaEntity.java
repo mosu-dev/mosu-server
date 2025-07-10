@@ -26,8 +26,8 @@ public class PaymentJpaEntity extends BaseTimeEntity {
     @Column(name = "payment_id")
     private Long id;
 
-    @Column(name = "application_id")
-    private Long applicationId;
+    @Column(name = "application_school_id")
+    private Long applicationSchoolId;
 
     @Column(name = "payment_key")
     private String paymentKey;
@@ -48,14 +48,14 @@ public class PaymentJpaEntity extends BaseTimeEntity {
 
     @Builder(access = AccessLevel.PRIVATE)
     private PaymentJpaEntity(
-            Long applicationId,
+            Long applicationSchoolId,
             String paymentKey,
             String orderId,
             PaymentAmountVO paymentAmount,
             PaymentStatus paymentStatus,
             PaymentMethod paymentMethod
     ) {
-        this.applicationId = applicationId;
+        this.applicationSchoolId = applicationSchoolId;
         this.paymentKey = paymentKey;
         this.orderId = orderId;
         this.paymentAmount = paymentAmount;
@@ -64,7 +64,7 @@ public class PaymentJpaEntity extends BaseTimeEntity {
     }
 
     public static PaymentJpaEntity of(
-            Long applicationId,
+            Long applicationSchoolId,
             String paymentKey,
             String orderId,
             PaymentStatus paymentStatus,
@@ -72,7 +72,7 @@ public class PaymentJpaEntity extends BaseTimeEntity {
             PaymentMethod paymentMethod
     ) {
         return PaymentJpaEntity.builder()
-                .applicationId(applicationId)
+                .applicationSchoolId(applicationSchoolId)
                 .paymentKey(paymentKey)
                 .orderId(orderId)
                 .paymentStatus(paymentStatus)
@@ -82,14 +82,14 @@ public class PaymentJpaEntity extends BaseTimeEntity {
     }
 
     public static PaymentJpaEntity ofFailure(
-            Long applicationId,
+            Long applicationSchoolId,
             String orderId,
             PaymentStatus paymentStatus,
             Integer totalAmount
     ) {
         PaymentAmountVO paymentAmount = PaymentAmountVO.ofFailure(totalAmount);
         return PaymentJpaEntity.builder()
-                .applicationId(applicationId)
+                .applicationSchoolId(applicationSchoolId)
                 .orderId(orderId)
                 .paymentStatus(paymentStatus)
                 .paymentAmount(paymentAmount)
