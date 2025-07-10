@@ -1,7 +1,5 @@
 package life.mosu.mosuserver.presentation.admin.dto;
 
-import life.mosu.mosuserver.domain.payment.PaymentMethod;
-
 public record RefundListResponse(
         Long refundId,
         String examNumber,
@@ -9,7 +7,7 @@ public record RefundListResponse(
         String phone,
         String requestedAt,
         String completedAt,
-        PaymentMethod paymentMethod,
+        String paymentMethod,
         String reason
 
 ) {

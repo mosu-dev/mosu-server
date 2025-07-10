@@ -15,7 +15,6 @@ import life.mosu.mosuserver.presentation.admin.dto.StudentListResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
@@ -49,8 +48,7 @@ public class AdminService {
         return applicationQueryRepository.searchAllApplicationsForExcel();
     }
 
-    public List<RefundListResponse> getRefunds(int page, int size) {
-        Pageable pageable = PageRequest.of(page, size);
+    public Page<RefundListResponse> getRefunds(Pageable pageable) {
         return refundQueryRepository.searchAllRefunds(pageable);
     }
 

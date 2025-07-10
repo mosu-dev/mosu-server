@@ -1,16 +1,21 @@
 package life.mosu.mosuserver.domain.admin;
 
+import static life.mosu.mosuserver.domain.base.BaseTimeEntity.formatDate;
+
 import com.querydsl.core.Tuple;
 import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import java.util.List;
 import life.mosu.mosuserver.domain.application.QApplicationJpaEntity;
 import life.mosu.mosuserver.domain.applicationschool.QApplicationSchoolJpaEntity;
+import life.mosu.mosuserver.domain.payment.PaymentMethod;
 import life.mosu.mosuserver.domain.payment.QPaymentJpaEntity;
 import life.mosu.mosuserver.domain.profile.QProfileJpaEntity;
 import life.mosu.mosuserver.domain.refund.QRefundJpaEntity;
 import life.mosu.mosuserver.presentation.admin.dto.RefundListResponse;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
 
@@ -27,14 +32,19 @@ public class RefundQueryRepositoryImpl implements RefundQueryRepository {
     QPaymentJpaEntity payment = QPaymentJpaEntity.paymentJpaEntity;
 
     @Override
-    public List<RefundListResponse> searchAllRefunds(Pageable pageable) {
-        JPAQuery<Tuple> query = baseQuery()
-                .offset(pageable.getOffset())
-                .limit(pageable.getPageSize());
+    public Page<RefundListResponse> searchAllRefunds(Pageable pageable) {
+        long total = baseQuery().fetch().size();
 
-        return query.fetch().stream()
+        List<RefundListResponse> content = baseQuery()
+                .offset(pageable.getOffset())
+                .limit(pageable.getPageSize())
+                .fetch()
+                .stream()
                 .map(this::mapToResponse)
                 .toList();
+
+        return new PageImpl<>(content, pageable, total);
+
     }
 
     private JPAQuery<Tuple> baseQuery() {
@@ -57,6 +67,7 @@ public class RefundQueryRepositoryImpl implements RefundQueryRepository {
     }
 
     private RefundListResponse mapToResponse(Tuple tuple) {
+        PaymentMethod paymentMethod = tuple.get(payment.paymentMethod);
         return new RefundListResponse(
                 tuple.get(refund.id),
                 tuple.get(appSchool.examinationNumber),
@@ -64,12 +75,10 @@ public class RefundQueryRepositoryImpl implements RefundQueryRepository {
                 tuple.get(profile.phoneNumber),
                 formatDate(tuple.get(refund.createdAt)),
                 formatDate(tuple.get(refund.agreedAt)),
-                tuple.get(payment.paymentMethod),
+                paymentMethod != null ? paymentMethod.getName() : "N/A",
                 tuple.get(refund.reason)
         );
     }
 
-    private String formatDate(java.time.LocalDateTime dateTime) {
-        return dateTime != null ? dateTime.toLocalDate().toString() : null;
-    }
+
 }

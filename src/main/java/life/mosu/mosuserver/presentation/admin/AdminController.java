@@ -20,12 +20,12 @@ import life.mosu.mosuserver.presentation.admin.dto.StudentListResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -98,13 +98,12 @@ public class AdminController implements AdminControllerDocs {
         excelFile.write(response.getOutputStream());
     }
 
-    @GetMapping("refunds")
+    @GetMapping("/refunds")
 //    @PreAuthorize("isAuthenticated() and hasRole('ADMIN')")
-    public ResponseEntity<ApiResponseWrapper<List<RefundListResponse>>> getRefundCounts(
-            @RequestParam(defaultValue = "0") int page,
-            @RequestParam(defaultValue = "15") int size
+    public ResponseEntity<ApiResponseWrapper<Page<RefundListResponse>>> getRefundCounts(
+            @PageableDefault(size = 15) Pageable pageable
     ) {
-        List<RefundListResponse> result = adminService.getRefunds(page, size);
+        Page<RefundListResponse> result = adminService.getRefunds(pageable);
         return ResponseEntity.ok(
                 ApiResponseWrapper.success(HttpStatus.OK, "환불 신청 수 조회 성공", result));
     }
