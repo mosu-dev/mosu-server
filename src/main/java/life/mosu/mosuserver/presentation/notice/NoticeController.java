@@ -24,7 +24,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/notice")
 @RequiredArgsConstructor
-public class NoticeController {
+public class NoticeController implements NoticeControllerDocs {
 
     private final NoticeService noticeService;
 

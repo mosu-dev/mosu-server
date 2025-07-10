@@ -6,6 +6,7 @@ import life.mosu.mosuserver.application.faq.FaqService;
 import life.mosu.mosuserver.global.util.ApiResponseWrapper;
 import life.mosu.mosuserver.presentation.faq.dto.FaqCreateRequest;
 import life.mosu.mosuserver.presentation.faq.dto.FaqResponse;
+import life.mosu.mosuserver.presentation.faq.dto.FaqUpdateRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -23,13 +24,14 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/faq")
-public class FaqController {
+public class FaqController implements FaqControllerDocs {
 
     private final FaqService faqService;
 
     //TODO: 관리자 권한 체크 추가
     @PostMapping
-    public ResponseEntity<ApiResponseWrapper<Void>> create(
+    //    @PreAuthorize("isAuthenticated() and hasRole('ADMIN')")
+    public ResponseEntity<ApiResponseWrapper<Void>> createFaq(
             @Valid @RequestBody FaqCreateRequest request) {
         faqService.createFaq(request);
         return ResponseEntity.ok(ApiResponseWrapper.success(HttpStatus.CREATED, "게시글 등록 성공"));
@@ -44,10 +46,18 @@ public class FaqController {
         return ResponseEntity.ok(ApiResponseWrapper.success(HttpStatus.OK, "게시글 조회 성공", responses));
     }
 
+    @GetMapping("/{faqId}")
+    public ResponseEntity<ApiResponseWrapper<FaqResponse>> getFaqDetail(
+            @PathVariable Long faqId) {
+        FaqResponse faq = faqService.getFaqDetail(faqId);
+        return ResponseEntity.ok(ApiResponseWrapper.success(HttpStatus.OK, "게시글 상세 조회 성공", faq));
+    }
+
     @PutMapping("/{faqId}")
-    public ResponseEntity<ApiResponseWrapper<Void>> update(
+    //    @PreAuthorize("isAuthenticated() and hasRole('ADMIN')")
+    public ResponseEntity<ApiResponseWrapper<Void>> updateFaq(
             @PathVariable Long faqId,
-            @Valid @RequestBody FaqCreateRequest request
+            @Valid @RequestBody FaqUpdateRequest request
     ) {
         faqService.update(request, faqId);
         return ResponseEntity.ok(ApiResponseWrapper.success(HttpStatus.OK, "게시글 수정 성공"));
@@ -55,7 +65,8 @@ public class FaqController {
 
     //TODO: 관리자 권한 체크 추가
     @DeleteMapping("/{faqId}")
-    public ResponseEntity<ApiResponseWrapper<Void>> delete(@PathVariable Long faqId) {
+    //    @PreAuthorize("isAuthenticated() and hasRole('ADMIN')")
+    public ResponseEntity<ApiResponseWrapper<Void>> deleteFaq(@PathVariable Long faqId) {
         faqService.deleteFaq(faqId);
         return ResponseEntity.ok(ApiResponseWrapper.success(HttpStatus.OK, "게시글 삭제 성공"));
     }
