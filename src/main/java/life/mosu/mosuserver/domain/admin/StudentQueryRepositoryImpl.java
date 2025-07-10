@@ -8,6 +8,9 @@ import com.querydsl.jpa.impl.JPAQueryFactory;
 import java.util.List;
 import java.util.Optional;
 import life.mosu.mosuserver.domain.application.QApplicationJpaEntity;
+import life.mosu.mosuserver.domain.profile.Education;
+import life.mosu.mosuserver.domain.profile.Gender;
+import life.mosu.mosuserver.domain.profile.Grade;
 import life.mosu.mosuserver.domain.profile.QProfileJpaEntity;
 import life.mosu.mosuserver.presentation.admin.dto.StudentExcelDto;
 import life.mosu.mosuserver.presentation.admin.dto.StudentFilter;
@@ -118,31 +121,39 @@ public class StudentQueryRepositoryImpl implements StudentQueryRepository {
     }
 
     private StudentListResponse mapToResponse(Tuple tuple, QProfileJpaEntity profile) {
+        Education education = tuple.get(profile.education);
+        Gender gender = tuple.get(profile.gender);
+        Grade grade = tuple.get(profile.grade);
+
         Long examCount = Optional.ofNullable(tuple.get(examCountExpr))
                 .orElse(0L);
         return new StudentListResponse(
                 tuple.get(profile.userName),
                 tuple.get(profile.birth) != null ? tuple.get(profile.birth).toString() : null,
                 tuple.get(profile.phoneNumber),
-                tuple.get(profile.gender) != null ? tuple.get(profile.gender).name() : null,
-                tuple.get(profile.education),
+                gender != null ? gender.getGenderName() : null,
+                education != null ? education.getEducationName() : null,
                 tuple.get(profile.schoolInfo.schoolName),
-                tuple.get(profile.grade),
+                grade != null ? grade.getGradeName() : null,
                 examCount.intValue()
         );
     }
 
     private StudentExcelDto mapToExcel(Tuple tuple, QProfileJpaEntity profile) {
+        Education education = tuple.get(profile.education);
+        Gender gender = tuple.get(profile.gender);
+        Grade grade = tuple.get(profile.grade);
+
         Long examCount = Optional.ofNullable(tuple.get(examCountExpr))
                 .orElse(0L);
         return new StudentExcelDto(
                 tuple.get(profile.userName),
                 tuple.get(profile.birth) != null ? tuple.get(profile.birth).toString() : null,
                 tuple.get(profile.phoneNumber),
-                tuple.get(profile.gender) != null ? tuple.get(profile.gender).name() : null,
-                tuple.get(profile.education),
+                gender != null ? gender.getGenderName() : null,
+                education != null ? education.getEducationName() : null,
                 tuple.get(profile.schoolInfo.schoolName),
-                tuple.get(profile.grade),
+                grade != null ? grade.getGradeName() : null,
                 examCount.intValue()
         );
     }
