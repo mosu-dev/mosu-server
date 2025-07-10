@@ -52,7 +52,7 @@ public class SchoolQuotaCacheManager {
     public void decreaseApplicationCount(String schoolName) {
         String key = REDIS_KEY_SCHOOL_CURRENT_APPLICATIONS + schoolName;
         Long currentValue = redisTemplate.opsForValue().get(key);
-        if (currentValue > 0) {
+        if (currentValue != null && currentValue > 0) {
             redisTemplate.opsForValue().decrement(key);
         }
     }
