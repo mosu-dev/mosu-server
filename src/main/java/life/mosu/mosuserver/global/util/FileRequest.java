@@ -2,6 +2,7 @@ package life.mosu.mosuserver.global.util;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import life.mosu.mosuserver.domain.application.AdmissionTicketImageJpaEntity;
+import life.mosu.mosuserver.domain.event.EventAttachmentJpaEntity;
 import life.mosu.mosuserver.domain.faq.FaqAttachmentJpaEntity;
 import life.mosu.mosuserver.domain.inquiry.InquiryAttachmentJpaEntity;
 import life.mosu.mosuserver.domain.inquiryAnswer.InquiryAnswerAttachmentEntity;
@@ -14,7 +15,7 @@ public record FileRequest(
 
         @Schema(description = "파일 이름", example = "example.jpg")
         String fileName,
-  
+
         @Schema(description = "S3 키", example = "비공개 이미지를 처리하기 위한 키")
         String s3Key
 
@@ -68,6 +69,16 @@ public record FileRequest(
                 .s3Key(s3Key)
                 .visibility(Visibility.PRIVATE)
                 .inquiryAnswerId(inquiryAnswerId)
+                .build();
+    }
+
+    public EventAttachmentJpaEntity toEventAttachmentEntity(String fileName, String s3Key,
+            Long eventId) {
+        return EventAttachmentJpaEntity.builder()
+                .fileName(fileName)
+                .s3Key(s3Key)
+                .visibility(Visibility.PUBLIC)
+                .eventId(eventId)
                 .build();
     }
 }
