@@ -1,9 +1,9 @@
 package life.mosu.mosuserver.application.inquiry;
 
 import life.mosu.mosuserver.domain.inquiry.InquiryJpaEntity;
-import life.mosu.mosuserver.domain.inquiry.InquiryRepository;
+import life.mosu.mosuserver.domain.inquiry.InquiryJpaRepository;
 import life.mosu.mosuserver.domain.inquiry.InquiryStatus;
-import life.mosu.mosuserver.domain.inquiryAnswer.InquiryAnswerRepository;
+import life.mosu.mosuserver.domain.inquiryAnswer.InquiryAnswerJpaRepository;
 import life.mosu.mosuserver.global.exception.CustomRuntimeException;
 import life.mosu.mosuserver.global.exception.ErrorCode;
 import life.mosu.mosuserver.presentation.inquiry.dto.InquiryCreateRequest;
@@ -22,13 +22,13 @@ import org.springframework.transaction.annotation.Transactional;
 public class InquiryService {
 
     private final InquiryAttachmentService inquiryAttachmentService;
-    private final InquiryRepository inquiryRepository;
+    private final InquiryJpaRepository inquiryJpaRepository;
     private final InquiryAnswerService inquiryAnswerService;
-    private final InquiryAnswerRepository inquiryAnswerRepository;
+    private final InquiryAnswerJpaRepository inquiryAnswerJpaRepository;
 
     @Transactional
     public void createInquiry(InquiryCreateRequest request) {
-        InquiryJpaEntity inquiryEntity = inquiryRepository.save(request.toEntity());
+        InquiryJpaEntity inquiryEntity = inquiryJpaRepository.save(request.toEntity());
         inquiryAttachmentService.createAttachment(request.attachments(), inquiryEntity);
     }
 
@@ -39,7 +39,7 @@ public class InquiryService {
             boolean asc,
             Pageable pageable) {
 
-        return inquiryRepository.searchInquiries(status, sortField, asc, pageable);
+        return inquiryJpaRepository.searchInquiries(status, sortField, asc, pageable);
 
     }
 
@@ -54,13 +54,13 @@ public class InquiryService {
     public void deleteInquiry(Long postId) {
         InquiryJpaEntity inquiryEntity = getInquiryOrThrow(postId);
 
-        inquiryAnswerRepository.findByInquiryId(postId).ifPresent(answer -> {
+        inquiryAnswerJpaRepository.findByInquiryId(postId).ifPresent(answer -> {
             inquiryAnswerService.deleteInquiryAnswer(postId);
         });
 
         inquiryAttachmentService.deleteAttachment(inquiryEntity);
 
-        inquiryRepository.delete(inquiryEntity);
+        inquiryJpaRepository.delete(inquiryEntity);
     }
 
 
@@ -77,7 +77,7 @@ public class InquiryService {
     }
 
     private InquiryJpaEntity getInquiryOrThrow(Long postId) {
-        return inquiryRepository.findById(postId)
+        return inquiryJpaRepository.findById(postId)
                 .orElseThrow(() -> new CustomRuntimeException(ErrorCode.INQUIRY_NOT_FOUND));
     }
 

@@ -10,7 +10,7 @@ import static org.mockito.Mockito.when;
 import life.mosu.mosuserver.application.faq.FaqAttachmentService;
 import life.mosu.mosuserver.application.faq.FaqService;
 import life.mosu.mosuserver.domain.faq.FaqJpaEntity;
-import life.mosu.mosuserver.domain.faq.FaqRepository;
+import life.mosu.mosuserver.domain.faq.FaqJpaRepository;
 import life.mosu.mosuserver.presentation.faq.dto.FaqCreateRequest;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -22,7 +22,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 public class FaqServiceTest {
 
     @Mock
-    private FaqRepository faqRepository;
+    private FaqJpaRepository faqJpaRepository;
     @Mock
     private FaqAttachmentService faqAttachmentService;
 
@@ -32,7 +32,7 @@ public class FaqServiceTest {
     void setUp() {
 
         faqService = new FaqService(
-                faqRepository,
+                faqJpaRepository,
                 faqAttachmentService
         );
     }
@@ -43,7 +43,7 @@ public class FaqServiceTest {
         FaqCreateRequest request = mock(FaqCreateRequest.class);
         FaqJpaEntity savedEntity = mock(FaqJpaEntity.class);
 
-        when(faqRepository.save(any())).thenReturn(savedEntity);
+        when(faqJpaRepository.save(any())).thenReturn(savedEntity);
         when(request.toEntity()).thenReturn(savedEntity);
         when(savedEntity.getId()).thenReturn(1L);
 
@@ -51,7 +51,7 @@ public class FaqServiceTest {
         faqService.createFaq(request);
 
         // then
-        verify(faqRepository, atLeastOnce()).save(any());
+        verify(faqJpaRepository, atLeastOnce()).save(any());
         assertEquals(1L, savedEntity.getId());
     }
 }

@@ -3,7 +3,7 @@ package life.mosu.mosuserver.application.inquiry;
 import java.time.Duration;
 import java.util.List;
 import life.mosu.mosuserver.domain.inquiryAnswer.InquiryAnswerAttachmentEntity;
-import life.mosu.mosuserver.domain.inquiryAnswer.InquiryAnswerAttachmentRepository;
+import life.mosu.mosuserver.domain.inquiryAnswer.InquiryAnswerAttachmentJpaRepository;
 import life.mosu.mosuserver.domain.inquiryAnswer.InquiryAnswerJpaEntity;
 import life.mosu.mosuserver.global.util.FileRequest;
 import life.mosu.mosuserver.infra.property.S3Properties;
@@ -20,7 +20,7 @@ public class InquiryAnswerAttachmentService implements
         AttachmentService<InquiryAnswerJpaEntity, FileRequest> {
 
     private final S3Properties s3Properties;
-    private final InquiryAnswerAttachmentRepository attachmentRepository;
+    private final InquiryAnswerAttachmentJpaRepository attachmentRepository;
     private final FileUploadHelper fileUploadHelper;
     private final S3Service s3Service;
 

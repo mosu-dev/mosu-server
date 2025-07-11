@@ -3,7 +3,7 @@ package life.mosu.mosuserver.application.faq;
 import java.time.Duration;
 import java.util.List;
 import life.mosu.mosuserver.domain.faq.FaqAttachmentJpaEntity;
-import life.mosu.mosuserver.domain.faq.FaqAttachmentRepository;
+import life.mosu.mosuserver.domain.faq.FaqAttachmentJpaRepository;
 import life.mosu.mosuserver.domain.faq.FaqJpaEntity;
 import life.mosu.mosuserver.global.util.FileRequest;
 import life.mosu.mosuserver.infra.property.S3Properties;
@@ -20,7 +20,7 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class FaqAttachmentService implements AttachmentService<FaqJpaEntity, FileRequest> {
 
-    private final FaqAttachmentRepository faqAttachmentRepository;
+    private final FaqAttachmentJpaRepository faqAttachmentJpaRepository;
     private final FileUploadHelper fileUploadHelper;
     private final S3Service s3Service;
     private final S3Properties s3Properties;
@@ -31,7 +31,7 @@ public class FaqAttachmentService implements AttachmentService<FaqJpaEntity, Fil
         fileUploadHelper.saveAttachments(
                 requests,
                 faqEntity.getId(),
-                faqAttachmentRepository,
+                faqAttachmentJpaRepository,
                 (req, id) -> req.toFaqAttachmentEntity(
                         req.fileName(),
                         req.s3Key(),
@@ -43,15 +43,15 @@ public class FaqAttachmentService implements AttachmentService<FaqJpaEntity, Fil
 
     @Override
     public void deleteAttachment(FaqJpaEntity entity) {
-        List<FaqAttachmentJpaEntity> attachments = faqAttachmentRepository.findAllByFaqId(
+        List<FaqAttachmentJpaEntity> attachments = faqAttachmentJpaRepository.findAllByFaqId(
                 entity.getId());
-        faqAttachmentRepository.deleteAll(attachments);
+        faqAttachmentJpaRepository.deleteAll(attachments);
     }
 
 
     public List<FaqResponse.AttachmentResponse> toAttachmentResponses(FaqJpaEntity faq) {
 
-        List<FaqAttachmentJpaEntity> attachments = faqAttachmentRepository.findAllByFaqId(
+        List<FaqAttachmentJpaEntity> attachments = faqAttachmentJpaRepository.findAllByFaqId(
                 faq.getId());
 
         return attachments.stream()
