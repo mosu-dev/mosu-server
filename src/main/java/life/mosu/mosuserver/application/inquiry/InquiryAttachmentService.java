@@ -3,7 +3,7 @@ package life.mosu.mosuserver.application.inquiry;
 import java.time.Duration;
 import java.util.List;
 import life.mosu.mosuserver.domain.inquiry.InquiryAttachmentJpaEntity;
-import life.mosu.mosuserver.domain.inquiry.InquiryAttachmentRepository;
+import life.mosu.mosuserver.domain.inquiry.InquiryAttachmentJpaRepository;
 import life.mosu.mosuserver.domain.inquiry.InquiryJpaEntity;
 import life.mosu.mosuserver.global.util.FileRequest;
 import life.mosu.mosuserver.infra.property.S3Properties;
@@ -18,7 +18,7 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class InquiryAttachmentService implements AttachmentService<InquiryJpaEntity, FileRequest> {
 
-    private final InquiryAttachmentRepository inquiryAttachmentRepository;
+    private final InquiryAttachmentJpaRepository inquiryAttachmentJpaRepository;
     private final FileUploadHelper fileUploadHelper;
     private final S3Service s3Service;
     private final S3Properties s3Properties;
@@ -28,7 +28,7 @@ public class InquiryAttachmentService implements AttachmentService<InquiryJpaEnt
         fileUploadHelper.saveAttachments(
                 requests,
                 inquiryEntity.getId(),
-                inquiryAttachmentRepository,
+                inquiryAttachmentJpaRepository,
                 (req, id) -> req.toInquiryAttachmentEntity(
                         req.fileName(),
                         req.s3Key(),
@@ -40,15 +40,15 @@ public class InquiryAttachmentService implements AttachmentService<InquiryJpaEnt
 
     @Override
     public void deleteAttachment(InquiryJpaEntity entity) {
-        List<InquiryAttachmentJpaEntity> attachments = inquiryAttachmentRepository.findAllByInquiryId(
+        List<InquiryAttachmentJpaEntity> attachments = inquiryAttachmentJpaRepository.findAllByInquiryId(
                 entity.getId());
-        inquiryAttachmentRepository.deleteAll(attachments);
+        inquiryAttachmentJpaRepository.deleteAll(attachments);
     }
 
 
     public List<InquiryDetailResponse.AttachmentDetailResponse> toAttachmentResponses(
             InquiryJpaEntity inquiry) {
-        List<InquiryAttachmentJpaEntity> attachments = inquiryAttachmentRepository.findAllByInquiryId(
+        List<InquiryAttachmentJpaEntity> attachments = inquiryAttachmentJpaRepository.findAllByInquiryId(
                 inquiry.getId());
 
         return attachments.stream()

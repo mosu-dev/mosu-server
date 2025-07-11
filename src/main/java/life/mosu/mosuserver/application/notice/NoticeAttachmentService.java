@@ -3,7 +3,7 @@ package life.mosu.mosuserver.application.notice;
 import java.time.Duration;
 import java.util.List;
 import life.mosu.mosuserver.domain.notice.NoticeAttachmentJpaEntity;
-import life.mosu.mosuserver.domain.notice.NoticeAttachmentRepository;
+import life.mosu.mosuserver.domain.notice.NoticeAttachmentJpaRepository;
 import life.mosu.mosuserver.domain.notice.NoticeJpaEntity;
 import life.mosu.mosuserver.global.util.FileRequest;
 import life.mosu.mosuserver.infra.property.S3Properties;
@@ -21,7 +21,7 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class NoticeAttachmentService implements AttachmentService<NoticeJpaEntity, FileRequest> {
 
-    private final NoticeAttachmentRepository noticeAttachmentRepository;
+    private final NoticeAttachmentJpaRepository noticeAttachmentJpaRepository;
     private final FileUploadHelper fileUploadHelper;
     private final S3Service s3Service;
     private final S3Properties s3Properties;
@@ -31,7 +31,7 @@ public class NoticeAttachmentService implements AttachmentService<NoticeJpaEntit
         fileUploadHelper.saveAttachments(
                 requests,
                 noticeEntity.getId(),
-                noticeAttachmentRepository,
+                noticeAttachmentJpaRepository,
                 (req, id) -> req.toNoticeAttachmentEntity(
                         req.fileName(),
                         req.s3Key(),
@@ -43,14 +43,14 @@ public class NoticeAttachmentService implements AttachmentService<NoticeJpaEntit
 
     @Override
     public void deleteAttachment(NoticeJpaEntity entity) {
-        List<NoticeAttachmentJpaEntity> attachments = noticeAttachmentRepository.findAllByNoticeId(
+        List<NoticeAttachmentJpaEntity> attachments = noticeAttachmentJpaRepository.findAllByNoticeId(
                 entity.getId());
-        noticeAttachmentRepository.deleteAll(attachments);
+        noticeAttachmentJpaRepository.deleteAll(attachments);
     }
 
     public List<NoticeResponse.AttachmentResponse> toAttachmentResponses(NoticeJpaEntity notice) {
 
-        List<NoticeAttachmentJpaEntity> attachments = noticeAttachmentRepository.findAllByNoticeId(
+        List<NoticeAttachmentJpaEntity> attachments = noticeAttachmentJpaRepository.findAllByNoticeId(
                 notice.getId());
 
         return attachments.stream()
@@ -64,7 +64,7 @@ public class NoticeAttachmentService implements AttachmentService<NoticeJpaEntit
     public List<NoticeDetailResponse.AttachmentDetailResponse> toDetailAttResponses(
             NoticeJpaEntity notice) {
 
-        List<NoticeAttachmentJpaEntity> attachments = noticeAttachmentRepository.findAllByNoticeId(
+        List<NoticeAttachmentJpaEntity> attachments = noticeAttachmentJpaRepository.findAllByNoticeId(
                 notice.getId());
 
         return attachments.stream()

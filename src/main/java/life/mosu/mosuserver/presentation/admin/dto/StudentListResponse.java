@@ -23,7 +23,7 @@ public record StudentListResponse(
         @Schema(description = "학교명", example = "서울고등학교")
         String schoolName,
 
-        @Schema(description = "학년", example = "HIGH_1")
+        @Schema(description = "학년", example = "고등학교 1학년")
         String grade,
 
         @Schema(description = "시험 응시 횟수", example = "2")

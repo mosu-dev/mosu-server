@@ -1,9 +1,9 @@
 package life.mosu.mosuserver.application.inquiry;
 
 import life.mosu.mosuserver.domain.inquiry.InquiryJpaEntity;
-import life.mosu.mosuserver.domain.inquiry.InquiryRepository;
+import life.mosu.mosuserver.domain.inquiry.InquiryJpaRepository;
 import life.mosu.mosuserver.domain.inquiryAnswer.InquiryAnswerJpaEntity;
-import life.mosu.mosuserver.domain.inquiryAnswer.InquiryAnswerRepository;
+import life.mosu.mosuserver.domain.inquiryAnswer.InquiryAnswerJpaRepository;
 import life.mosu.mosuserver.global.exception.CustomRuntimeException;
 import life.mosu.mosuserver.global.exception.ErrorCode;
 import life.mosu.mosuserver.presentation.inquiry.dto.InquiryAnswerRequest;
@@ -20,18 +20,18 @@ import org.springframework.transaction.annotation.Transactional;
 public class InquiryAnswerService {
 
     private final InquiryAnswerAttachmentService answerAttachmentService;
-    private final InquiryAnswerRepository inquiryAnswerRepository;
-    private final InquiryRepository inquiryRepository;
+    private final InquiryAnswerJpaRepository inquiryAnswerJpaRepository;
+    private final InquiryJpaRepository inquiryJpaRepository;
 
     @Transactional
     public void createInquiryAnswer(Long postId, InquiryAnswerRequest request) {
         InquiryJpaEntity inquiryEntity = getInquiryOrThrow(postId);
 
-        if (inquiryAnswerRepository.findByInquiryId(postId).isPresent()) {
+        if (inquiryAnswerJpaRepository.findByInquiryId(postId).isPresent()) {
             throw new CustomRuntimeException(ErrorCode.INQUIRY_ANSWER_ALREADY_EXISTS);
         }
 
-        InquiryAnswerJpaEntity answerEntity = inquiryAnswerRepository.save(
+        InquiryAnswerJpaEntity answerEntity = inquiryAnswerJpaRepository.save(
                 request.toEntity(postId));
 
         answerAttachmentService.createAttachment(request.attachments(), answerEntity);
@@ -42,10 +42,10 @@ public class InquiryAnswerService {
     public void deleteInquiryAnswer(Long postId) {
         InquiryJpaEntity inquiryEntity = getInquiryOrThrow(postId);
 
-        InquiryAnswerJpaEntity answerEntity = inquiryAnswerRepository.findByInquiryId(postId)
+        InquiryAnswerJpaEntity answerEntity = inquiryAnswerJpaRepository.findByInquiryId(postId)
                 .orElseThrow(() -> new CustomRuntimeException(ErrorCode.INQUIRY_ANSWER_NOT_FOUND));
 
-        inquiryAnswerRepository.delete(answerEntity);
+        inquiryAnswerJpaRepository.delete(answerEntity);
         answerAttachmentService.deleteAttachment(answerEntity);
         inquiryEntity.updateStatusToPending();
     }
@@ -53,7 +53,7 @@ public class InquiryAnswerService {
     @Transactional(readOnly = true, propagation = Propagation.SUPPORTS)
     public InquiryDetailResponse.InquiryAnswerDetailResponse getInquiryAnswerDetail(
             Long inquiryId) {
-        return inquiryAnswerRepository.findByInquiryId(inquiryId)
+        return inquiryAnswerJpaRepository.findByInquiryId(inquiryId)
                 .map(answer -> InquiryAnswerDetailResponse.of(
                         answer,
                         answerAttachmentService.toAttachmentResponses(answer)
@@ -65,18 +65,18 @@ public class InquiryAnswerService {
     public void updateInquiryAnswer(Long postId, InquiryAnswerUpdateRequest request) {
         InquiryJpaEntity inquiryEntity = getInquiryOrThrow(postId);
 
-        InquiryAnswerJpaEntity answerEntity = inquiryAnswerRepository.findByInquiryId(postId)
+        InquiryAnswerJpaEntity answerEntity = inquiryAnswerJpaRepository.findByInquiryId(postId)
                 .orElseThrow(() -> new CustomRuntimeException(ErrorCode.INQUIRY_ANSWER_NOT_FOUND));
 
         answerEntity.update(request.title(), request.content());
-        inquiryAnswerRepository.save(answerEntity);
+        inquiryAnswerJpaRepository.save(answerEntity);
 
         answerAttachmentService.deleteAttachment(answerEntity);
         answerAttachmentService.createAttachment(request.attachments(), answerEntity);
     }
 
     private InquiryJpaEntity getInquiryOrThrow(Long postId) {
-        return inquiryRepository.findById(postId)
+        return inquiryJpaRepository.findById(postId)
                 .orElseThrow(() -> new CustomRuntimeException(ErrorCode.INQUIRY_NOT_FOUND));
     }
 
