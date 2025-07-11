@@ -6,8 +6,6 @@ import life.mosu.mosuserver.application.oauth.OAuthUserService;
 import life.mosu.mosuserver.global.handler.OAuth2LoginFailureHandler;
 import life.mosu.mosuserver.global.handler.OAuth2LoginSuccessHandler;
 import life.mosu.mosuserver.global.resolver.AuthorizationRequestRedirectResolver;
-import life.mosu.mosuserver.presentation.oauth.AccessTokenFilter;
-import life.mosu.mosuserver.presentation.oauth.TokenExceptionFilter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -23,7 +21,6 @@ import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
@@ -45,8 +42,7 @@ public class SecurityConfig {
     private final OAuth2LoginSuccessHandler loginSuccessHandler;
     private final OAuth2LoginFailureHandler loginFailureHandler;
     private final AuthenticationEntryPoint authenticationEntryPoint;
-    private final AccessTokenFilter accessTokenFilter;
-    private final TokenExceptionFilter tokenExceptionFilter;
+
 
     private final AuthorizationRequestRedirectResolver authorizationRequestRedirectResolver;
 
@@ -99,8 +95,6 @@ public class SecurityConfig {
                         .successHandler(loginSuccessHandler)
                         .failureHandler(loginFailureHandler)
                 )
-                .addFilterBefore(accessTokenFilter, UsernamePasswordAuthenticationFilter.class)
-                .addFilterBefore(tokenExceptionFilter, accessTokenFilter.getClass())
                 .logout(config -> config.logoutSuccessUrl("/"))
                 .exceptionHandling(exceptions ->
                         exceptions.authenticationEntryPoint(authenticationEntryPoint));
