@@ -33,25 +33,21 @@ public class EventJpaEntity extends BaseTimeEntity {
     @Column(name = "event_link")
     private String eventLink;
 
-
     @Builder
     public EventJpaEntity(
             final String title,
             final DurationJpaVO duration,
             final String eventLink
-
     ) {
         this.title = title;
         this.duration = duration;
         this.eventLink = eventLink;
-
     }
 
     public void update(final String title, final DurationJpaVO duration, final String eventLink) {
         this.title = title;
         this.duration = duration;
         this.eventLink = eventLink;
-
     }
 
 }

@@ -16,4 +16,3 @@ public enum Lunch {
 
     private final String lunchName;
 }
-//임의 구현

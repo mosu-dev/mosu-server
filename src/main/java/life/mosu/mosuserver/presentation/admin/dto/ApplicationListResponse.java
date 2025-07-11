@@ -6,9 +6,6 @@ import java.time.LocalDateTime;
 import java.util.Set;
 import life.mosu.mosuserver.domain.payment.PaymentMethod;
 import life.mosu.mosuserver.domain.payment.PaymentStatus;
-import life.mosu.mosuserver.domain.profile.Education;
-import life.mosu.mosuserver.domain.profile.Gender;
-import life.mosu.mosuserver.domain.profile.Grade;
 import life.mosu.mosuserver.presentation.applicationschool.dto.AdmissionTicketResponse;
 
 @Schema(description = "관리자 신청 목록 응답 DTO")
@@ -23,8 +20,8 @@ public record ApplicationListResponse(
         @Schema(description = "수험자 이름", example = "홍길동")
         String name,
 
-        @Schema(description = "성별", example = "MALE")
-        Gender gender,
+        @Schema(description = "성별", example = "남성")
+        String gender,
 
         @Schema(description = "생년월일", example = "2005-05-10")
         LocalDate birth,
@@ -35,14 +32,14 @@ public record ApplicationListResponse(
         @Schema(description = "보호자 전화번호", example = "010-9876-5432")
         String guardianPhoneNumber,
 
-        @Schema(description = "학력 (예: ENROLLED, GRADUATED)", example = "GRADUATED")
-        Education educationLevel,
+        @Schema(description = "학력 (예: 재학생, 졸업생)", example = "재학생")
+        String educationLevel,
 
         @Schema(description = "학교명", example = "대치중학교")
         String schoolName,
 
-        @Schema(description = "학년", example = "HIGH_3")
-        Grade grade,
+        @Schema(description = "학년", example = "고등학교 1학년")
+        String grade,
 
         @Schema(description = "도시락 신청 여부", example = "NONE")
         String lunch,
