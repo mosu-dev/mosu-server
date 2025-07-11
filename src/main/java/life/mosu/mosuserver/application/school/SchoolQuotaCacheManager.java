@@ -3,7 +3,7 @@ package life.mosu.mosuserver.application.school;
 import java.util.List;
 import life.mosu.mosuserver.domain.school.SchoolApplicationProjection;
 import life.mosu.mosuserver.domain.school.SchoolJpaEntity;
-import life.mosu.mosuserver.domain.school.SchoolRepository;
+import life.mosu.mosuserver.domain.school.SchoolJpaRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
@@ -16,7 +16,7 @@ public class SchoolQuotaCacheManager {
     private static final String REDIS_KEY_SCHOOL_CURRENT_APPLICATIONS = "school:current_applications:";
 
     private final RedisTemplate<String, Long> redisTemplate;
-    private final SchoolRepository schoolRepository;
+    private final SchoolJpaRepository schoolRepository;
 
     public void cacheSchoolMaxCapacities() {
         List<SchoolJpaEntity> schools = schoolRepository.findAll();

@@ -1,5 +1,7 @@
 package life.mosu.mosuserver.domain.user;
 
+import static life.mosu.mosuserver.global.util.KeyGeneratorUtil.generateUUIDCustomerKey;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -59,21 +61,31 @@ public class UserJpaEntity extends BaseTimeEntity {
     @Enumerated(EnumType.STRING)
     private UserRole userRole;
 
-
     @Builder
     public UserJpaEntity(String loginId, String password, Gender gender, String name,
-            LocalDate birth,
-            String customerKey, boolean agreedToTermsOfService, boolean agreedToPrivacyPolicy,
+            LocalDate birth, boolean agreedToTermsOfService, boolean agreedToPrivacyPolicy,
             boolean agreedToMarketing, UserRole userRole) {
         this.loginId = loginId;
         this.password = password;
         this.gender = gender;
         this.name = name;
         this.birth = birth;
-        this.customerKey = customerKey;
+        this.customerKey = generateUUIDCustomerKey();
         this.agreedToTermsOfService = agreedToTermsOfService;
         this.agreedToPrivacyPolicy = agreedToPrivacyPolicy;
         this.agreedToMarketing = agreedToMarketing;
         this.userRole = userRole;
+    }
+
+    public void updateOAuthUser(
+            Gender gender, String name,
+            LocalDate birth) {
+        this.gender = gender;
+        this.name = name;
+        this.birth = birth;
+    }
+
+    public void registerProfile() {
+        this.userRole = UserRole.ROLE_USER;
     }
 }

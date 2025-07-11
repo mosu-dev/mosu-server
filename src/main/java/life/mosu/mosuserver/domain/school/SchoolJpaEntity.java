@@ -12,6 +12,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import java.time.LocalDate;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -41,6 +42,7 @@ public class SchoolJpaEntity {
     @Column(name = "capacity")
     private Long capacity;
 
+    @Builder
     public SchoolJpaEntity(String schoolName, Area area, AddressJpaVO address, LocalDate examDate,
             Long capacity) {
         this.schoolName = schoolName;

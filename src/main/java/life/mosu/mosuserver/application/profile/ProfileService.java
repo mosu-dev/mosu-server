@@ -2,6 +2,8 @@ package life.mosu.mosuserver.application.profile;
 
 import life.mosu.mosuserver.domain.profile.ProfileJpaEntity;
 import life.mosu.mosuserver.domain.profile.ProfileJpaRepository;
+import life.mosu.mosuserver.domain.user.UserJpaEntity;
+import life.mosu.mosuserver.domain.user.UserJpaRepository;
 import life.mosu.mosuserver.global.exception.CustomRuntimeException;
 import life.mosu.mosuserver.global.exception.ErrorCode;
 import life.mosu.mosuserver.presentation.profile.dto.EditProfileRequest;
@@ -16,14 +18,19 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 public class ProfileService {
 
+    private final UserJpaRepository userRepository;
     private final ProfileJpaRepository profileJpaRepository;
 
     @Transactional
     public void registerProfile(Long userId, ProfileRequest request) {
+        UserJpaEntity user = userRepository.findById(userId).orElseThrow(
+                () -> new CustomRuntimeException(ErrorCode.USER_NOT_FOUND, userId)
+        );
         if (profileJpaRepository.existsByUserId(userId)) {
             throw new CustomRuntimeException(ErrorCode.PROFILE_ALREADY_EXISTS, userId);
         }
 
+        user.registerProfile();
         ProfileJpaEntity profile = request.toEntity(userId);
         profileJpaRepository.save(profile);
     }

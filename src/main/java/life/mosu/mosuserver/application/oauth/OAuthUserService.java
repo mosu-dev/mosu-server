@@ -42,17 +42,26 @@ public class OAuthUserService extends DefaultOAuth2UserService {
     }
 
     private UserJpaEntity updateOrWrite(final OAuthUserInfo info) {
-        return userRepository.findByLoginId(info.email())
 
+        return userRepository.findByLoginId(info.email())
+                .map(existingUser -> {
+                    existingUser.updateOAuthUser(info.gender(), info.name(),
+                            info.birthDay() != null ? info.birthDay() : LocalDate.of(1900, 1, 1));
+                    return existingUser;
+                })
                 .orElseGet(() -> {
                     final UserJpaEntity newUser = UserJpaEntity.builder()
                             .loginId(info.email())
-                            .gender(Gender.MALE)
+                            .gender(info.gender() != null ? info.gender() : Gender.MALE)
                             .name(info.name())
-                            .password("")
-                            .birth(LocalDate.now())
-                            .userRole(UserRole.ROLE_USER)
+                            .birth(info.birthDay() != null ? info.birthDay()
+                                    : LocalDate.of(1900, 1, 1))
+                            .userRole(UserRole.ROLE_PENDING)
+                            .agreedToTermsOfService(true)
+                            .agreedToPrivacyPolicy(true)
+                            .agreedToMarketing(false)
                             .build();
+
                     return userRepository.save(newUser);
                 });
     }

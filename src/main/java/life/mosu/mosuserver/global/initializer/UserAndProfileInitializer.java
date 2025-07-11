@@ -46,7 +46,6 @@ public class UserAndProfileInitializer {
             String name = (i % 2 == 0) ? "김철수" + i : "이영희" + i;
             Gender gender = (i % 2 == 0) ? Gender.MALE : Gender.FEMALE;
             LocalDate birth = LocalDate.of(1990 + (i % 5), (i % 12) + 1, (i % 28) + 1);
-            String customerKey = "CK-" + i + "-" + System.currentTimeMillis();
             boolean agreedToMarketing = random.nextBoolean();
             UserRole userRole = (i == 1) ? ROLE_ADMIN : ROLE_USER;
 
@@ -56,7 +55,6 @@ public class UserAndProfileInitializer {
                     .gender(gender)
                     .name(name)
                     .birth(birth)
-                    .customerKey(customerKey)
                     .agreedToTermsOfService(true)
                     .agreedToPrivacyPolicy(true)
                     .agreedToMarketing(agreedToMarketing)
