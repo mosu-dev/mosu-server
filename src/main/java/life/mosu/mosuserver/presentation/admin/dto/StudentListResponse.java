@@ -1,8 +1,6 @@
 package life.mosu.mosuserver.presentation.admin.dto;
 
 import io.swagger.v3.oas.annotations.media.Schema;
-import life.mosu.mosuserver.domain.profile.Education;
-import life.mosu.mosuserver.domain.profile.Grade;
 
 @Schema(description = "학생 목록 응답 DTO")
 public record StudentListResponse(
@@ -20,13 +18,13 @@ public record StudentListResponse(
         String gender,
 
         @Schema(description = "학력", example = "ENROLLED")
-        Education educationLevel,
+        String educationLevel,
 
         @Schema(description = "학교명", example = "서울고등학교")
         String schoolName,
 
         @Schema(description = "학년", example = "HIGH_1")
-        Grade grade,
+        String grade,
 
         @Schema(description = "시험 응시 횟수", example = "2")
         int examCount

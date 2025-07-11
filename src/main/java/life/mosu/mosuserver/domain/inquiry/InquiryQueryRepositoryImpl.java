@@ -1,12 +1,13 @@
 package life.mosu.mosuserver.domain.inquiry;
 
+import static life.mosu.mosuserver.domain.base.BaseTimeEntity.formatDate;
+
 import com.querydsl.core.Tuple;
 import com.querydsl.core.types.OrderSpecifier;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.core.types.dsl.ComparableExpressionBase;
 import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
-import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Optional;
 import life.mosu.mosuserver.presentation.inquiry.dto.InquiryResponse;
@@ -19,8 +20,6 @@ import org.springframework.stereotype.Repository;
 @Repository
 @RequiredArgsConstructor
 public class InquiryQueryRepositoryImpl implements InquiryQueryRepository {
-
-    private static final DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
     private final JPAQueryFactory queryFactory;
     private final QInquiryJpaEntity inquiry = QInquiryJpaEntity.inquiryJpaEntity;
@@ -92,14 +91,14 @@ public class InquiryQueryRepositoryImpl implements InquiryQueryRepository {
     }
 
     private InquiryResponse mapToResponse(Tuple tuple) {
+        InquiryStatus status = tuple.get(inquiry.status);
         return new InquiryResponse(
                 tuple.get(inquiry.id),
                 tuple.get(inquiry.title),
                 tuple.get(inquiry.content),
                 tuple.get(inquiry.author),
-                tuple.get(inquiry.status),
-                tuple.get(inquiry.createdAt) != null ? tuple.get(inquiry.createdAt)
-                        .format(FORMATTER)
-                        : null);
+                status != null ? status.getStatusName() : "N/A",
+                formatDate(tuple.get(inquiry.createdAt))
+        );
     }
 }

@@ -23,6 +23,10 @@ public abstract class BaseTimeEntity {
     @Column(name = "updated_at")
     private LocalDateTime updatedAt;
 
+    public static String formatDate(java.time.LocalDateTime dateTime) {
+        return dateTime != null ? dateTime.toLocalDate().toString() : null;
+    }
+
     public String getCreatedAt() {
         return createdAt != null ? createdAt.format(
                 DateTimeFormatter.ofPattern("yyyy-MM-dd")) : null;
